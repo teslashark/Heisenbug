@@ -44,6 +44,11 @@ public class ScalePlayer extends Application {
         player.play();
     }
 
+    
+    /**
+     * Construct the scene and start the application.
+     * @param primaryStage the stage for the main window
+     */
     @Override
     public void start(Stage primaryStage) {
 
@@ -116,7 +121,8 @@ public class ScalePlayer extends Application {
     }
 
     /**
-     * @param args the command line arguments
+     * Launch the application.
+     * @param args the command line arguments are ignored
      */
     public static void main(String[] args) {
         launch(args);
