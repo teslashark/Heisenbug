@@ -98,16 +98,10 @@ public class ScalePlayer extends Application {
     }
     
     /**
-     * Construct the scene and start the application.
-     * @param primaryStage the stage for the main window
+     * Constructs a basic menu bar with only the option File > Exit.
+     * @return the menu bar
      */
-    @Override
-    public void start(Stage primaryStage) {                
-        HBox hbox = new HBox(8);
-        hbox.setAlignment(Pos.CENTER);
-        hbox.getChildren().addAll(addStartButton(), addStopButton());
-        
-        
+    protected MenuBar addMenuBar() {
         Menu menuFile = new Menu("File");
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction((ActionEvent t) -> {
@@ -117,9 +111,21 @@ public class ScalePlayer extends Application {
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menuFile);
+        return menuBar;
+    }
+    
+    /**
+     * Construct the scene and start the application.
+     * @param primaryStage the stage for the main window
+     */
+    @Override
+    public void start(Stage primaryStage) {                
+        HBox hbox = new HBox(8);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().addAll(addStartButton(), addStopButton());
 
         BorderPane root = new BorderPane();
-        root.setTop(menuBar);
+        root.setTop(addMenuBar());
         root.setCenter(hbox);
         
         Scene scene = new Scene(root, 300, 250);
