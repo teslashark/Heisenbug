@@ -27,8 +27,17 @@ import javafx.stage.WindowEvent;
  */
 public class ScalePlayer extends Application {
     
+    /**
+     * Represents the number of pitch steps for 
+     * do, re, mi, fa, so, la, ti, do.
+     * Source: https://en.wikipedia.org/wiki/Solfège
+     */
     private static final int[] SCALE = {0, 2, 4, 5, 7, 9, 11, 12};
     
+    /**
+     * One midi player is used throughout, so we can stop a scale that is
+     * currently playing.
+     */
     private final MidiPlayer player;
 
     public ScalePlayer() {
