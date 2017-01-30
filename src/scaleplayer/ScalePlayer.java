@@ -9,9 +9,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -26,15 +28,29 @@ import javafx.stage.Stage;
  */
 public class ScalePlayer extends Application {
     
+    private static final int[] scale = {0, 2, 4, 5, 7, 9, 11, 12};
+    
     @Override
     public void start(Stage primaryStage) {
+        
+        MidiPlayer player = new MidiPlayer(1,60);
 
         Button startButton = new Button();
         startButton.setText("Play scale");
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Start");
+                TextInputDialog pitchDialog = new TextInputDialog("60");
+                pitchDialog.showAndWait().ifPresent(response -> {
+                    int startingPitch = Integer.parseInt(response);
+                    player.stop();
+                    player.clear();
+                    for (int i=0; i < 8; i++) {
+                        player.addNote(startingPitch+scale[i], 127, i, 1, 0, 0);
+                        player.addNote(startingPitch+scale[i], 127, 16-i, 1, 0, 0);
+                    }
+                    player.play();
+                });
             }
         });
         
@@ -43,7 +59,7 @@ public class ScalePlayer extends Application {
         stopButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Stop");
+                player.stop();
             }
         });
         
