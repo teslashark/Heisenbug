@@ -5,7 +5,6 @@ package scaleplayer;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -62,14 +61,11 @@ public class ScalePlayer extends Application {
                                              00.0, 20.0 });
         startButton.setGraphic(triangle);
         
-        startButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                TextInputDialog pitchDialog = new TextInputDialog("60");
-                pitchDialog.showAndWait().ifPresent(response -> {
-                    playScale(Integer.parseInt(response));
-                });
-            }
+        startButton.setOnAction((ActionEvent event) -> {
+            TextInputDialog pitchDialog = new TextInputDialog("60");
+            pitchDialog.showAndWait().ifPresent(response -> {
+                playScale(Integer.parseInt(response));
+            });
         });
         
         Button stopButton = new Button("Stop playing");
@@ -94,10 +90,8 @@ public class ScalePlayer extends Application {
         
         Menu menuFile = new Menu("File");
         MenuItem exit = new MenuItem("Exit");
-        exit.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                System.exit(0);
-            }
+        exit.setOnAction((ActionEvent t) -> {
+            System.exit(0);
         });        
         menuFile.getItems().addAll(exit);
         
@@ -112,11 +106,9 @@ public class ScalePlayer extends Application {
         
         primaryStage.setTitle("Scale Player");
         primaryStage.setScene(scene);
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-          public void handle(WindowEvent we) {
-              System.exit(0);
-          }
-      });        
+        primaryStage.setOnCloseRequest((WindowEvent we) -> {
+            System.exit(0);
+        });        
         primaryStage.show();
     }
 
