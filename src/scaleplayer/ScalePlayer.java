@@ -50,7 +50,7 @@ public class ScalePlayer extends Application {
     }
 
     /**
-     * Constructs the start button. When pressed, the start button shows a 
+     * Construct the start button. When pressed, the start button shows a 
      * dialog which lets the user choose a starting pitch for the scale.
      * @return the start button
      */
@@ -76,7 +76,7 @@ public class ScalePlayer extends Application {
     }
     
     /**
-     * Constructs the stop button. When pressed, the button stops playing
+     * Construct the stop button. When pressed, the button stops playing
      * the current scale.
      * @return the stop button
      */
@@ -99,6 +99,7 @@ public class ScalePlayer extends Application {
     }
     
     /**
+     * Construct all the buttons.
      * @return the pane containing the buttons
      */
     protected Pane addButtonPane() {
@@ -109,7 +110,7 @@ public class ScalePlayer extends Application {
     }
     
     /**
-     * Constructs a basic menu bar with only the option File > Exit.
+     * Construct a basic menu bar with only the option File > Exit.
      * @return the menu bar
      */
     protected MenuBar addMenuBar() {
