@@ -40,6 +40,8 @@ public class ScalePlayer extends Application {
 
         Button startButton = new Button();
         startButton.setText("Play scale");
+        startButton.setStyle("-fx-background-color: lightgreen;");
+
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(new Double[]{
                                              0.0, 0.0,
@@ -65,6 +67,8 @@ public class ScalePlayer extends Application {
         
         Button stopButton = new Button();
         stopButton.setText("Stop playing");
+        stopButton.setStyle("-fx-background-color: pink;");
+        
         Polygon square = new Polygon();
         square.getPoints().addAll(new Double[]{
                                              0.0, 0.0,
