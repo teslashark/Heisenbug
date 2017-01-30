@@ -14,6 +14,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -98,6 +99,16 @@ public class ScalePlayer extends Application {
     }
     
     /**
+     * @return the pane containing the buttons
+     */
+    protected Pane addButtonPane() {
+        HBox hbox = new HBox(8);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().addAll(addStartButton(), addStopButton());
+        return hbox;
+    }
+    
+    /**
      * Constructs a basic menu bar with only the option File > Exit.
      * @return the menu bar
      */
@@ -120,13 +131,9 @@ public class ScalePlayer extends Application {
      */
     @Override
     public void start(Stage primaryStage) {                
-        HBox hbox = new HBox(8);
-        hbox.setAlignment(Pos.CENTER);
-        hbox.getChildren().addAll(addStartButton(), addStopButton());
-
         BorderPane root = new BorderPane();
         root.setTop(addMenuBar());
-        root.setCenter(hbox);
+        root.setCenter(addButtonPane());
         
         Scene scene = new Scene(root, 300, 250);
         
