@@ -136,9 +136,9 @@ public class ScalePlayer extends Application {
         root.setCenter(addButtonPane());
         
         Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Scale Player");
         primaryStage.setScene(scene);
+
+        primaryStage.setTitle("Scale Player");
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
         });        
