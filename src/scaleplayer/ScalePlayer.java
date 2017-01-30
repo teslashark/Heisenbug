@@ -104,7 +104,6 @@ public class ScalePlayer extends Application {
     @Override
     public void start(Stage primaryStage) {                
         HBox hbox = new HBox(8);
-        hbox.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hbox.setAlignment(Pos.CENTER);
         hbox.getChildren().addAll(addStartButton(), addStopButton());
         
