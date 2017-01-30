@@ -48,14 +48,12 @@ public class ScalePlayer extends Application {
         player.play();
     }
 
-    
     /**
-     * Construct the scene and start the application.
-     * @param primaryStage the stage for the main window
+     * Constructs the start button. When pressed, the start button shows a 
+     * dialog which lets the user choose a starting pitch for the scale.
+     * @return the start button
      */
-    @Override
-    public void start(Stage primaryStage) {
-
+    protected Button addStartButton() {
         Button startButton = new Button("Play scale");
         startButton.setStyle("-fx-background-color: lightgreen;");
 
@@ -73,6 +71,15 @@ public class ScalePlayer extends Application {
             });
         });
         
+        return startButton;
+    }
+    
+    /**
+     * Constructs the stop button. When pressed, the button stops playing
+     * the current scale.
+     * @return the stop button
+     */
+    protected Button addStopButton() {
         Button stopButton = new Button("Stop playing");
         stopButton.setStyle("-fx-background-color: pink;");
         
@@ -87,10 +94,19 @@ public class ScalePlayer extends Application {
             player.stop();
         });
         
+        return stopButton;
+    }
+    
+    /**
+     * Construct the scene and start the application.
+     * @param primaryStage the stage for the main window
+     */
+    @Override
+    public void start(Stage primaryStage) {                
         HBox hbox = new HBox(8);
         hbox.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hbox.setAlignment(Pos.CENTER);
-        hbox.getChildren().addAll(startButton, stopButton);
+        hbox.getChildren().addAll(addStartButton(), addStopButton());
         
         
         Menu menuFile = new Menu("File");
