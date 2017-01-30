@@ -29,6 +29,20 @@ public class ScalePlayer extends Application {
     
     private static final int[] scale = {0, 2, 4, 5, 7, 9, 11, 12};
     private static final MidiPlayer player = new MidiPlayer(1,60);
+    
+    /**
+     * Play a new scale, after stopping and clearing any previous scale.
+     * @param startingPitch An integer between 0 115.
+     */
+    protected void playScale(int startingPitch) {
+        player.stop();
+        player.clear();
+        for (int i=0; i < 8; i++) {
+            player.addNote(startingPitch+scale[i], 127, i, 1, 0, 0);
+            player.addNote(startingPitch+scale[i], 127, 16-i, 1, 0, 0);
+        }
+        player.play();
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -48,14 +62,7 @@ public class ScalePlayer extends Application {
             public void handle(ActionEvent event) {
                 TextInputDialog pitchDialog = new TextInputDialog("60");
                 pitchDialog.showAndWait().ifPresent(response -> {
-                    int startingPitch = Integer.parseInt(response);
-                    player.stop();
-                    player.clear();
-                    for (int i=0; i < 8; i++) {
-                        player.addNote(startingPitch+scale[i], 127, i, 1, 0, 0);
-                        player.addNote(startingPitch+scale[i], 127, 16-i, 1, 0, 0);
-                    }
-                    player.play();
+                    playScale(Integer.parseInt(response));
                 });
             }
         });
