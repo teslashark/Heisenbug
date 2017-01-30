@@ -33,8 +33,7 @@ public class ScalePlayer extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        Button startButton = new Button();
-        startButton.setText("Play scale");
+        Button startButton = new Button("Play scale");
         startButton.setStyle("-fx-background-color: lightgreen;");
 
         Polygon triangle = new Polygon();
@@ -43,6 +42,7 @@ public class ScalePlayer extends Application {
                                              20.0, 10.0,
                                              00.0, 20.0 });
         startButton.setGraphic(triangle);
+        
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -60,8 +60,7 @@ public class ScalePlayer extends Application {
             }
         });
         
-        Button stopButton = new Button();
-        stopButton.setText("Stop playing");
+        Button stopButton = new Button("Stop playing");
         stopButton.setStyle("-fx-background-color: pink;");
         
         Polygon square = new Polygon();
