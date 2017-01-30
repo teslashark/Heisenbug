@@ -4,6 +4,7 @@
 package scaleplayer;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -19,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * This JavaFX app lets the user play scales.
@@ -89,6 +91,11 @@ public class ScalePlayer extends Application {
         
         primaryStage.setTitle("Scale Player");
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+              System.exit(0);
+          }
+      });        
         primaryStage.show();
     }
 
