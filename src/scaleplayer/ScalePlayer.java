@@ -28,7 +28,11 @@ public class ScalePlayer extends Application {
     
     private static final int[] SCALE = {0, 2, 4, 5, 7, 9, 11, 12};
     
-    private static final MidiPlayer player = new MidiPlayer(1,60);
+    private final MidiPlayer player;
+
+    public ScalePlayer() {
+        this.player = new MidiPlayer(1,60);
+    }
     
     /**
      * Play a new SCALE, after stopping and clearing any previous SCALE.
