@@ -77,11 +77,8 @@ public class ScalePlayer extends Application {
                                              20.0, 20.0,
                                              20.0, 0.0});        
         stopButton.setGraphic(square);
-        stopButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                player.stop();
-            }
+        stopButton.setOnAction((ActionEvent event) -> {
+            player.stop();
         });
         
         HBox hbox = new HBox(8);
