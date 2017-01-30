@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -39,6 +40,12 @@ public class ScalePlayer extends Application {
 
         Button startButton = new Button();
         startButton.setText("Play scale");
+        Polygon triangle = new Polygon();
+        triangle.getPoints().addAll(new Double[]{
+                                             0.0, 0.0,
+                                             20.0, 10.0,
+                                             00.0, 20.0 });
+        startButton.setGraphic(triangle);
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -58,6 +65,13 @@ public class ScalePlayer extends Application {
         
         Button stopButton = new Button();
         stopButton.setText("Stop playing");
+        Polygon square = new Polygon();
+        square.getPoints().addAll(new Double[]{
+                                             0.0, 0.0,
+                                             0.0, 20.0,
+                                             20.0, 20.0,
+                                             20.0, 0.0});        
+        stopButton.setGraphic(square);
         stopButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
