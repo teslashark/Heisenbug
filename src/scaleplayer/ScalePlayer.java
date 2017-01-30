@@ -28,11 +28,10 @@ import javafx.stage.WindowEvent;
 public class ScalePlayer extends Application {
     
     private static final int[] scale = {0, 2, 4, 5, 7, 9, 11, 12};
-    
+    private static final MidiPlayer player = new MidiPlayer(1,60);
+
     @Override
     public void start(Stage primaryStage) {
-        
-        MidiPlayer player = new MidiPlayer(1,60);
 
         Button startButton = new Button();
         startButton.setText("Play scale");
