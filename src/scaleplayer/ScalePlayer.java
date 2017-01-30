@@ -36,7 +36,7 @@ public class ScalePlayer extends Application {
     }
     
     /**
-     * Play a new SCALE, after stopping and clearing any previous SCALE.
+     * Play a new scale, after stopping and clearing any previous scale.
      * @param startingPitch An integer between 0 115.
      */
     protected void playScale(int startingPitch) {
@@ -110,7 +110,7 @@ public class ScalePlayer extends Application {
     }
     
     /**
-     * Construct a basic menu bar with only the option File > Exit.
+     * Construct a basic menu bar with only the option File : Exit.
      * @return the menu bar
      */
     protected MenuBar addMenuBar() {
