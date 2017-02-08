@@ -13,10 +13,11 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" 
             xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@scaleplayer.css"
             fx:controller="scaleplayer.ScalePlayer" 
             prefHeight="300.0" prefWidth="400.0">
    <center>
-      <HBox alignment="CENTER" stylesheets="@scaleplayer.css" BorderPane.alignment="CENTER" spacing="10">
+      <HBox alignment="CENTER" BorderPane.alignment="CENTER" spacing="10">
          <children>
             <Button id="start-button" mnemonicParsing="false" text="Play scale" onAction="#handlePlayScaleButtonAction">
                <graphic>
