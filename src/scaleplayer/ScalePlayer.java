@@ -50,7 +50,10 @@ public class ScalePlayer extends Application {
     
     @FXML 
     protected void handlePlayScaleButtonAction(ActionEvent event) {
-        playScale(60);
+        TextInputDialog pitchDialog = new TextInputDialog("60");
+            pitchDialog.showAndWait().ifPresent(response -> {
+                playScale(Integer.parseInt(response));
+            });
     }    
     
     @FXML 
