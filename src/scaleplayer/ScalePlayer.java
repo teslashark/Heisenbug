@@ -65,6 +65,7 @@ public class ScalePlayer extends Application {
     @FXML 
     protected void handlePlayScaleButtonAction(ActionEvent event) {
         TextInputDialog pitchDialog = new TextInputDialog("60");
+        pitchDialog.setHeaderText("Give me a starting note (0-115):");
             pitchDialog.showAndWait().ifPresent(response -> {
                 playScale(Integer.parseInt(response));
             });
