@@ -58,6 +58,11 @@ public class ScalePlayer extends Application {
         player.stop();
     }    
     
+    @FXML
+    protected void handleExitMenuItemAction(ActionEvent event) {
+        System.exit(0);
+    }
+    
     /**
      * Play a new scale, after stopping and clearing any previous scale.
      * @param startingPitch An integer between 0 115.
