@@ -17,7 +17,7 @@
          <center>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" stylesheets="@scaleplayer.css" BorderPane.alignment="CENTER" spacing="10">
                <children>
-                  <Button id="start-button" mnemonicParsing="false" text="Play scale">
+                  <Button id="start-button" mnemonicParsing="false" text="Play scale" onAction="#handlePlayScaleButtonAction">
                      <graphic>
                         <Polygon stroke="BLACK" strokeType="INSIDE">
                           <points>
@@ -30,7 +30,7 @@
                           </points>
                         </Polygon>
                      </graphic></Button>
-                  <Button id="stop-button" mnemonicParsing="false" text="Stop playing">
+                  <Button id="stop-button" mnemonicParsing="false" text="Stop playing" onAction="#handleStopPlayingButtonAction">
                      <graphic>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" height="20" stroke="BLACK" strokeType="INSIDE" width="20.0" />
                      </graphic></Button>

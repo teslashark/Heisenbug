@@ -6,6 +6,7 @@ package scaleplayer;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -46,6 +47,16 @@ public class ScalePlayer extends Application {
     public ScalePlayer() {
         this.player = new MidiPlayer(1,60);
     }
+    
+    @FXML 
+    protected void handlePlayScaleButtonAction(ActionEvent event) {
+        playScale(60);
+    }    
+    
+    @FXML 
+    protected void handleStopPlayingButtonAction(ActionEvent event) {
+        player.stop();
+    }    
     
     /**
      * Play a new scale, after stopping and clearing any previous scale.
