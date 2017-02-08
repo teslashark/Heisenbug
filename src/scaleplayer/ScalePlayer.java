@@ -3,9 +3,12 @@
  */
 package scaleplayer;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -140,15 +143,12 @@ public class ScalePlayer extends Application {
      * @param primaryStage the stage for the main window
      */
     @Override
-    public void start(Stage primaryStage) {                
-        BorderPane root = new BorderPane();
-        root.setTop(addMenuBar());
-        root.setCenter(addButtonPane());
+    public void start(Stage primaryStage) throws IOException {                
+        Parent root = FXMLLoader.load(getClass().getResource("ScalePlayer.fxml"));
+        Scene scene = new Scene(root);
         
-        Scene scene = new Scene(root, 300, 250);
-        primaryStage.setScene(scene);
-
         primaryStage.setTitle("Scale Player");
+        primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             System.exit(0);
         });        

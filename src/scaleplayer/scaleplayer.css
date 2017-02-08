@@ -1,7 +1,13 @@
 /*
- * Empty Stylesheet file.
+ * ScalePlayer Stylesheet file.
  */
 
-.mainFxmlClass {
+#start-button {
+    -fx-padding: 10;
+    -fx-background-color: lightgreen;
+}
 
+#stop-button {
+    -fx-padding: 10;
+    -fx-background-color: pink;
 }
