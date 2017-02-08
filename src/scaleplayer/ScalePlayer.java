@@ -48,6 +48,20 @@ public class ScalePlayer extends Application {
         this.player = new MidiPlayer(1,60);
     }
     
+    /**
+     * Play a new scale, after stopping and clearing any previous scale.
+     * @param startingPitch An integer between 0 115.
+     */
+    protected void playScale(int startingPitch) {
+        player.stop();
+        player.clear();
+        for (int i=0; i < 8; i++) {
+            player.addNote(startingPitch+SCALE[i], 127, i, 1, 0, 0);
+            player.addNote(startingPitch+SCALE[i], 127, 16-i, 1, 0, 0);
+        }
+        player.play();
+    }
+    
     @FXML 
     protected void handlePlayScaleButtonAction(ActionEvent event) {
         TextInputDialog pitchDialog = new TextInputDialog("60");
@@ -64,20 +78,6 @@ public class ScalePlayer extends Application {
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
         System.exit(0);
-    }
-    
-    /**
-     * Play a new scale, after stopping and clearing any previous scale.
-     * @param startingPitch An integer between 0 115.
-     */
-    protected void playScale(int startingPitch) {
-        player.stop();
-        player.clear();
-        for (int i=0; i < 8; i++) {
-            player.addNote(startingPitch+SCALE[i], 127, i, 1, 0, 0);
-            player.addNote(startingPitch+SCALE[i], 127, 16-i, 1, 0, 0);
-        }
-        player.play();
     }
     
     /**
