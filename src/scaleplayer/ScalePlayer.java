@@ -17,7 +17,7 @@ import javafx.stage.WindowEvent;
 /**
  * This JavaFX app lets the user play scales.
  * @author Janet Davis 
- * @author AOLUTION - PROJECT 1
+ * @author SOLUTION - PROJECT 1
  * @since January 26, 2017
  */
 public class ScalePlayer extends Application {
@@ -91,6 +91,7 @@ public class ScalePlayer extends Application {
     /**
      * Construct the scene and start the application.
      * @param primaryStage the stage for the main window
+     * @throws java.io.IOException
      */
     @Override
     public void start(Stage primaryStage) throws IOException {                
