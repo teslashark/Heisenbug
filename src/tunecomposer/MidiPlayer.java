@@ -1,7 +1,7 @@
 /*
  * CS 300-A, 2017S
  */
-package scaleplayer;
+package tunecomposer;
 
 import javax.sound.midi.*;
 

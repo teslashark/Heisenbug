@@ -1,7 +1,7 @@
 /*
  * CS 300-A, 2017S
  */
-package scaleplayer;
+package tunecomposer;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -20,7 +20,7 @@ import javafx.stage.WindowEvent;
  * @author SOLUTION - PROJECT 1
  * @since January 26, 2017
  */
-public class ScalePlayer extends Application {
+public class TuneComposer extends Application {
     
     /**
      * Represents the number of pitch steps for 
@@ -43,7 +43,7 @@ public class ScalePlayer extends Application {
     /**
      * Constructs a new ScalePlayer application.
      */
-    public ScalePlayer() {
+    public TuneComposer() {
         this.player = new MidiPlayer(1,60);
     }
     
@@ -100,7 +100,7 @@ public class ScalePlayer extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {                
-        Parent root = FXMLLoader.load(getClass().getResource("ScalePlayer.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("TuneComposer.fxml"));
         Scene scene = new Scene(root);
         
         primaryStage.setTitle("Scale Player");
