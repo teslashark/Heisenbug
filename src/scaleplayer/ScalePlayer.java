@@ -30,6 +30,11 @@ public class ScalePlayer extends Application {
     private static final int[] SCALE = {0, 2, 4, 5, 7, 9, 11, 12};
     
     /**
+     * Play notes at maximum volume.
+     */
+    private static final int VOLUME = 127;
+    
+    /**
      * One midi player is used throughout, so we can stop a scale that is
      * currently playing.
      */
@@ -50,8 +55,8 @@ public class ScalePlayer extends Application {
         player.stop();
         player.clear();
         for (int i=0; i < 8; i++) {
-            player.addNote(startingPitch+SCALE[i], 127, i, 1, 0, 0);
-            player.addNote(startingPitch+SCALE[i], 127, 16-i, 1, 0, 0);
+            player.addNote(startingPitch+SCALE[i], VOLUME, i,    1, 0, 0);
+            player.addNote(startingPitch+SCALE[i], VOLUME, 16-i, 1, 0, 0);
         }
         player.play();
     }
