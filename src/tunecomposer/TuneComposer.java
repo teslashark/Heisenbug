@@ -62,6 +62,16 @@ public class TuneComposer extends Application {
     }
     
     /**
+     * plays a single note for a specified amount of time
+     * @param pitch
+     * @param time
+     */
+    protected void playNote(int pitch, int time) {
+        final int noteLength = 1;
+        player.addNote(pitch, VOLUME, time, noteLength, 0, 0);
+    }
+    
+    /**
      * When the user clicks the "Play scale" button, show a dialog to get the 
      * starting note and then play the scale.
      * @param event the button click event
