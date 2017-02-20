@@ -3,7 +3,9 @@
  */
 package tunecomposer;
 
+import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +23,8 @@ import javafx.stage.WindowEvent;
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {
+    
+    //private ArrayList musicNotesArray = new ArrayList();    
     
     /**
      * Represents the number of pitch steps for 
@@ -70,6 +74,19 @@ public class TuneComposer extends Application {
         final int noteLength = 1;
         player.addNote(pitch, VOLUME, time, noteLength, 0, 0);
     }
+    
+    /**
+     * creates a rectangle of width 100px and height 10px
+     * @param event 
+     */
+    /*
+    @FXML
+    protected void handleOnMouseClickAction(ActionEvent event){
+        Rectangle noteBox = new Rectangle(100, 10);
+        musicNotesArray.add(noteBox);
+        System.out.println("we made a box!");
+    }
+    */
     
     /**
      * When the user clicks the "Play scale" button, show a dialog to get the 
