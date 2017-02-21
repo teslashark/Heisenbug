@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -24,7 +25,11 @@ import javafx.stage.WindowEvent;
  */
 public class TuneComposer extends Application {
     
-    //private ArrayList musicNotesArray = new ArrayList();    
+    /**
+     * Contains the rectangle objects that represent
+     * the musical notes in the UI
+     */
+    private ArrayList musicNotesArray = new ArrayList();    
     
     /**
      * Represents the number of pitch steps for 
@@ -66,41 +71,28 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * plays a single note for a specified amount of time
+     * 
      * @param pitch
-     * @param time
+     * @param startTick
      */
-    protected void playNote(int pitch, int time) {
-        final int noteLength = 1;
-        player.addNote(pitch, VOLUME, time, noteLength, 0, 0);
+    protected void addNote(int pitch, int startTick) {
+        final int noteLength = 10000;
+        player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
+        //player.addNote(pitch, VOLUME, 1, noteLength, 0, 0);
     }
     
     /**
-     * creates a rectangle of width 100px and height 10px
+     * creates a rectangle object of width 100px and height 10px
+     * 
      * @param event 
      */
-    /*
     @FXML
-    protected void handleOnMouseClickAction(ActionEvent event){
+    protected void handleOnMouseClickAction(MouseEvent event){
         Rectangle noteBox = new Rectangle(100, 10);
-        musicNotesArray.add(noteBox);
-        System.out.println("we made a box!");
+        noteBox.x = (int) event.getSceneX();
+        noteBox.y = (int) event.getSceneY();
+        musicNotesArray.add(noteBox);        
     }
-    */
-    
-    /**
-     * When the user clicks the "Play scale" button, show a dialog to get the 
-     * starting note and then play the scale.
-     * @param event the button click event
-     */
-    @FXML 
-    protected void handlePlayScaleButtonAction(ActionEvent event) {
-        TextInputDialog pitchDialog = new TextInputDialog("60");
-        pitchDialog.setHeaderText("Give me a starting note (0-115):");
-            pitchDialog.showAndWait().ifPresent(response -> {
-                playScale(Integer.parseInt(response));
-            });
-    }    
     
     /**
      * When the user clicks the "Stop playing" button, stop playing the scale.
@@ -112,13 +104,44 @@ public class TuneComposer extends Application {
     }    
     
     /**
-     * When the user clicks the "Exit" menu item, exit the program.
+     * 
      * @param event the menu selection event
+     */
+    @FXML
+    protected void handleStopMenuItemAction(ActionEvent event) {
+        player.stop();
+        player.clear();
+    }
+
+    /**
+     * 
+     * @param event 
+     */
+    @FXML
+    protected void handlePlayMenuItemAction(ActionEvent event) {
+        
+        player.stop();
+        player.clear();
+
+        for (int i = 0; i < musicNotesArray.size(); i++){            
+            Rectangle noteBox = (Rectangle) musicNotesArray.get(i); 
+            int tickDelay = noteBox.x / 200;
+            int pitch = noteBox.y / 10;
+            this.addNote(pitch, tickDelay);            
+        }
+        
+        player.play();
+        
+    }
+    
+    /**
+     * 
+     * @param event 
      */
     @FXML
     protected void handleExitMenuItemAction(ActionEvent event) {
         System.exit(0);
-    }
+    }    
     
     /**
      * Construct the scene and start the application.
