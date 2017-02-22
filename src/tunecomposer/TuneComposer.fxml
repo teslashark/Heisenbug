@@ -33,7 +33,6 @@
       <ScrollBar BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <Pane fx:id="musicLines" BorderPane.alignment="CENTER">
-      </Pane>
+      <Pane fx:id="musicLines" onMouseClicked="#handleOnMouseClickAction" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
