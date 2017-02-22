@@ -11,6 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -40,6 +43,20 @@ public class TuneComposer extends Application {
      */
     private final MidiPlayer player;
 
+    @FXML
+    private Pane musicLines;
+
+    /**
+     *
+     */
+    public void initialize() {
+        for (int i = 1; i <= 127; i++) {
+            Line line = new Line(0, i*10, 2000, i*10);
+            line.setStroke(Color.LIGHTGRAY);
+            musicLines.getChildren().add(line);
+        }
+    }
+    
     /**
      * Constructs a new ScalePlayer application.
      */
