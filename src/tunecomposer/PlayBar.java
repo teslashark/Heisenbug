@@ -84,7 +84,7 @@ public class PlayBar {
      * stop animation when called
      */
     public void stopAnimation() {
-        timeline.stop();
+        playLine.setVisible(false);
     }
     
     /**

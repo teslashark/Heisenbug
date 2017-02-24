@@ -130,6 +130,7 @@ public class TuneComposer extends Application {
         player.clear();
         musicNotesArray.clear();
         playBarObj.stopAnimation();
+        System.out.println("hello");
     }
 
     /**
