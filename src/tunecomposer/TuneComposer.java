@@ -80,20 +80,6 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * Play a new scale, after stopping and clearing any previous scale.
-     * @param startingPitch an integer between 0 and 115
-     */
-    protected void playScale(int startingPitch) {
-        player.stop();
-        player.clear();
-        for (int i=0; i < 8; i++) {
-            player.addNote(startingPitch+SCALE[i], VOLUME, i,    1, 0, 0);
-            player.addNote(startingPitch+SCALE[i], VOLUME, 16-i, 1, 0, 0);
-        }
-        player.play();
-    }
-    
-    /**
      * 
      * @param pitch
      * @param startTick
@@ -112,10 +98,18 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
         Rectangle r = new Rectangle();
-        r.setX(event.getSceneX());
-        r.setY(event.getSceneY());
+        r.setFill(Color.BLUE);
+        r.setY(event.getY());        
         r.setWidth(100);
         r.setHeight(10);
+        
+        if (event.getX() > 1900) {
+            r.setX(1900);
+        }
+        else {
+            r.setX(event.getX());
+        }
+        
         musicNotesArray.add(r);
         musicPane.getChildren().add(r);
     }
@@ -152,7 +146,6 @@ public class TuneComposer extends Application {
         
         player.play();
         playBarObj.playAnimation(musicNotesArray);
-//        playBarObj.playLine.setVisible(false);
         musicNotesArray.clear();
 
     }

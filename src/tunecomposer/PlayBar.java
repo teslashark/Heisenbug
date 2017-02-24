@@ -55,11 +55,12 @@ public class PlayBar {
      */
     public void playAnimation(ArrayList noteList) {
         playLine.setVisible(true);
+        final int endCoordinate = findEndCoordinate(noteList);
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         //create starting and ending keyframes for animation.
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, new KeyValue (playLine.translateXProperty(), 0));
-        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2000), new KeyValue (playLine.translateXProperty(), findEndCordinate(noteList)));
+        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(endCoordinate*10), new KeyValue (playLine.translateXProperty(), endCoordinate));
         timeline.getKeyFrames().addAll(keyFrame1, keyFrame2);
         timeline.play();
     }
@@ -75,7 +76,7 @@ public class PlayBar {
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, new KeyValue (playLine.translateXProperty(), 0));
 //        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2000), new KeyValue (playLine.translateXProperty(), 200));
         KeyFrame keyFrame2;
-        keyFrame2 = new KeyFrame(Duration.millis(6000),new KeyValue (playLine.translateXProperty(), 200));
+        keyFrame2 = new KeyFrame(Duration.millis(2000),new KeyValue (playLine.translateXProperty(), 200));
         timeline.getKeyFrames().addAll(keyFrame1, keyFrame2);
         timeline.play();
     }
@@ -90,7 +91,7 @@ public class PlayBar {
     /**
      * returns the x cord of the right side of the last note in our list of notes
      */
-    private int findEndCordinate(ArrayList<Rectangle> noteList) {
+    private int findEndCoordinate(ArrayList<Rectangle> noteList) {
         int largestXValue = 0;
         for (Rectangle rect: noteList) {
             if (rect.getX() > largestXValue) 
