@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 
 <BorderPane prefHeight="1280.0" prefWidth="2000.0" stylesheets="@tunecomposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <top>
@@ -41,7 +42,10 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Pane fx:id="musicLines" onMouseClicked="#handleOnMouseClickAction" />
+                  <Pane fx:id="musicPane" onMouseClicked="#handleOnMouseClickAction">
+                     <children>
+                        <Line fx:id="playLine" />
+                     </children></Pane>
                </children>
             </AnchorPane>
         </content>
