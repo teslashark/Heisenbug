@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -57,26 +59,20 @@ public class PlayBar {
         playLine.setVisible(true);
         final int endCoordinate = findEndCoordinate(noteList);
         final Timeline timeline = new Timeline();
+        //timeline.onFinished();
+        
+        EventHandler onFinished = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                playLine.setVisible(false);
+            }
+            
+        };
+        
         timeline.setCycleCount(1);
         //create starting and ending keyframes for animation.
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, new KeyValue (playLine.translateXProperty(), 0));
-        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(endCoordinate*10), new KeyValue (playLine.translateXProperty(), endCoordinate));
-        timeline.getKeyFrames().addAll(keyFrame1, keyFrame2);
-        timeline.play();
-    }
-    
-    /**
-     * test method for playAnimation
-     */
-    public void playAnimation() {
-        playLine.setVisible(true);
-        timeline = new Timeline();
-        timeline.setCycleCount(1);
-        //create starting and ending keyframes for animation.
-        KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, new KeyValue (playLine.translateXProperty(), 0));
-//        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2000), new KeyValue (playLine.translateXProperty(), 200));
-        KeyFrame keyFrame2;
-        keyFrame2 = new KeyFrame(Duration.millis(2000),new KeyValue (playLine.translateXProperty(), 200));
+        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(endCoordinate*10), onFinished, new KeyValue (playLine.translateXProperty(), endCoordinate));
         timeline.getKeyFrames().addAll(keyFrame1, keyFrame2);
         timeline.play();
     }

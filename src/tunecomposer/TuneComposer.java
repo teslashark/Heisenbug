@@ -66,7 +66,7 @@ public class TuneComposer extends Application {
     public void initialize() {
         for (int i = 1; i <= 127; i++) {
             Line line = new Line(0, i*10, 2000, i*10);
-            line.setStroke(Color.LIGHTGRAY);
+            line.setId("staffLine");
             musicPane.getChildren().add(line);
         }
         playBarObj = new PlayBar(musicPane);
@@ -76,18 +76,7 @@ public class TuneComposer extends Application {
      * Constructs a new ScalePlayer application.
      */
     public TuneComposer() {
-        this.player = new MidiPlayer(1,60);
-    }
-    
-    /**
-     * 
-     * @param pitch
-     * @param startTick
-     */
-    protected void addNote(int pitch, int startTick) {
-        final int noteLength = 10000;
-        player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
-        //player.addNote(pitch, VOLUME, 1, noteLength, 0, 0);
+        this.player = new MidiPlayer(100,60);
     }
     
     /**
@@ -97,21 +86,26 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
+        
         Rectangle r = new Rectangle();
-        r.setFill(Color.BLUE);
-        r.setY(event.getY());        
+        r.setId("noteBox");
         r.setWidth(100);
         r.setHeight(10);
         
         if (event.getX() > 1900) {
-            r.setX(1900);
+            r.setX(1900);            
         }
         else {
             r.setX(event.getX());
         }
         
+        r.setY(Math.round(event.getY() / 10) * 10);
+        
         musicNotesArray.add(r);
         musicPane.getChildren().add(r);
+        
+        //player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
+        
     }
 
     /**
@@ -122,9 +116,7 @@ public class TuneComposer extends Application {
     protected void handleStopMenuItemAction(ActionEvent event) {
         player.stop();
         player.clear();
-        musicNotesArray.clear();
         playBarObj.stopAnimation();
-        System.out.println("hello");
     }
 
     /**
@@ -137,16 +129,20 @@ public class TuneComposer extends Application {
         player.stop();
         player.clear();
 
+        final int noteLength = 100;
+        
         for (int i = 0; i < musicNotesArray.size(); i++){            
             Rectangle noteBox = (Rectangle) musicNotesArray.get(i); 
-            int tickDelay = (int)noteBox.getX() / 200;
-            int pitch = (int) noteBox.getY() / 10;
-            this.addNote(pitch, tickDelay);            
+            int startTick = (int)noteBox.getX();
+            int pitch = 128 - (int) noteBox.getY() /10;
+            player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
         }
+        
+        
         
         player.play();
         playBarObj.playAnimation(musicNotesArray);
-        musicNotesArray.clear();
+        //musicNotesArray.clear();
 
     }
     
