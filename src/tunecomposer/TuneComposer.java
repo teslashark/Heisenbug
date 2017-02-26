@@ -27,17 +27,10 @@ import javafx.stage.WindowEvent;
 public class TuneComposer extends Application {
     
     /**
-     * Contains the rectangle objects that represent
-     * the musical notes in the UI
+     * Contains the rectangle objects that represent 
+     * the musical notes in the UI.
      */
     private ArrayList musicNotesArray = new ArrayList();    
-    
-    /**
-     * Represents the number of pitch steps for 
-     * do, re, mi, fa, so, la, ti, do.
-     * Source: https://en.wikipedia.org/wiki/Solfège
-     */
-    private static final int[] SCALE = {0, 2, 4, 5, 7, 9, 11, 12};
     
     /**
      * Play notes at maximum volume.
@@ -62,7 +55,7 @@ public class TuneComposer extends Application {
     private Pane musicPane;
     
     /**
-     * The vertical red line that will move as the notes play
+     * The vertical red line that will move as the notes play.
      */
     @FXML
     private PlayBar playBarObj;
@@ -95,6 +88,7 @@ public class TuneComposer extends Application {
      * adds the rectangle to musicNotesArray for midiPlayer
      * and adds to musicPane to visually show note's box.
      * Assumes scren size is 2000px wide.
+
      * @param event 
      */
     @FXML
@@ -115,8 +109,7 @@ public class TuneComposer extends Application {
         r.setY(Math.round(event.getY() / 10) * 10);
         
         musicNotesArray.add(r);
-        musicPane.getChildren().add(r);
-                
+        musicPane.getChildren().add(r);        
     }
 
     /**
@@ -198,5 +191,4 @@ public class TuneComposer extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
 }

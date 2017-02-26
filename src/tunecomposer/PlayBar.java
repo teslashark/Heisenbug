@@ -45,7 +45,8 @@ public class PlayBar {
     private Pane parentPane;
     
     /**
-     * creates line and sets it to playLine field. sets line as invisible until animate is called
+     * creates line and sets it to playLine field. 
+     * sets line as invisible until animate is called
      * @param pane 
      */
     PlayBar(Pane pane) {
@@ -54,6 +55,10 @@ public class PlayBar {
         timeline = new Timeline();
     }
     
+    /**
+     * creates the playLine object, styles it, adds it to the main pane
+     * and sets it's initial state to invisible
+     */    
     private void createPlayLine() {
         playLine = new Line(0, 0, 0, 1280);
         playLine.setStrokeWidth(1);
@@ -63,8 +68,10 @@ public class PlayBar {
     }
     
     /**
-     * moves the line across the screen at the speed set by movementSpeed, disappears at end of last note displayed
-     * @param noteList list of rectangles that visually represent notes on the screen
+     * moves the line across the screen at the speed set by 
+     * movementSpeed,disappears at end of last note displayed
+     * @param noteList list of rectangles that visually 
+     * represent notes on the screen
      */
     public void playAnimation(ArrayList noteList) {
         playLine.setVisible(true);
@@ -89,21 +96,22 @@ public class PlayBar {
     }
     
     /**
-     * stop animation when called
+     * stop the playLine animation and make it disappear
      */
     public void stopAnimation() {
-        playLine.setVisible(false);
         timeline.stop();
+        playLine.setVisible(false);
     }
     
     /**
-     * returns the x cord of the right side of the last note in our list of notes
+     * returns the x cord of the right side of 
+     * the last note in our list of notes
      */
     private int findEndCoordinate(ArrayList<Rectangle> noteList) {
         int largestXValue = 0;
         for (Rectangle rect: noteList) {
             if (rect.getX() > largestXValue) 
-                largestXValue = (int) rect.getX(); // add 100 to x cord b/c rectangle is 100 pixels wide
+                largestXValue = (int) rect.getX();
         }
         return largestXValue + 100;
     } 
