@@ -8,7 +8,11 @@ and open the template in the editor.
     Author     : limpicbc
 */
 
-.noteBox {
-    -fx-border-color: black; 
-    -fx-background-color: blue;    
+#noteBox {
+    -fx-fill: lightblue; 
+    -fx-stroke: black;    
+}
+
+#staffLine {
+    -fx-stroke: lightgray;
 }
