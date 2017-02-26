@@ -16,7 +16,8 @@
     stylesheets="@TuneComposer.css" 
     xmlns="http://javafx.com/javafx/8.0.111" 
     xmlns:fx="http://javafx.com/fxml/1" 
-    fx:controller="tunecomposer.TuneComposer">
+    fx:controller="tunecomposer.TuneComposer"
+>
    <top>
       <MenuBar>
         <menus>
@@ -24,11 +25,16 @@
             <items>
               <MenuItem 
                   onAction="#handleExitMenuItemAction" 
-                  text="Exit">
+                  text="Exit"
+              >
                      <accelerator>
                         <KeyCodeCombination 
-                            alt="UP" code="Q" control="DOWN" 
-                            meta="UP" shift="UP" shortcut="UP" 
+                            alt="UP"
+                            code="Q"
+                            control="DOWN" 
+                            meta="UP"
+                            shift="UP"
+                            shortcut="UP" 
                         />
                      </accelerator>
               </MenuItem>
@@ -36,9 +42,11 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Action">
               <items>
-                  <MenuItem mnemonicParsing="false" 
-                            onAction="#handlePlayMenuItemAction" 
-                            text="Play">
+                  <MenuItem 
+                      mnemonicParsing="false" 
+                      onAction="#handlePlayMenuItemAction" 
+                      text="Play"
+                  >
                      <accelerator>
                         <KeyCodeCombination 
                             alt="UP" code="P" control="DOWN" 
@@ -46,13 +54,19 @@
                         />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" 
-                            onAction="#handleStopMenuItemAction" 
-                            text="Stop">
+                  <MenuItem 
+                      mnemonicParsing="false" 
+                      onAction="#handleStopMenuItemAction" 
+                      text="Stop"
+                  >
                      <accelerator>
                         <KeyCodeCombination 
-                            alt="UP" code="S" control="DOWN" 
-                            meta="UP" shift="UP" shortcut="UP" 
+                            alt="UP"
+                            code="S"
+                            control="DOWN" 
+                            meta="UP"
+                            shift="UP"
+                            shortcut="UP" 
                         />
                      </accelerator>
                   </MenuItem>
@@ -65,11 +79,15 @@
       <ScrollPane 
           prefHeight="200.0" 
           prefWidth="200.0" 
-          BorderPane.alignment="CENTER">
+          BorderPane.alignment="CENTER"
+      >
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Pane fx:id="musicPane" onMouseClicked="#handleOnMouseClickAction">
+                  <Pane 
+                      fx:id="musicPane"
+                      onMouseClicked="#handleOnMouseClickAction"
+                  >
                      <children>
                         <Line fx:id="playLine" />
                      </children>
