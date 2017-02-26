@@ -13,32 +13,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This JavaFX app lets the user play scales.
- * @author Janet Davis 
- * @author SOLUTION - PROJECT 1
+ * This JavaFX app lets the user compose tunes.
+ * @author BEC3 (Emma, Cooper and Ben)
  * @since January 26, 2017
  */
 public class TuneComposer extends Application {
     
     /**
-     * Contains the rectangle objects that represent
-     * the musical notes in the UI
+     * Contains the rectangle objects that represent 
+     * the musical notes in the UI.
      */
     private ArrayList musicNotesArray = new ArrayList();    
-    
-    /**
-     * Represents the number of pitch steps for 
-     * do, re, mi, fa, so, la, ti, do.
-     * Source: https://en.wikipedia.org/wiki/Solfège
-     */
-    private static final int[] SCALE = {0, 2, 4, 5, 7, 9, 11, 12};
     
     /**
      * Play notes at maximum volume.
@@ -51,17 +42,21 @@ public class TuneComposer extends Application {
      */
     private final MidiPlayer player;
 
+    /**
+     * Central pane which holds the music staff and notes.
+     */
     @FXML
     private Pane musicPane;
     
     /**
-     * The vertical red line that will move as the notes play
+     * The vertical red line that will move as the notes play.
      */
     @FXML
     private PlayBar playBarObj;
 
     /**
-     * Creates the grey lines of the music staff and the red playLine. adds all of these to musicPane pane. sets the red line to playLine
+     * Creates the grey lines of the music staff and the red playLine. 
+     * Adds all of these to musicPane pane. Sets the red line to playLine
      */
     public void initialize() {
         for (int i = 1; i <= 127; i++) {
@@ -80,36 +75,26 @@ public class TuneComposer extends Application {
     }
     
     /**
-     * creates a rectangle object of width 100px and height 10px
-     * 
+     * Creates a rectangle object of width 100px and height 10px
      * @param event 
      */
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
-        
         Rectangle r = new Rectangle();
         r.setId("noteBox");
         r.setWidth(100);
         r.setHeight(10);
         
-        if (event.getX() > 1900) {
-            r.setX(1900);            
-        }
-        else {
-            r.setX(event.getX());
-        }
+        r.setX(event.getX());
         
         r.setY(Math.round(event.getY() / 10) * 10);
         
         musicNotesArray.add(r);
-        musicPane.getChildren().add(r);
-        
-        //player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
-        
+        musicPane.getChildren().add(r);        
     }
 
     /**
-     * 
+     * Stops tune from playing and clears animation.
      * @param event the menu selection event
      */
     @FXML
@@ -120,12 +105,11 @@ public class TuneComposer extends Application {
     }
 
     /**
-     * 
-     * @param event 
+     * Adds all notes to the MidiPlayer, plays them and begins animation.
+     * @param event the menu selection event
      */
     @FXML
     protected void handlePlayMenuItemAction(ActionEvent event) {
-        
         player.stop();
         player.clear();
 
@@ -137,17 +121,13 @@ public class TuneComposer extends Application {
             int pitch = 128 - (int) noteBox.getY() /10;
             player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
         }
-        
-        
-        
+
         player.play();
         playBarObj.playAnimation(musicNotesArray);
-        //musicNotesArray.clear();
-
     }
     
     /**
-     * 
+     * Exits tune player.
      * @param event 
      */
     @FXML
@@ -180,5 +160,4 @@ public class TuneComposer extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
