@@ -3,11 +3,11 @@
 
 >Give a concise overview of your design. How did you divide the code into classes and methods? How does your design for Project 3 differ from your design(s) for Project 2?
 
-Anwser
+We Had three classes in our project. The MidiPlayer which was untouched, the PlayBar class where the animation and logic for the red bar was managed, and the TuneComposer. I think we did a better job of putting logic in methods to keep changes possible, but we mainly extended the design from project 2 rather than reorganize everything. 
 
 >Explain why your way was the elegant way to do it. Address any improvements you made based on my feedback.
 
-Answer
+Our way was elegant becuase the code is readable and simple to follow, and we avoided complex solutions to problems. It should also leave us with a fair amout of flexibility for the next project. We might have to change a couple methods in the future, but we planned for that and have kept our code free of unnecisarry complications and dependencies. We weren't able to make total structural decisions based on the feedback from project 2, but we were able to name classes better and make code more readible. We used color names instead of hex codes, we formatted the FXML for easier readibility, and isolated as many GUI element constructions as possible in the FXML. Some of the GUI elements had to be created by the play handler such as the note rectangles and red line, so we weren't able to keep all GUI in the FXML.
 
 >Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't have time or the knowledge to fix it).
 
