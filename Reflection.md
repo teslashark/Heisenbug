@@ -11,7 +11,7 @@ Answer
 
 >Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't have time or the knowledge to fix it).
 
-Answer
+I think we could have separated our solution into more classes in order to better separate the functions of each class into exactly what they do. For example, a possible "note" class may be helpful, especially if in the future we expand to have different types of notes (with different lengths, etc.) that would be helpful so that the tuneComposer class builds the pane and then uses the note class and playBar class in order to build a tune and then play it with MidiPlayer. We didn't do this immediately this time since this is more of an idea for the future as the application potentially builds and becomes more complicated. We also tried to build the midiplayer notes as the notes were clicked, but didn't have the methods to restart midiplayers once they had already been started and stopped, so that may be another place to refactor.
 
 >Finally, describe how your team collaborated on the project. What did you do together? What did you do separately? What did each team member contribute? Optionally, include a brief team retrospective: What is one thing you did well as a team? What is one thing you could have improved?
 
