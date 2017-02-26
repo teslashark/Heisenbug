@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tunecomposer;
 
 import java.util.ArrayList;
@@ -19,35 +14,35 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
- *
+ * PlayBar class which creates the animation of a red bar that indicates what notes are playing.
  * @author lazarcl
  */
 public class PlayBar {
     
     /**
-     * a reference to the red line that will move across the screen
+     * A reference to the red line that will move across the screen.
      */
     private Line playLine; 
     
     /**
-     * animation timeline for playBar
+     * Animation timeline for playBar.
      */
     private Timeline timeline;
     
     /**
-     * sets the speed that the bar will move. units are pixels per second
+     * Sets the speed that the bar will move. Units are pixels per second.
      */
     private final float movementSpeed = 100;
     
     /**
-     * pane that playLine live in
+     * Pane that playLine live in.
      */
     private Pane parentPane;
     
     /**
-     * creates line and sets it to playLine field. 
-     * sets line as invisible until animate is called
-     * @param pane 
+     * Creates line and sets it to playLine field. 
+     * Sets line as invisible until animate is called.
+     * @param pane the pane the playBar and timeline are on
      */
     PlayBar(Pane pane) {
         parentPane = pane;
@@ -56,8 +51,8 @@ public class PlayBar {
     }
     
     /**
-     * creates the playLine object, styles it, adds it to the main pane
-     * and sets it's initial state to invisible
+     * Creates the playLine object, styles it, adds it to the main pane,
+     * and sets it's initial state to invisible.
      */    
     private void createPlayLine() {
         playLine = new Line(0, 0, 0, 1280);
@@ -68,10 +63,9 @@ public class PlayBar {
     }
     
     /**
-     * moves the line across the screen at the speed set by 
-     * movementSpeed,disappears at end of last note displayed
-     * @param noteList list of rectangles that visually 
-     * represent notes on the screen
+     * Moves the line across the screen at the speed set by 
+     * movementSpeed, disappears at end of last note displayed.
+     * @param noteList List of rectangles that visually represent notes on the screen
      */
     public void playAnimation(ArrayList noteList) {
         playLine.setVisible(true);
@@ -88,7 +82,7 @@ public class PlayBar {
         };
         
         timeline.setCycleCount(1);
-        //create starting and ending keyframes for animation.
+        // create starting and ending keyframes for animation.
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, new KeyValue (playLine.translateXProperty(), 0));
         KeyFrame keyFrame2 = new KeyFrame(Duration.millis(endCoordinate*10), onFinished, new KeyValue (playLine.translateXProperty(), endCoordinate));
         timeline.getKeyFrames().addAll(keyFrame1, keyFrame2);
@@ -96,7 +90,7 @@ public class PlayBar {
     }
     
     /**
-     * stop the playLine animation and make it disappear
+     * Stop the playLine animation and make it disappear.
      */
     public void stopAnimation() {
         timeline.stop();
@@ -104,8 +98,8 @@ public class PlayBar {
     }
     
     /**
-     * returns the x cord of the right side of 
-     * the last note in our list of notes
+     * Returns the x cord of the right side of 
+     * the last note in our list of notes.
      */
     private int findEndCoordinate(ArrayList<Rectangle> noteList) {
         int largestXValue = 0;
