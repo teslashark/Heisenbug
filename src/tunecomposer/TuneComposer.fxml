@@ -40,7 +40,10 @@
               </MenuItem>
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Action">
+            <Menu 
+                  mnemonicParsing="false" 
+                  text="Action"
+            >
               <items>
                   <MenuItem 
                       mnemonicParsing="false" 
@@ -49,8 +52,12 @@
                   >
                      <accelerator>
                         <KeyCodeCombination 
-                            alt="UP" code="P" control="DOWN" 
-                            meta="UP" shift="UP" shortcut="UP" 
+                            alt="UP" 
+                            code="P" 
+                            control="DOWN" 
+                            meta="UP"
+                            shift="UP" 
+                            shortcut="UP" 
                         />
                      </accelerator>
                   </MenuItem>
