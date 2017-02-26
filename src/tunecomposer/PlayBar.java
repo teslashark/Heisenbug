@@ -6,6 +6,7 @@
 package tunecomposer;
 
 import java.util.ArrayList;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -39,16 +40,26 @@ public class PlayBar {
     private final float movementSpeed = 100;
     
     /**
+     * pane that playLine live in
+     */
+    private Pane parentPane;
+    
+    /**
      * creates line and sets it to playLine field. sets line as invisible until animate is called
      * @param pane 
      */
     PlayBar(Pane pane) {
+        parentPane = pane;
+        createPlayLine();
+        timeline = new Timeline();
+    }
+    
+    private void createPlayLine() {
         playLine = new Line(0, 0, 0, 1280);
         playLine.setStrokeWidth(1);
         playLine.setStroke(Color.RED);
-        pane.getChildren().add(playLine);
+        parentPane.getChildren().add(playLine);
         playLine.setVisible(false);
-        timeline = new Timeline();
     }
     
     /**
@@ -57,14 +68,14 @@ public class PlayBar {
      */
     public void playAnimation(ArrayList noteList) {
         playLine.setVisible(true);
-        final int endCoordinate = findEndCoordinate(noteList);
-        final Timeline timeline = new Timeline();
-        //timeline.onFinished();
+        int endCoordinate = findEndCoordinate(noteList);
+        
+        timeline.getKeyFrames().clear();
         
         EventHandler onFinished = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                playLine.setVisible(false);
+                    playLine.setVisible(false);
             }
             
         };
@@ -74,7 +85,7 @@ public class PlayBar {
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, new KeyValue (playLine.translateXProperty(), 0));
         KeyFrame keyFrame2 = new KeyFrame(Duration.millis(endCoordinate*10), onFinished, new KeyValue (playLine.translateXProperty(), endCoordinate));
         timeline.getKeyFrames().addAll(keyFrame1, keyFrame2);
-        timeline.play();
+        timeline.playFromStart();
     }
     
     /**
@@ -82,6 +93,7 @@ public class PlayBar {
      */
     public void stopAnimation() {
         playLine.setVisible(false);
+        timeline.stop();
     }
     
     /**
@@ -91,8 +103,8 @@ public class PlayBar {
         int largestXValue = 0;
         for (Rectangle rect: noteList) {
             if (rect.getX() > largestXValue) 
-                largestXValue = (int) rect.getX() + 100; // add 100 to x cord b/c rectangle is 100 pixels wide
+                largestXValue = (int) rect.getX(); // add 100 to x cord b/c rectangle is 100 pixels wide
         }
-        return largestXValue;
+        return largestXValue + 100;
     } 
 }
