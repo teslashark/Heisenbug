@@ -144,7 +144,7 @@ public class TuneComposer extends Application {
         }
         
         else if (mouse.getEventType() == mouse.DRAG_DETECTED){
-            SelectionRectangle rect = new SelectionRectangle()
+            SelectionRectangle rect = new SelectionRectangle();
             
         }
         
