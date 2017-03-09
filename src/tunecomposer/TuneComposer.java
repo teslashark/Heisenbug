@@ -21,6 +21,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.sound.midi.ShortMessage;
 import tunecomposer.NoteBox;
 
 /**
@@ -77,16 +78,6 @@ public class TuneComposer extends Application {
      * An arrayList to hold all instrument radio buttons for easy access.
      */
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
-    
-    /**
-     * Stores a string of the name of the currently selected instrument
-     */
-    private String currentInstrument = "";
-    
-    /**
-     * Stores a string of the hex value for the color of the currently selected instrument
-     */
-    private String currentNoteColor = "";
     
     private Selection selector;
     
@@ -171,8 +162,8 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleInstrumentSelection(ActionEvent event) {
         RadioButton selectedButton = (RadioButton)event.getSource();
-        currentInstrument = selectedButton.getText();
-        currentNoteColor = selectedButton.getTextFill().toString().substring(2,8);
+        selectedInstrument = selectedButton.getText().replaceAll("\\s+","");
+        //currentNoteColor = selectedButton.getTextFill().toString().substring(2,8);
         for (RadioButton button : instrumentButtons) {
             if (button.selectedProperty().get() && !button.equals(selectedButton)) {
                 button.setSelected(false);
@@ -227,23 +218,60 @@ public class TuneComposer extends Application {
             
             //default is piano
             int channel = 0;
+            int instrumentNum = 0;
+            
             
             // TODO: get this code
             // player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + c, i, 0, s, t);
             // to be use here in accordance to her advice
             
+            System.out.println("curr instrument: " + noteBox.instrument);
+            
             switch (noteBox.instrument) {
-                case "Piano": channel = 0;
-                case "Harpsicord": channel = 1;
-                case "Marimba": channel = 2;
-                case "Organ": channel = 3;
-                case "Accordian": channel = 4;
-                case "Guitar": channel = 5;
-                case "Violin": channel = 6;
-                case "FrenchHorn": channel = 7;
+                case "Piano": 
+                    channel = 0;
+                    instrumentNum = 0;
+                    break;
+                case "Harpsicord": 
+                    channel = 1;
+                    instrumentNum = 6;
+                    break;
+                case "Marimba": 
+                    channel = 2;
+                    instrumentNum = 12;
+                    break;
+                case "ChurchOrgan": 
+                    channel = 3;
+                    instrumentNum = 19;
+                    break;
+                case "Accordion": 
+                    channel = 4;
+                    instrumentNum = 21;
+                    break;
+                case "Guitar": 
+                    channel = 5;
+                    instrumentNum = 24;
+                    break;
+                case "Violin": 
+                    channel = 6;
+                    instrumentNum = 40;
+                    break;
+                case "FrenchHorn": 
+                    channel = 7;
+                    instrumentNum = 60;
+                    break;
+                default:
+                    System.out.println("No cases matched");                        
             }
             
-            System.out.println("channel: " + channel);            
+            //[0,6,12,19,21,24,40,60];
+            
+            //for (int i = 0; i < 7; i++) {
+                
+            //}
+            
+            System.out.println("channel: " + channel);  
+            player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, instrumentNum, 0, startTick, 0);
             player.addNote(pitch, VOLUME, startTick, noteLength, channel, 0);
         }
     }

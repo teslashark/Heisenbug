@@ -8,6 +8,7 @@ package tunecomposer;
 import java.util.ArrayList;
 import java.awt.Point;
 import tunecomposer.TuneComposer;
+import tunecomposer.NoteBox;
 
 /**
  *

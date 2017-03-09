@@ -18,12 +18,12 @@ necessary? isn't it already default?*/
     -fx-stroke: black;    
 }
 
-#noteBoxOrgan {
+#noteBoxChurchOrgan {
     -fx-fill: yellow; 
     -fx-stroke: black;    
 }
 
-#noteBoxAccordian {
+#noteBoxAccordion {
     -fx-fill: purple; 
     -fx-stroke: black;    
 }
