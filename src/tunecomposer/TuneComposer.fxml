@@ -1,80 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<BorderPane 
-    prefHeight="1280.0" 
-    prefWidth="2000.0" 
-    stylesheets="@TuneComposer.css" 
-    xmlns="http://javafx.com/javafx/8.0.111" 
-    xmlns:fx="http://javafx.com/fxml/1" 
-    fx:controller="tunecomposer.TuneComposer"
->
+<BorderPane prefHeight="1280.0" prefWidth="2000.0" stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <top>
       <MenuBar>
         <menus>
           <Menu text="File">
             <items>
-              <MenuItem 
-                  onAction="#handleExitMenuItemAction" 
-                  text="Exit"
-              >
+              <MenuItem onAction="#handleExitMenuItemAction" text="Exit">
                      <accelerator>
-                        <KeyCodeCombination 
-                            alt="UP"
-                            code="Q"
-                            control="DOWN" 
-                            meta="UP"
-                            shift="UP"
-                            shortcut="UP" 
-                        />
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
               </MenuItem>
             </items>
           </Menu>
-            <Menu 
-                  mnemonicParsing="false" 
-                  text="Action"
-            >
+            <Menu mnemonicParsing="false" text="Action">
               <items>
-                  <MenuItem 
-                      mnemonicParsing="false" 
-                      onAction="#handlePlayMenuItemAction" 
-                      text="Play"
-                  >
+                  <MenuItem mnemonicParsing="false" onAction="#handlePlayMenuItemAction" text="Play">
                      <accelerator>
-                        <KeyCodeCombination 
-                            alt="UP" 
-                            code="P" 
-                            control="DOWN" 
-                            meta="UP"
-                            shift="UP" 
-                            shortcut="UP" 
-                        />
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem 
-                      mnemonicParsing="false" 
-                      onAction="#handleStopMenuItemAction" 
-                      text="Stop"
-                  >
+                  <MenuItem mnemonicParsing="false" onAction="#handleStopMenuItemAction" text="Stop">
                      <accelerator>
-                        <KeyCodeCombination 
-                            alt="UP"
-                            code="S"
-                            control="DOWN" 
-                            meta="UP"
-                            shift="UP"
-                            shortcut="UP" 
-                        />
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
               </items>
@@ -83,18 +45,11 @@
       </MenuBar>
    </top>
    <center>
-      <ScrollPane 
-          prefHeight="200.0" 
-          prefWidth="200.0" 
-          BorderPane.alignment="CENTER"
-      >
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Pane 
-                      fx:id="musicPane"
-                      onMouseClicked="#handleOnMouseClickAction"
-                  >
+                  <Pane fx:id="musicPane" onMouseClicked="#handleOnMouseClickAction">
                      <children>
                         <Line fx:id="playLine" />
                      </children>
@@ -104,4 +59,58 @@
         </content>
       </ScrollPane>
    </center>
+   <left>
+      <Pane fx:id="instrumentPanel" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="348.0" prefWidth="200.0">
+               <children>
+                  <Group fx:id="instrumentButtonsGroup">
+                     <children>
+                        <RadioButton fx:id="pianoButton" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Piano" textFill="#9e9d9d">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="38.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Harpsicord" textFill="#2ec626">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="76.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Marimba" textFill="#3515d7">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="114.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Church Organ" textFill="#c1d71e">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="152.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Accordion" textFill="#dd377f">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="190.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Guitar" textFill="#2fe3ff">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="228.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Violin">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton layoutY="266.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="French Horn" textFill="#8c794a">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </RadioButton>
+                     </children>
+                  </Group>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </left>
 </BorderPane>

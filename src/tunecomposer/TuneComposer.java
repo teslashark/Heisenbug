@@ -10,8 +10,11 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
@@ -59,6 +62,29 @@ public class TuneComposer extends Application {
      */
     @FXML
     private PlayBar playBarObj;
+    
+    /**
+     * The group of 8 instrument RadioButtons in the side panel
+     */
+    @FXML
+    private Group instrumentButtonsGroup;
+    
+    /**
+     * An arrayList to hold all instrument radio buttons for easy access.
+     */
+    private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
+    
+    /**
+     * Stores a string of the name of the currently selected instrument
+     */
+    private String currentInstrument = "";
+    
+    /**
+     * Stores a string of the hex value for the color of the currently selected instrument
+     */
+    private String currentNoteColor = "";
+    
+    
 
     /**
      * creates the grey lines of the music staff and the red line playBar object.
@@ -72,6 +98,13 @@ public class TuneComposer extends Application {
             musicPane.getChildren().add(line);
         }
         playBarObj = new PlayBar(musicPane);
+        
+        //convert group of radiobuttons to ArrayList of buttons
+        for (int i = 0; i < 8; i++) {
+            Node currentNode = instrumentButtonsGroup.getChildren().get(i);
+            instrumentButtons.add((RadioButton)currentNode);
+        }
+        instrumentButtons.get(0).fire();
     }
     
     /**
@@ -110,6 +143,24 @@ public class TuneComposer extends Application {
         
         musicNotesArray.add(r);
         musicPane.getChildren().add(r);        
+    }
+    
+    /**
+     * Handles when an instrument RadioButton is clicked.
+     * Changes the global currentInstrument and currentNoteColor values to reflect
+     * the newly selected instrument. Deselects the previous RadioButton.
+     * @param event 
+     */
+    @FXML
+    protected void handleInstrumentSelection(ActionEvent event) {
+        RadioButton selectedButton = (RadioButton)event.getSource();
+        currentInstrument = selectedButton.getText();
+        currentNoteColor = selectedButton.getTextFill().toString().substring(2,8);
+        for (RadioButton button : instrumentButtons) {
+            if (button.selectedProperty().get() && !button.equals(selectedButton)) {
+                button.setSelected(false);
+            }
+        }
     }
 
     /**
