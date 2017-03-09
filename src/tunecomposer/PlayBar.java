@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import tunecomposer.NoteBox;
 
 /**
  * PlayBar class which creates the animation of a red bar that indicates what notes are playing.
@@ -101,12 +102,13 @@ public class PlayBar {
      * Returns the x cord of the right side of 
      * the last note in our list of notes.
      */
-    private int findEndCoordinate(ArrayList<Rectangle> noteList) {
-        int largestXValue = 0;
-        for (Rectangle rect: noteList) {
-            if (rect.getX() > largestXValue) 
-                largestXValue = (int) rect.getX();
+    private int findEndCoordinate(ArrayList<NoteBox> noteList) {
+        int largestXCoordinate = 0;      
+        for (NoteBox noteBox: noteList) {
+            int noteBoxRightXCoordinate = noteBox.getX() + noteBox.getWidth();
+            if (noteBoxRightXCoordinate > largestXCoordinate) 
+                largestXCoordinate = noteBoxRightXCoordinate;
         }
-        return largestXValue + 100;
+        return largestXCoordinate;
     } 
 }

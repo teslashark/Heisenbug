@@ -21,6 +21,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.sound.midi.ShortMessage;
+import tunecomposer.NoteBox;
 
 /**
  * This JavaFX app lets the user play scales.
@@ -34,7 +36,10 @@ public class TuneComposer extends Application {
      * Contains the rectangle objects that represent 
      * the musical notes in the UI.
      */
-    private ArrayList musicNotesArray = new ArrayList();    
+    protected ArrayList musicNotesArray = new ArrayList();
+    
+    //must be first letter capatilized
+    private String selectedInstrument = "Piano";
     
     /**
      * Play notes at maximum volume.
@@ -44,7 +49,6 @@ public class TuneComposer extends Application {
     /**
      * length of time in ticks that notes should play;
      */
-    private final int noteLength = 100;
     
     /**
      * One midi player is used throughout, so we can stop a scale that is
@@ -74,16 +78,6 @@ public class TuneComposer extends Application {
      * An arrayList to hold all instrument radio buttons for easy access.
      */
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
-    
-    /**
-     * Stores a string of the name of the currently selected instrument
-     */
-    private String currentInstrument = "";
-    
-    /**
-     * Stores a string of the hex value for the color of the currently selected instrument
-     */
-    private String currentNoteColor = "";
     
     private Selection selector;
     
@@ -121,8 +115,8 @@ public class TuneComposer extends Application {
      * sets y to snap b/t staff lines, and
      * sets left side of rectangle to mouse x-cord
      * adds the rectangle to musicNotesArray for midiPlayer
-     * and adds to musicPane to visually show note's box.
-     * Assumes scren size is 2000px wide.
+     * and adds to musicPane to visually show notes' box.
+     * Assumes screen size is 2000px wide.
 
      * @param event 
      */
@@ -133,7 +127,7 @@ public class TuneComposer extends Application {
         boolean ctrl = mouse.isControlDown();
         
         if (mouse.getEventType() == mouse.MOUSE_CLICKED){
-            NoteBox newNote = new NoteBox(tunecomposer.selectedInstrument, mouse);
+            NoteBox newNote = new NoteBox(selectedInstrument, mouse);
             
             if (ctrl){
                 selector.select(newNote);
@@ -154,23 +148,9 @@ public class TuneComposer extends Application {
     
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
-        //create rectangle
-        Rectangle r = new Rectangle();
-        r.setId("noteBox");
-        r.setWidth(100);
-        r.setHeight(10);
-        //find x and y cords from mouse position
-        if (event.getX() > 1900) { //ensure rectangle doesn't go off screen
-            r.setX(1900);            
-        }
-        else {
-            r.setX(event.getX());
-        }
-        //snap Y between staff lines
-        r.setY(Math.round(event.getY() / 10) * 10);
-        
-        musicNotesArray.add(r);
-        musicPane.getChildren().add(r);        
+        NoteBox noteBox = new NoteBox(selectedInstrument, event);
+        musicNotesArray.add(noteBox);
+        musicPane.getChildren().add(noteBox.rectangle);   
     }
     
     /**
@@ -182,8 +162,8 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleInstrumentSelection(ActionEvent event) {
         RadioButton selectedButton = (RadioButton)event.getSource();
-        currentInstrument = selectedButton.getText();
-        currentNoteColor = selectedButton.getTextFill().toString().substring(2,8);
+        selectedInstrument = selectedButton.getText().replaceAll("\\s+","");
+        //currentNoteColor = selectedButton.getTextFill().toString().substring(2,8);
         for (RadioButton button : instrumentButtons) {
             if (button.selectedProperty().get() && !button.equals(selectedButton)) {
                 button.setSelected(false);
@@ -210,9 +190,7 @@ public class TuneComposer extends Application {
     protected void handlePlayMenuItemAction(ActionEvent event) {
         player.stop();
         player.clear();
-
         addNotesArrayToMidiPlayer();
-        
         player.play();
         playBarObj.playAnimation(musicNotesArray);
     }
@@ -233,13 +211,75 @@ public class TuneComposer extends Application {
      */
     private void addNotesArrayToMidiPlayer() {
         for (int i = 0; i < musicNotesArray.size(); i++){            
-            Rectangle noteBox = (Rectangle) musicNotesArray.get(i); 
+            NoteBox noteBox = (NoteBox) musicNotesArray.get(i);
+            int noteLength = (int) noteBox.getWidth();
             int startTick = (int)noteBox.getX();
-            int pitch = 128 - (int) noteBox.getY() /10;
-            player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
+            int pitch = 128 - (int) noteBox.getY() / 10;
+            
+            //default is piano
+            int channel = 0;
+            int instrumentNum = 0;
+            
+            
+            // TODO: get this code
+            // player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + c, i, 0, s, t);
+            // to be use here in accordance to her advice
+            
+            System.out.println("curr instrument: " + noteBox.instrument);
+            
+            switch (noteBox.instrument) {
+                case "Piano": 
+                    channel = 0;
+                    instrumentNum = 0;
+                    break;
+                case "Harpsicord": 
+                    channel = 1;
+                    instrumentNum = 6;
+                    break;
+                case "Marimba": 
+                    channel = 2;
+                    instrumentNum = 12;
+                    break;
+                case "ChurchOrgan": 
+                    channel = 3;
+                    instrumentNum = 19;
+                    break;
+                case "Accordion": 
+                    channel = 4;
+                    instrumentNum = 21;
+                    break;
+                case "Guitar": 
+                    channel = 5;
+                    instrumentNum = 24;
+                    break;
+                case "Violin": 
+                    channel = 6;
+                    instrumentNum = 40;
+                    break;
+                case "FrenchHorn": 
+                    channel = 7;
+                    instrumentNum = 60;
+                    break;
+                default:
+                    System.out.println("No cases matched");                        
+            }
+            
+            //[0,6,12,19,21,24,40,60];
+            
+            //for (int i = 0; i < 7; i++) {
+                
+            //}
+            
+            System.out.println("channel: " + channel);  
+            player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, instrumentNum, 0, startTick, 0);
+            player.addNote(pitch, VOLUME, startTick, noteLength, channel, 0);
         }
     }
     
+    public void deleteNote(NoteBox note){
+        int index = musicNotesArray.indexOf(note);
+        musicNotesArray.remove(index);        
+    }
     
     /**
      * Construct the scene and start the application.

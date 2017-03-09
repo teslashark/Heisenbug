@@ -8,6 +8,7 @@ package tunecomposer;
 import java.util.ArrayList;
 import java.awt.Point;
 import tunecomposer.TuneComposer;
+import tunecomposer.NoteBox;
 
 /**
  *
@@ -31,23 +32,23 @@ public class Selection {
     
     
     void unselect(NoteBox...notesClick){
-        selected.removeAll(notesClick);
         for (NoteBox s: notesClick){
+            selected.remove(s);
             s.unmarkNote();
         }
     }
     
-    void deleteSelected(){
+    public void deleteSelected(ArrayList<NoteBox> musicNotesArray){
         for (NoteBox d: selected){
-            TuneComposer.deleteNote(d);
+            musicNotesArray.remove(d);
             unselect(d);
-            d.delete();
+            //d.delete();
         }
     }
     
     void select(NoteBox...notesClick){
-        selected.addAll(notesClick);
         for (NoteBox s: notesClick){
+            selected.add(s);
             s.markNote();
         }
     }
@@ -59,18 +60,18 @@ public class Selection {
     
     void resizeSelected(int xChange){
         for (NoteBox s: selected){
-            s.resize(xChange);
+            s.changeNoteBoxLength(xChange);
         }
     }
     
     void dragSelected(int xChange, int yChange){
         for (NoteBox s: selected){
-            s.drag(xChange,yChange);
+            s.repositionNoteBox(xChange,yChange);
         }
     }
     
     NoteBox[] rectScan(Point topLeft, Point bottomRight, boolean ctrl, NoteBox[] listofNotes){
-        for (NoteBox b: listofAllNotes){
+        for (NoteBox b: listofNotes){
             if (b.isInRect(topLeft,bottomRight)){
                 if (!ctrl || !selected.contains(b)){
                     notesInRect.add(b);
@@ -86,7 +87,9 @@ public class Selection {
             c.markNote();
         }
         
-        return notesInRect.toArray();
+        NoteBox[] updatedNotesInBox = new NoteBox[notesInRect.size()];
+        
+        return notesInRect.toArray(updatedNotesInBox);
     }
     
     void boxSelectionSubmit(NoteBox[] notesToSel){
