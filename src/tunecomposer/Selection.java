@@ -5,10 +5,9 @@
  */
 package tunecomposer;
 
-global Note[] listofallNotes;
-//When a Note is created it should be added to the global array "listofallNotes"
 import java.util.ArrayList;
 import java.awt.Point;
+import tunecomposer.TuneComposer;
 
 /**
  *
@@ -27,71 +26,72 @@ import java.awt.Point;
 
 public class Selection {
     
-    ArrayList<Note> selected;
-    ArrayList<Note> notesInBox;
+    ArrayList<NoteBox> selected;
+    ArrayList<NoteBox> notesInRect;
     
     
-    void unselect(Note...notesClick){
+    void unselect(NoteBox...notesClick){
         selected.removeAll(notesClick);
-        for (Note s: notesClick){
-            s.unmark();
+        for (NoteBox s: notesClick){
+            s.unmarkNote();
         }
     }
     
     void deleteSelected(){
-        for (Note d: selected){
+        for (NoteBox d: selected){
+            TuneComposer.deleteNote(d);
             unselect(d);
             d.delete();
         }
     }
     
-    void select(Note...notesClick){
+    void select(NoteBox...notesClick){
         selected.addAll(notesClick);
-        for (Note s: notesClick){
-            s.mark();
+        for (NoteBox s: notesClick){
+            s.markNote();
         }
     }
     
-    void unselectReplace(Note...notesClick){
+    void unselectReplace(NoteBox...notesClick){
         unselect();
         select(notesClick);
     }
     
     void resizeSelected(int xChange){
-        for (Note s: selected){
+        for (NoteBox s: selected){
             s.resize(xChange);
         }
     }
     
     void dragSelected(int xChange, int yChange){
-        for (Note s: selected){
+        for (NoteBox s: selected){
             s.drag(xChange,yChange);
         }
     }
     
-    Note[] boxScan(Point topLeft, Point bottomRight, boolean ctrl){
-        for (Note b: listofAllNotes){
-            if (b.isInBox(topLeft,bottomRight)){
+    NoteBox[] rectScan(Point topLeft, Point bottomRight, boolean ctrl, NoteBox[] listofNotes){
+        for (NoteBox b: listofAllNotes){
+            if (b.isInRect(topLeft,bottomRight)){
                 if (!ctrl || !selected.contains(b)){
-                    notesInBox.add(b);
+                    notesInRect.add(b);
                 }
             }
-            else if (notesInBox.contains(b)){
-                notesInBox.remove(b);
+            else if (notesInRect.contains(b)){
+                notesInRect.remove(b);
                 unselect(b);
             }
         }
         
-        for (Note c: notesInBox){
-            c.mark();
+        for (NoteBox c: notesInRect){
+            c.markNote();
         }
         
-        return notesInBox.toArray();
+        return notesInRect.toArray();
     }
     
-    void boxSelectionSubmit(Note[] boxedNotes){
-        notesInBox.clear();
-        select(boxedNotes);
+    void boxSelectionSubmit(NoteBox[] notesToSel){
+        notesInRect.clear();
+        select(notesToSel);
     }
     
     
