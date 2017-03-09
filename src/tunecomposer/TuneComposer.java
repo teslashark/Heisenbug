@@ -36,7 +36,7 @@ public class TuneComposer extends Application {
      * Contains the rectangle objects that represent 
      * the musical notes in the UI.
      */
-    private ArrayList musicNotesArray = new ArrayList();
+    protected ArrayList musicNotesArray = new ArrayList();
     
     //must be first letter capatilized
     private String selectedInstrument = "Piano";
@@ -127,7 +127,7 @@ public class TuneComposer extends Application {
         boolean ctrl = mouse.isControlDown();
         
         if (mouse.getEventType() == mouse.MOUSE_CLICKED){
-            NoteBox newNote = new NoteBox(tunecomposer.selectedInstrument, mouse);
+            NoteBox newNote = new NoteBox(selectedInstrument, mouse);
             
             if (ctrl){
                 selector.select(newNote);
