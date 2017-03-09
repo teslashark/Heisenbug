@@ -3,6 +3,7 @@
  */
 package tunecomposer;
 
+import tunecomposer.Selection;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class TuneComposer extends Application {
      */
     private String currentNoteColor = "";
     
+    private Selection selector;
     
 
     /**
@@ -124,6 +126,32 @@ public class TuneComposer extends Application {
 
      * @param event 
      */
+    
+    
+    protected void handleClickInPanel(MouseEvent mouse){
+        
+        boolean ctrl = mouse.isControlDown();
+        
+        if (mouse.getEventType() == mouse.MOUSE_CLICKED){
+            NoteBox newNote = new NoteBox(tunecomposer.selectedInstrument, mouse);
+            
+            if (ctrl){
+                selector.select(newNote);
+            }
+            else{
+                selector.unselectReplace(newNote);
+            }    
+        }
+        
+        else if (mouse.getEventType() == mouse.DRAG_DETECTED){
+            SelectionRectangle rect = new SelectionRectangle()
+            
+        }
+        
+        
+    }
+    
+    
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
         //create rectangle
