@@ -21,6 +21,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import tunecomposer.NoteBox;
 
 /**
  * This JavaFX app lets the user play scales.
@@ -34,7 +35,10 @@ public class TuneComposer extends Application {
      * Contains the rectangle objects that represent 
      * the musical notes in the UI.
      */
-    private ArrayList musicNotesArray = new ArrayList();    
+    private ArrayList musicNotesArray = new ArrayList();
+    
+    //must be first letter capatilized
+    private String selectedInstrument = "Piano";
     
     /**
      * Play notes at maximum volume.
@@ -44,7 +48,6 @@ public class TuneComposer extends Application {
     /**
      * length of time in ticks that notes should play;
      */
-    private final int noteLength = 100;
     
     /**
      * One midi player is used throughout, so we can stop a scale that is
@@ -121,8 +124,8 @@ public class TuneComposer extends Application {
      * sets y to snap b/t staff lines, and
      * sets left side of rectangle to mouse x-cord
      * adds the rectangle to musicNotesArray for midiPlayer
-     * and adds to musicPane to visually show note's box.
-     * Assumes scren size is 2000px wide.
+     * and adds to musicPane to visually show notes' box.
+     * Assumes screen size is 2000px wide.
 
      * @param event 
      */
@@ -154,23 +157,9 @@ public class TuneComposer extends Application {
     
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
-        //create rectangle
-        Rectangle r = new Rectangle();
-        r.setId("noteBox");
-        r.setWidth(100);
-        r.setHeight(10);
-        //find x and y cords from mouse position
-        if (event.getX() > 1900) { //ensure rectangle doesn't go off screen
-            r.setX(1900);            
-        }
-        else {
-            r.setX(event.getX());
-        }
-        //snap Y between staff lines
-        r.setY(Math.round(event.getY() / 10) * 10);
-        
-        musicNotesArray.add(r);
-        musicPane.getChildren().add(r);        
+        NoteBox noteBox = new NoteBox(selectedInstrument, event);
+        musicNotesArray.add(noteBox);
+        musicPane.getChildren().add(noteBox.rectangle);   
     }
     
     /**
@@ -210,9 +199,7 @@ public class TuneComposer extends Application {
     protected void handlePlayMenuItemAction(ActionEvent event) {
         player.stop();
         player.clear();
-
         addNotesArrayToMidiPlayer();
-        
         player.play();
         playBarObj.playAnimation(musicNotesArray);
     }
@@ -233,13 +220,38 @@ public class TuneComposer extends Application {
      */
     private void addNotesArrayToMidiPlayer() {
         for (int i = 0; i < musicNotesArray.size(); i++){            
-            Rectangle noteBox = (Rectangle) musicNotesArray.get(i); 
+            NoteBox noteBox = (NoteBox) musicNotesArray.get(i);
+            int noteLength = (int) noteBox.getWidth();
             int startTick = (int)noteBox.getX();
-            int pitch = 128 - (int) noteBox.getY() /10;
-            player.addNote(pitch, VOLUME, startTick, noteLength, 0, 0);
+            int pitch = 128 - (int) noteBox.getY() / 10;
+            
+            //default is piano
+            int channel = 0;
+            
+            // TODO: get this code
+            // player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + c, i, 0, s, t);
+            // to be use here in accordance to her advice
+            
+            switch (noteBox.instrument) {
+                case "Piano": channel = 0;
+                case "Harpsicord": channel = 1;
+                case "Marimba": channel = 2;
+                case "Organ": channel = 3;
+                case "Accordian": channel = 4;
+                case "Guitar": channel = 5;
+                case "Violin": channel = 6;
+                case "FrenchHorn": channel = 7;
+            }
+            
+            System.out.println("channel: " + channel);            
+            player.addNote(pitch, VOLUME, startTick, noteLength, channel, 0);
         }
     }
     
+    public void deleteNote(NoteBox note){
+        int index = musicNotesArray.indexOf(note);
+        musicNotesArray.remove(index);        
+    }
     
     /**
      * Construct the scene and start the application.

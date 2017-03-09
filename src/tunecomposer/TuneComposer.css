@@ -1,6 +1,45 @@
 /* Colors notes as light blue, with a black outline. */
-#noteBox {
+
+/*TODO: are the stroke color specifications 
+necessary? isn't it already default?*/
+
+#noteBoxPiano {
+    -fx-fill: grey; 
+    -fx-stroke: black;  
+}
+
+#noteBoxHarpsicord {
+    -fx-fill: green; 
+    -fx-stroke: black;    
+}
+
+#noteBoxMarimba {
+    -fx-fill: blue; 
+    -fx-stroke: black;    
+}
+
+#noteBoxOrgan {
+    -fx-fill: yellow; 
+    -fx-stroke: black;    
+}
+
+#noteBoxAccordian {
+    -fx-fill: purple; 
+    -fx-stroke: black;    
+}
+
+#noteBoxGuitar {
     -fx-fill: lightblue; 
+    -fx-stroke: black;    
+}
+
+#noteBoxViolin {
+    -fx-fill: darkslategrey; 
+    -fx-stroke: black;    
+}
+
+#noteBoxFrenchHorn {
+    -fx-fill: brown; 
     -fx-stroke: black;    
 }
 
