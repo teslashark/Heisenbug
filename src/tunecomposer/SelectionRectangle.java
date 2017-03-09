@@ -9,6 +9,14 @@ package tunecomposer;
  *
  * @author lonbern
  */
+
+/* METHODS NEEDED:
+   CONSTRUCTOR --> SelectionRectangle(Point topLeft, Point botRight);
+    void updateSize(Point newBotRightCorner);
+    Point getBotRight();
+    Point getTopLeft();
+    void undraw();
+*/
 public class SelectionRectangle {
     
 }
