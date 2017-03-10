@@ -7,6 +7,7 @@ package tunecomposer;
 
 import java.awt.Point;
 import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -42,6 +43,15 @@ public class NoteBox {
         }
         //snap Y coordinate between horizontal lines in composer
         rectangle.setY(Math.round(event.getY() / 10) * 10);
+        
+        this.rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            
+            @Override
+            public void handle(MouseEvent event) {
+                NoteBox.this.markNote();
+            }
+        });
+        
     }
     
     //TODO: rename to getXCoordinate???
@@ -71,15 +81,29 @@ public class NoteBox {
     }
     
     //TODO: make the style not inlined
-    public void markNote(){        
+    public void markNote(){
+        this.isSelected = true;
         rectangle.setStyle("-fx-stroke: red; -fx-stroke-width: 3;");
     }
     
     //TODO: make the style not inlined
     public void unmarkNote(){
+        this.isSelected = false;
         rectangle.setStyle("-fx-stroke: black; -fx-stroke-width: 1;");
     }
     
+    public boolean pointIsInNoteBox(Point point) {
+        
+        boolean xValInRange = 
+                (point.x >= this.getX() &&
+                point.x <= this.getX() + this.getWidth());
+        
+        boolean yValInRange = 
+                (point.y <= this.getY() &&
+                point.y >= this.getY() - this.boxHeight);
+        
+        return (xValInRange && yValInRange);
+    }
     
     public static boolean isOverlapping(int max1, int min1, int max2, int min2) {
         return (max1 >= min2 && max2 >= min1);
