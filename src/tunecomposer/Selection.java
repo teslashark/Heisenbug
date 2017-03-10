@@ -30,7 +30,14 @@ public class Selection {
     ArrayList<NoteBox> selected;
     ArrayList<NoteBox> notesInRect;
     
-    
+    void  emptySelected() {
+        if (!selected.isEmpty()) {
+            for (NoteBox s: selected){
+                unselect(s);
+                s.unmarkNote();
+            }
+        }
+    }
     void unselect(NoteBox...notesClick){
         for (NoteBox s: notesClick){
             selected.remove(s);
