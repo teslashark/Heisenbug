@@ -154,7 +154,7 @@ public class TuneComposer extends Application {
         
         
     }
-       private double startingPointX;
+    private double startingPointX;
     private double startingPointY;
     
     @FXML
@@ -167,10 +167,32 @@ public class TuneComposer extends Application {
     
     @FXML
     protected void handleOnMouseDraggedAction(MouseEvent event){
+        this.updateSelected();
+        System.out.println(selectedNotes);
+        NoteBox currentNote;
+        Point topLeft = new Point((int)startingPointX,(int)startingPointY);
+        Point bottomRight = new Point((int)event.getX(), (int)event.getY());
         this.selectionRectangle.setX(startingPointX);
         this.selectionRectangle.setY(startingPointY);
-        resizeRectangle(selectionRectangle,event);
+        resizeRectangle(selectionRectangle,event);        
         
+        for (int i = 0; i < musicNotesArray.size(); i++) {
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            
+            if (currentNote.isInRect(topLeft, bottomRight)) {
+                currentNote.markNote();
+            } else if(!event.isControlDown()) {
+                currentNote.unmarkNote();  
+            }
+            Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
+            if (pointIsInRectangle(startingPoint, currentNote.getStretchZone())) {
+                /*int changeInLength = (int)event.getX() - (int)startingPointX;
+                currentNote.changeNoteBoxLength(currentNote.getWidth() + changeInLength);*/
+                //TODO IMPLEMENT RECTANGLE STRECHING!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED)
+            } else if (pointIsInRectangle(startingPoint, currentNote.getDragZone())) {
+                //TODO IMPLEMENT RECTANGLE MOVEMENT!!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED
+            }
+        }
     }
     //TODO Move this method to somewhere better
         private void resizeRectangle(Rectangle r,MouseEvent e) {
@@ -203,13 +225,13 @@ public class TuneComposer extends Application {
        playBarObj.stopAnimation();
        this.updateSelected();
        NoteBox currentNote;
-       boolean hasNoConflict = true;
+       boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
        Point clickPoint = new Point((int)event.getX(), roundedYCoordinate);
        for(int i = 0; i < musicNotesArray.size(); i++){
            currentNote = (NoteBox) musicNotesArray.get(i);
            if(currentNote.pointIsInNoteBox(clickPoint)){
-              hasNoConflict = false;
+              hasNoConflictWithNote = false;
               if (event.isControlDown()) {
                   if (currentNote.getIsSelected()) {
                       currentNote.unmarkNote();
@@ -224,11 +246,13 @@ public class TuneComposer extends Application {
            } 
        }       
         
-       if (hasNoConflict) {           
+       if (hasNoConflictWithNote) {           
             //this.selector.unselectAll(musicNotesArray);
             NoteBox noteBox = new NoteBox(selectedInstrument, event);
             if (event.isControlDown()) {
                 noteBox.markNote();
+            }else{
+                unselectAll();
             }
             musicNotesArray.add(noteBox);
             musicPane.getChildren().add(noteBox.rectangle);
@@ -238,14 +262,6 @@ public class TuneComposer extends Application {
     }
     
         
-    @FXML
-    void handleDragDetected(MouseEvent event) {
-        System.out.println("MouseDragged");
-        for (int i=0; i < selectedNotes.size();i++) {
-            selectedNotes.get(i).drag();
-        }
-    }
-    
     /**
      * Handles when an instrument RadioButton is clicked.
      * Changes the global currentInstrument and currentNoteColor values to reflect
@@ -422,6 +438,18 @@ public class TuneComposer extends Application {
             currentNote = (NoteBox)musicNotesArray.get(i);
             currentNote.unmarkNote();
         }
+    }
+    
+    public boolean pointIsInRectangle(Point point, Rectangle rect) {
+        boolean xValInRange = 
+                (point.x >= rect.getX() &&
+                point.x <= rect.getX() + rect.getWidth());
+       
+        boolean yValInRange = 
+                (point.y >= rect.getY() &&
+                point.y <= rect.getY() + rect.getHeight());
+        
+        return (xValInRange && yValInRange);
     }
     
     
