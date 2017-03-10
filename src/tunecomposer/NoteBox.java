@@ -51,6 +51,10 @@ public class NoteBox {
         
     }
     
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+    
     //TODO: rename to getXCoordinate???
     public int getX() {
         return (int) this.rectangle.getX();
@@ -131,6 +135,14 @@ public class NoteBox {
         
         return isYOverlapping && isXOverlapping;
         
+    }
+    
+    public void drag() {
+        rectangle.setOnMouseDragged(event -> {
+        //this.setTranslateX(event.getSceneX() - dragDeltaX);
+        //this.setTranslateY(event.getSceneY() - dragDeltaY);
+        System.out.println("Yes");
+        });
     }
     
 }

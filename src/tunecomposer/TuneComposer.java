@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -191,6 +192,15 @@ public class TuneComposer extends Application {
         
     }
     
+        
+    @FXML
+    void handleDragDetected(MouseEvent event) {
+        System.out.println("MouseDragged");
+        for (int i=0; i < selectedNotes.size();i++) {
+            selectedNotes.get(i).drag();
+        }
+    }
+    
     /**
      * Handles when an instrument RadioButton is clicked.
      * Changes the global currentInstrument and currentNoteColor values to reflect
@@ -208,6 +218,31 @@ public class TuneComposer extends Application {
             }
             if (button.equals(selectedButton))
                 button.setSelected(true);
+        }
+    }
+    
+    @FXML
+    protected void handleSelectAllClicked(ActionEvent event) {
+        NoteBox currentNote;
+        for (int i = 0; i < musicNotesArray.size(); i++) {
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            currentNote.markNote();
+        }
+    }
+    
+    @FXML
+    protected void handleDeleteClicked(ActionEvent event) {
+        NoteBox currentNote;
+        System.out.println("delete called");
+        for (int i=0; i < musicNotesArray.size();) {
+            System.out.println("in for loop");
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            System.out.println(currentNote);
+            if (currentNote.getIsSelected()) {
+                deleteNote(currentNote);
+            } else {
+                i++;
+            }
         }
     }
 
@@ -318,7 +353,10 @@ public class TuneComposer extends Application {
     
     public void deleteNote(NoteBox note){
         int index = musicNotesArray.indexOf(note);
-        musicNotesArray.remove(index);        
+        System.out.println(index);
+        System.out.println("Trying to delete");
+        musicNotesArray.remove(index);  
+        musicPane.getChildren().remove(note.getRectangle());
     }
     
     public void updateSelected() {
