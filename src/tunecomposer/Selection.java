@@ -38,6 +38,13 @@ public class Selection {
         }
     }
     
+    void unselectAll(ArrayList<NoteBox> notesList){
+        for (NoteBox s: notesList){
+            selected.remove(s);
+            s.unmarkNote();
+        }
+    }
+    
     public void deleteSelected(ArrayList<NoteBox> musicNotesArray){
         for (NoteBox d: selected){
             musicNotesArray.remove(d);

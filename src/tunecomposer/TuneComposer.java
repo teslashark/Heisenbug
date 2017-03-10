@@ -3,6 +3,7 @@
  */
 package tunecomposer;
 
+import java.awt.Point;
 import tunecomposer.Selection;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
@@ -145,12 +146,29 @@ public class TuneComposer extends Application {
         
     }
     
-    
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
-        NoteBox noteBox = new NoteBox(selectedInstrument, event);
-        musicNotesArray.add(noteBox);
-        musicPane.getChildren().add(noteBox.rectangle);   
+       NoteBox currentNote;
+       boolean hasNoConflict = true;
+       int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
+       Point clickPoint = new Point((int)event.getX(), roundedYCoordinate);
+       for(int i = 0; i < musicNotesArray.size(); i++){
+           currentNote = (NoteBox) musicNotesArray.get(i);
+           if(currentNote.pointIsInNoteBox(clickPoint)){
+              hasNoConflict = false;              
+              break;
+              
+           } 
+       }       
+        
+       if (hasNoConflict) {           
+            //this.selector.unselectAll(musicNotesArray);
+            NoteBox noteBox = new NoteBox(selectedInstrument, event);
+            musicNotesArray.add(noteBox);
+            musicPane.getChildren().add(noteBox.rectangle);
+            noteBox.markNote();
+       }
+        
     }
     
     /**
