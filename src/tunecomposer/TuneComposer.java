@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -17,6 +18,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
@@ -32,7 +36,6 @@ import tunecomposer.NoteBox;
  * @since February 20, 2017
  */
 public class TuneComposer extends Application {
-    
     /**
      * Contains the rectangle objects that represent 
      * the musical notes in the UI.
@@ -81,6 +84,8 @@ public class TuneComposer extends Application {
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
     
     private Selection selector;
+    
+    private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
     
 
     /**
@@ -148,6 +153,10 @@ public class TuneComposer extends Application {
     
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
+       player.stop();
+       player.clear();
+       playBarObj.stopAnimation();
+       this.updateSelected();
        NoteBox currentNote;
        boolean hasNoConflict = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
@@ -155,20 +164,41 @@ public class TuneComposer extends Application {
        for(int i = 0; i < musicNotesArray.size(); i++){
            currentNote = (NoteBox) musicNotesArray.get(i);
            if(currentNote.pointIsInNoteBox(clickPoint)){
-              hasNoConflict = false;              
+              hasNoConflict = false;
+              if (event.isControlDown()) {
+                  if (currentNote.getIsSelected()) {
+                      currentNote.unmarkNote();
+                  } else {
+                      currentNote.markNote();
+                  }
+                  break;
+              } 
+              unselectAll();
+              currentNote.markNote();
               break;
-              
            } 
        }       
         
        if (hasNoConflict) {           
             //this.selector.unselectAll(musicNotesArray);
             NoteBox noteBox = new NoteBox(selectedInstrument, event);
+            if (event.isControlDown()) {
+                noteBox.markNote();
+            }
             musicNotesArray.add(noteBox);
             musicPane.getChildren().add(noteBox.rectangle);
-            noteBox.markNote();
        }
+       
         
+    }
+    
+        
+    @FXML
+    void handleDragDetected(MouseEvent event) {
+        System.out.println("MouseDragged");
+        for (int i=0; i < selectedNotes.size();i++) {
+            selectedNotes.get(i).drag();
+        }
     }
     
     /**
@@ -185,6 +215,33 @@ public class TuneComposer extends Application {
         for (RadioButton button : instrumentButtons) {
             if (button.selectedProperty().get() && !button.equals(selectedButton)) {
                 button.setSelected(false);
+            }
+            if (button.equals(selectedButton))
+                button.setSelected(true);
+        }
+    }
+    
+    @FXML
+    protected void handleSelectAllClicked(ActionEvent event) {
+        NoteBox currentNote;
+        for (int i = 0; i < musicNotesArray.size(); i++) {
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            currentNote.markNote();
+        }
+    }
+    
+    @FXML
+    protected void handleDeleteClicked(ActionEvent event) {
+        NoteBox currentNote;
+        System.out.println("delete called");
+        for (int i=0; i < musicNotesArray.size();) {
+            System.out.println("in for loop");
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            System.out.println(currentNote);
+            if (currentNote.getIsSelected()) {
+                deleteNote(currentNote);
+            } else {
+                i++;
             }
         }
     }
@@ -296,8 +353,32 @@ public class TuneComposer extends Application {
     
     public void deleteNote(NoteBox note){
         int index = musicNotesArray.indexOf(note);
-        musicNotesArray.remove(index);        
+        System.out.println(index);
+        System.out.println("Trying to delete");
+        musicNotesArray.remove(index);  
+        musicPane.getChildren().remove(note.getRectangle());
     }
+    
+    public void updateSelected() {
+        NoteBox currentNote;
+        selectedNotes.clear();
+        for (int i=0; i < musicNotesArray.size(); i++) {
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            if (currentNote.getIsSelected()) {
+                selectedNotes.add(currentNote);
+            }
+        }
+    }
+    
+    public void unselectAll() {
+        selectedNotes.clear();
+        NoteBox currentNote;
+        for (int i=0; i < musicNotesArray.size(); i++) {
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            currentNote.unmarkNote();
+        }
+    }
+    
     
     /**
      * Construct the scene and start the application.

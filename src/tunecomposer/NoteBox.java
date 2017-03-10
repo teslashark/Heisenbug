@@ -9,6 +9,10 @@ import java.awt.Point;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
@@ -43,15 +47,12 @@ public class NoteBox {
         }
         //snap Y coordinate between horizontal lines in composer
         rectangle.setY(Math.round(event.getY() / 10) * 10);
+  
         
-        this.rectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            
-            @Override
-            public void handle(MouseEvent event) {
-                NoteBox.this.markNote();
-            }
-        });
-        
+    }
+    
+    public Rectangle getRectangle() {
+        return rectangle;
     }
     
     //TODO: rename to getXCoordinate???
@@ -63,8 +64,16 @@ public class NoteBox {
         return (int) this.rectangle.getY();
     }
     
+    public int getBoxHeight() {
+        return boxHeight;
+    }
+    
     public int getWidth() {
         return (int) this.rectangle.getWidth();
+    }
+    
+    public boolean getIsSelected() {
+        return isSelected;
     }
     
     public void changeNoteBoxLength(int newLength) {
@@ -126,6 +135,14 @@ public class NoteBox {
         
         return isYOverlapping && isXOverlapping;
         
+    }
+    
+    public void drag() {
+        rectangle.setOnMouseDragged(event -> {
+        //this.setTranslateX(event.getSceneX() - dragDeltaX);
+        //this.setTranslateY(event.getSceneY() - dragDeltaY);
+        System.out.println("Yes");
+        });
     }
     
 }

@@ -41,11 +41,25 @@
                   </MenuItem>
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handleSelectAllClicked" text="Select All">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteClicked" text="Delete">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
    <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane onDragDetected="#handleDragDetected" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
@@ -86,7 +100,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="152.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Accordion" textFill="#dd377f">
+                        <RadioButton layoutY="152.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Accordion" textFill="#8d1885">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
@@ -101,7 +115,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="266.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="French Horn" textFill="#8c794a">
+                        <RadioButton layoutY="266.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="French Horn" textFill="#a33e22">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
