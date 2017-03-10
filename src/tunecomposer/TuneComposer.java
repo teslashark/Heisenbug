@@ -24,6 +24,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import static javafx.scene.paint.Color.BLACK;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javax.sound.midi.ShortMessage;
@@ -86,6 +88,8 @@ public class TuneComposer extends Application {
     private Selection selector;
     
     private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
+    
+    private Rectangle selectionRectangle;
     
 
     /**
@@ -150,7 +154,48 @@ public class TuneComposer extends Application {
         
         
     }
+       private double startingPointX;
+    private double startingPointY;
     
+    @FXML
+    protected void handleOnMousePressedAction(MouseEvent event){
+        selectionRectangle = new Rectangle();
+        musicPane.getChildren().add(selectionRectangle);
+        startingPointX = event.getX();
+        startingPointY = event.getY();
+    }
+    
+    @FXML
+    protected void handleOnMouseDraggedAction(MouseEvent event){
+        this.selectionRectangle.setX(startingPointX);
+        this.selectionRectangle.setY(startingPointY);
+        resizeRectangle(selectionRectangle,event);
+        
+    }
+    //TODO Move this method to somewhere better
+        private void resizeRectangle(Rectangle r,MouseEvent e) {
+        r.setWidth(e.getX()-startingPointX);
+        r.setHeight(e.getY()-startingPointY);
+        //if the box is dragged up/left the width and height need to bechanged
+        if (r.getWidth()< 0){
+            r.setWidth(-1*r.getWidth());
+            r.setX(r.getX()- r.getWidth());
+        }
+        if (r.getHeight()< 0){
+            r.setHeight(-1*r.getHeight());
+            r.setY(r.getY()- r.getHeight()); 
+        }
+        r.setStroke(BLACK);
+        r.setStrokeWidth(1);
+        r.setFill(Color.TRANSPARENT);
+    }
+
+    @FXML
+    protected void handleOnMouseReleasedAction(MouseEvent event){
+        musicPane.getChildren().remove(selectionRectangle);    
+    }
+    
+
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
        player.stop();

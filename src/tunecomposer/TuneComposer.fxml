@@ -63,7 +63,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Pane fx:id="musicPane" onMouseClicked="#handleOnMouseClickAction">
+                  <Pane fx:id="musicPane" onMouseClicked="#handleOnMouseClickAction" onMouseDragged="#handleOnMouseDraggedAction" onMousePressed="#handleOnMousePressedAction" onMouseReleased="#handleOnMouseReleasedAction">
                      <children>
                         <Line fx:id="playLine" />
                      </children>
