@@ -166,11 +166,17 @@ public class TuneComposer extends Application {
                 currentNote.unmarkNote();  
             }
             Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
-            if (pointIsInRectangle(startingPoint, currentNote.getStretchZone())) {
-                /*int changeInLength = (int)event.getX() - (int)startingPointX;
-                currentNote.changeNoteBoxLength(currentNote.getWidth() + changeInLength);*/
+            Rectangle stretchZone = currentNote.getStretchZone();
+            if (pointIsInRectangle(startingPoint, stretchZone)) {
+                int changeInLength = (int)event.getX() - (int)startingPointX;
+                currentNote.changeNoteBoxLength(changeInLength);
+                //System.out.println(currentNote.getStretchZone());
+                //currentNote.changeNoteBoxLength(currentNote.getWidth() + changeInLength);*/
                 //TODO IMPLEMENT RECTANGLE STRECHING!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED)
             } else if (pointIsInRectangle(startingPoint, currentNote.getDragZone())) {
+                int xpos = currentNote.getX() + ( (int)event.getX() - startingPoint.x );
+                int ypos = currentNote.getY() + ( (int)event.getY() - startingPoint.y );
+                currentNote.repositionNoteBox(xpos,ypos);
                 //TODO IMPLEMENT RECTANGLE MOVEMENT!!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED
             }
         }
@@ -299,11 +305,8 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleDeleteClicked(ActionEvent event) {
         NoteBox currentNote;
-        System.out.println("delete called");
         for (int i=0; i < musicNotesArray.size();) {
-            System.out.println("in for loop");
             currentNote = (NoteBox)musicNotesArray.get(i);
-            System.out.println(currentNote);
             if (currentNote.getIsSelected()) {
                 deleteNote(currentNote);
             } else {
@@ -365,9 +368,7 @@ public class TuneComposer extends Application {
             // TODO: get this code
             // player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + c, i, 0, s, t);
             // to be use here in accordance to her advice
-            
-            System.out.println("curr instrument: " + noteBox.instrument);
-            
+                        
             switch (noteBox.instrument) {
                 case "Piano": 
                     channel = 0;
@@ -400,9 +401,7 @@ public class TuneComposer extends Application {
                 case "FrenchHorn": 
                     channel = 7;
                     instrumentNum = 60;
-                    break;
-                default:
-                    System.out.println("No cases matched");                        
+                    break;                       
             }
             
             //[0,6,12,19,21,24,40,60];
@@ -411,7 +410,6 @@ public class TuneComposer extends Application {
                 
             //}
             
-            System.out.println("channel: " + channel);  
             player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, instrumentNum, 0, startTick, 0);
             player.addNote(pitch, VOLUME, startTick, noteLength, channel, 0);
         }
