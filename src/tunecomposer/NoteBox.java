@@ -47,6 +47,10 @@ public class NoteBox {
      */
     private final int boxHeight = 10;
     
+    private Rectangle stretchZone;
+    
+    private Rectangle dragZone;
+    
     /**
      * NoteBox Constructor
      * @param instrument A string of the desired instrument
@@ -67,8 +71,10 @@ public class NoteBox {
         }
         //snap Y coordinate between horizontal lines in composer
         rectangle.setY(Math.round(event.getY() / 10) * 10);
-  
         
+        stretchZone = new Rectangle(this.getX() + (this.getWidth() - 5),this.getY(),5, this.getBoxHeight());
+        dragZone = new Rectangle(this.getX(), this.getY(),this.getWidth()-5, this.getBoxHeight());
+
     }
     
     /**
@@ -77,7 +83,7 @@ public class NoteBox {
      * @return The rectangle representing the place to click to resize the NoteBox
      */
     public Rectangle getStretchZone() {
-        return new Rectangle(this.getX() + (this.getWidth() - 5),this.getY(),this.getWidth(), this.getBoxHeight());
+        return stretchZone;
     }
     
     /**
@@ -86,8 +92,7 @@ public class NoteBox {
      * @return The rectangle representing the place to click to drag and move the NoteBox
      */
     public Rectangle getDragZone() {
-                return new Rectangle(this.getX(), this.getY(),this.getWidth()-5, this.getBoxHeight());
-
+        return dragZone;
     }
     
     /**
@@ -144,6 +149,8 @@ public class NoteBox {
      */
     public void changeNoteBoxLength(int sizeDifference) {
         this.rectangle.setWidth(this.rectangle.getWidth() + sizeDifference);
+        this.stretchZone.setX(rectangle.getX() + rectangle.getWidth() - 5);
+        this.dragZone.setWidth(this.getWidth()-5);
     }
     
     // TODO: make it so that when the mouse is unclicked on dragging it snaps
@@ -153,6 +160,11 @@ public class NoteBox {
         rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
         rectangle.setY(Math.round(newYCoordinate / 10) * 10);
+        stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
+        stretchZone.setY(rectangle.getY());
+        dragZone.setX(rectangle.getX());
+        dragZone.setY(rectangle.getY());
+        
     }
     
     /**

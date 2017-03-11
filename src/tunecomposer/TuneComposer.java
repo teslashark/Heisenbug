@@ -170,14 +170,11 @@ public class TuneComposer extends Application {
             if (pointIsInRectangle(startingPoint, stretchZone)) {
                 int changeInLength = (int)event.getX() - (int)startingPointX;
                 currentNote.changeNoteBoxLength(changeInLength);
-                //System.out.println(currentNote.getStretchZone());
-                //currentNote.changeNoteBoxLength(currentNote.getWidth() + changeInLength);*/
                 //TODO IMPLEMENT RECTANGLE STRECHING!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED)
             } else if (pointIsInRectangle(startingPoint, currentNote.getDragZone())) {
                 int xpos = currentNote.getX() + ( (int)event.getX() - startingPoint.x );
                 int ypos = currentNote.getY() + ( (int)event.getY() - startingPoint.y );
                 currentNote.repositionNoteBox(xpos,ypos);
-                //TODO IMPLEMENT RECTANGLE MOVEMENT!!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED
             }
         }
         this.updateSelected();
