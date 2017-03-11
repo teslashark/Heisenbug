@@ -120,43 +120,21 @@ public class TuneComposer extends Application {
         this.player = new MidiPlayer(100,60);
     }
     
+    
     /**
-     * creates a rectangle object of width 100px and height 10px.
-     * sets y to snap b/t staff lines, and
-     * sets left side of rectangle to mouse x-cord
-     * adds the rectangle to musicNotesArray for midiPlayer
-     * and adds to musicPane to visually show notes' box.
-     * Assumes screen size is 2000px wide.
-
-     * @param event 
+     * saves x-coordinate of start location of a drag
      */
-    
-    
-    protected void handleClickInPanel(MouseEvent mouse){
-        
-        boolean ctrl = mouse.isControlDown();
-        
-        if (mouse.getEventType() == mouse.MOUSE_CLICKED){
-            NoteBox newNote = new NoteBox(selectedInstrument, mouse);
-            
-            if (ctrl){
-                selector.select(newNote);
-            }
-            else{
-                selector.unselectReplace(newNote);
-            }    
-        }
-        
-        else if (mouse.getEventType() == mouse.DRAG_DETECTED){
-            SelectionRectangle rect = new SelectionRectangle();
-            
-        }
-        
-        
-    }
     private double startingPointX;
+    /**
+     * saves y-coordinate of start of location of a drag
+     */
     private double startingPointY;
     
+    /**
+     * Handles mouse pressed event, saving point in case the user drags the mouse, and 
+     * begins the selection rectangle
+     * @param event the mouse event
+     */
     @FXML
     protected void handleOnMousePressedAction(MouseEvent event){
         selectionRectangle = new Rectangle();
@@ -165,10 +143,13 @@ public class TuneComposer extends Application {
         startingPointY = event.getY();
     }
     
+    /**
+     * Handles the mouse drag, checking to see if notes fall within the selection box.
+     * If so the notes become selected.
+     * @param event the mouse event
+     */
     @FXML
     protected void handleOnMouseDraggedAction(MouseEvent event){
-        this.updateSelected();
-        System.out.println(selectedNotes);
         NoteBox currentNote;
         Point topLeft = new Point((int)startingPointX,(int)startingPointY);
         Point bottomRight = new Point((int)event.getX(), (int)event.getY());
@@ -193,31 +174,46 @@ public class TuneComposer extends Application {
                 //TODO IMPLEMENT RECTANGLE MOVEMENT!!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED
             }
         }
+        this.updateSelected();
     }
-    //TODO Move this method to somewhere better
-        private void resizeRectangle(Rectangle r,MouseEvent e) {
-        r.setWidth(e.getX()-startingPointX);
-        r.setHeight(e.getY()-startingPointY);
+    
+    /**
+     * resizes a rectangle based on a mouse event, used for updating the size of the selection
+     * rectangle.
+     * @param rect the rectangle to be resized
+     * @param e the mouse event
+     */
+    private void resizeRectangle(Rectangle rect,MouseEvent e) {
+        rect.setWidth(e.getX()-startingPointX);
+        rect.setHeight(e.getY()-startingPointY);
         //if the box is dragged up/left the width and height need to bechanged
-        if (r.getWidth()< 0){
-            r.setWidth(-1*r.getWidth());
-            r.setX(r.getX()- r.getWidth());
+        if (rect.getWidth()< 0){
+            rect.setWidth(-1*rect.getWidth());
+            rect.setX(rect.getX()- rect.getWidth());
         }
-        if (r.getHeight()< 0){
-            r.setHeight(-1*r.getHeight());
-            r.setY(r.getY()- r.getHeight()); 
+        if (rect.getHeight()< 0){
+            rect.setHeight(-1*rect.getHeight());
+            rect.setY(rect.getY()- rect.getHeight()); 
         }
-        r.setStroke(BLACK);
-        r.setStrokeWidth(1);
-        r.setFill(Color.TRANSPARENT);
+        rect.setStroke(BLACK);
+        rect.setStrokeWidth(1);
+        rect.setFill(Color.TRANSPARENT);
     }
 
+    /**
+     * Handles mouse released, removing the selection rectangle from the screen.
+     * @param event the mouse event
+     */
     @FXML
     protected void handleOnMouseReleasedAction(MouseEvent event){
         musicPane.getChildren().remove(selectionRectangle);    
     }
     
-
+    /**
+     * Handles clicking on the pane to add NoteBoxs, clicking on notes for selection
+     * and control clicking.
+     * @param event 
+     */
     @FXML
     protected void handleOnMouseClickAction(MouseEvent event){
        player.stop();
@@ -282,6 +278,10 @@ public class TuneComposer extends Application {
         }
     }
     
+    /**
+     * Handles when select all is clicked in the edit menu, selecting all note boxes.
+     * @param event the mouse event
+     */
     @FXML
     protected void handleSelectAllClicked(ActionEvent event) {
         NoteBox currentNote;
@@ -291,6 +291,11 @@ public class TuneComposer extends Application {
         }
     }
     
+    /**
+     * Handles when delete is clicked in the edit menu, removing a specified note box
+     * from the musicNotesArray collection.
+     * @param event 
+     */
     @FXML
     protected void handleDeleteClicked(ActionEvent event) {
         NoteBox currentNote;
@@ -412,14 +417,20 @@ public class TuneComposer extends Application {
         }
     }
     
+    /**
+     * Deletes a note box from the musicNotesArray, as well as removes the rectangle from the
+     * music pane.
+     * @param note The NoteBox to be deleted. 
+     */
     public void deleteNote(NoteBox note){
         int index = musicNotesArray.indexOf(note);
-        System.out.println(index);
-        System.out.println("Trying to delete");
         musicNotesArray.remove(index);  
         musicPane.getChildren().remove(note.getRectangle());
     }
     
+    /**
+     * Checks all NoteBoxes in the musicNoteArray to update the ArrayList of selectedNotes
+     */
     public void updateSelected() {
         NoteBox currentNote;
         selectedNotes.clear();
@@ -431,6 +442,9 @@ public class TuneComposer extends Application {
         }
     }
     
+    /**
+     * deselects all NoteBoxes in the musicNotesArray
+     */
     public void unselectAll() {
         selectedNotes.clear();
         NoteBox currentNote;
@@ -440,6 +454,12 @@ public class TuneComposer extends Application {
         }
     }
     
+    /**
+     * Determines whether a given point is inside the bound of a given rectangle
+     * @param point the given point
+     * @param rect the given rectangle
+     * @return returns true if the point is inside of the rectangle, else returns false
+     */
     public boolean pointIsInRectangle(Point point, Rectangle rect) {
         boolean xValInRange = 
                 (point.x >= rect.getX() &&
