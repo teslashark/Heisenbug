@@ -4,7 +4,6 @@
 package tunecomposer;
 
 import java.awt.Point;
-import tunecomposer.Selection;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,8 +84,6 @@ public class TuneComposer extends Application {
      */
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
     
-    private Selection selector;
-    
     private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
     
     private Rectangle selectionRectangle;
@@ -151,33 +148,53 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleOnMouseDraggedAction(MouseEvent event){
         NoteBox currentNote;
+        NoteBox currentSelectedNote;
+        boolean stretchDrag = false;
         Point topLeft = new Point((int)startingPointX,(int)startingPointY);
         Point bottomRight = new Point((int)event.getX(), (int)event.getY());
-        this.selectionRectangle.setX(startingPointX);
-        this.selectionRectangle.setY(startingPointY);
-        resizeRectangle(selectionRectangle,event);        
+        Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
         
-        for (int i = 0; i < musicNotesArray.size(); i++) {
-            currentNote = (NoteBox)musicNotesArray.get(i);
-            
-            if (currentNote.isInRect(topLeft, bottomRight)) {
-                currentNote.markNote();
-            } else if(!event.isControlDown()) {
-                currentNote.unmarkNote();  
-            }
-            Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
+        for (int i=0; i<selectedNotes.size();i++){    
+            currentNote = (NoteBox)selectedNotes.get(i); 
             Rectangle stretchZone = currentNote.getStretchZone();
             if (pointIsInRectangle(startingPoint, stretchZone)) {
-                int changeInLength = (int)event.getX() - (int)startingPointX;
-                currentNote.changeNoteBoxLength(changeInLength);
-                //TODO IMPLEMENT RECTANGLE STRECHING!!!!!!!!!!!!!!!!! (FOR EVERYTHING THAT IS SELECTED)
+                for (int j=0; j<selectedNotes.size();j++){
+                    currentSelectedNote = (NoteBox)selectedNotes.get(j);
+                    //Not sure why this doesn't change the length of the bars correctly
+                    int changeInLength = (int)event.getX() - (int)startingPointX;
+                    currentSelectedNote.changeNoteBoxLength(changeInLength);
+                    
+                }
             } else if (pointIsInRectangle(startingPoint, currentNote.getDragZone())) {
-                int xpos = currentNote.getX() + ( (int)event.getX() - startingPoint.x );
-                int ypos = currentNote.getY() + ( (int)event.getY() - startingPoint.y );
-                currentNote.repositionNoteBox(xpos,ypos);
-            }
+                for (int j=0; j<selectedNotes.size();j++){
+                    currentSelectedNote = (NoteBox)selectedNotes.get(j);
+                    //I don't know why this doesn't properly change the position,
+                    //the coordinate change seems to check out
+                    int xpos = currentSelectedNote.getX() + ( (int)event.getX() - startingPoint.x );
+                    int ypos = currentSelectedNote.getY() + ( (int)event.getY() - startingPoint.y );
+                    currentSelectedNote.repositionNoteBox(xpos,ypos);
+                }
+                stretchDrag=true;
+                break;
+            } 
         }
         this.updateSelected();
+        
+        if (!stretchDrag){
+            this.selectionRectangle.setX(startingPointX);
+            this.selectionRectangle.setY(startingPointY);
+            resizeSelectionRectangle(selectionRectangle,event); 
+        
+            for (int i = 0; i < musicNotesArray.size(); i++) {
+                currentNote = (NoteBox)musicNotesArray.get(i);
+
+                if (currentNote.isInRect(topLeft, bottomRight)) {
+                    currentNote.markNote();
+                } else if(!event.isControlDown()) {
+                    currentNote.unmarkNote();  
+                }
+            }
+        }
     }
     
     /**
@@ -186,7 +203,7 @@ public class TuneComposer extends Application {
      * @param rect the rectangle to be resized
      * @param e the mouse event
      */
-    private void resizeRectangle(Rectangle rect,MouseEvent e) {
+    private void resizeSelectionRectangle(Rectangle rect,MouseEvent e) {
         rect.setWidth(e.getX()-startingPointX);
         rect.setHeight(e.getY()-startingPointY);
         //if the box is dragged up/left the width and height need to bechanged
@@ -254,7 +271,7 @@ public class TuneComposer extends Application {
                 unselectAll();
             }
             musicNotesArray.add(noteBox);
-            musicPane.getChildren().add(noteBox.rectangle);
+            musicPane.getChildren().add(noteBox.getRectangle());
        }
        
         
@@ -366,7 +383,7 @@ public class TuneComposer extends Application {
             // player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + c, i, 0, s, t);
             // to be use here in accordance to her advice
                         
-            switch (noteBox.instrument) {
+            switch (noteBox.getInstrument()) {
                 case "Piano": 
                     channel = 0;
                     instrumentNum = 0;
