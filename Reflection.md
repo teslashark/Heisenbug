@@ -1,18 +1,30 @@
 ## Reflection
-#### by Cooper, Emma, and Ben L.
+#### by Quinn, Ben, Will, and Niki
 
->Give a concise overview of your design. How did you divide the code into classes and methods? How does your design for Project 3 differ from your design(s) for Project 2?
+1) In terms of instrument selection, we just had a single global variable that would be changed based on which radio button was currently selected. We then used that variable as an input when constructing a new note.
 
-We Had three classes in our project. The MidiPlayer which was untouched, the PlayBar class where the animation and logic for the red bar was managed, and the TuneComposer. I think we did a better job of putting logic in methods to keep changes possible, but we mainly extended the design from project 2 rather than reorganize everything. 
+We created a NoteBox class to keep the information contained in each note for easy access and mutability. We also created a selection box global rectangle to keep track of the bow that appears during a click and drag.
 
->Explain why your way was the elegant way to do it. Address any improvements you made based on my feedback.
+Overall, most of our functionality comes from event handles connected to our FXML file, breaking down what happens during different mouse events and button presses.
 
-Our way was elegant becuase the code is readable and simple to follow, and we avoided complex solutions to problems. It should also leave us with a fair amout of flexibility for the next project. We might have to change a couple methods in the future, but we planned for that and have kept our code free of unnecisarry complications and dependencies. We weren't able to make total structural decisions based on the feedback from project 2, but we were able to name classes better and make code more readible. We used color names instead of hex codes, we formatted the FXML for easier readibility, and isolated as many GUI element constructions as possible in the FXML. Some of the GUI elements had to be created by the play handler such as the note rectangles and red line, so we weren't able to keep all GUI in the FXML.
+2) For the instrument panel this was the best way to do it as it hardly impacted our previous method for note creation, and creating the NoteBox class meant we could wrap up a lot of methods to be called by the controller class without adding as much clutter to that class.
 
->Explain what, if anything, in your solution is inelegant and why you didn't make it elegant (for example, maybe you didn't have time or the knowledge to fix it).
 
-I think we could have separated our solution into more classes in order to better separate the functions of each class into exactly what they do. For example, a possible "note" class may be helpful, especially if in the future we expand to have different types of notes (with different lengths, etc.) that would be helpful so that the tuneComposer class builds the pane and then uses the note class and playBar class in order to build a tune and then play it with MidiPlayer. We didn't do this immediately this time since this is more of an idea for the future as the application potentially builds and becomes more complicated. We also tried to build the midiplayer notes as the notes were clicked, but didn't have the methods to restart midiplayers once they had already been started and stopped, so that may be another place to refactor.
+3) Ideally each radio button would be contained in a ToggleGroup. This would automatically mean only one radio button could be selected at a certain time. Unfortunately when using the ToggleGroup we couldn't figure out how to keep the vertical layout of the panel, and so opted to just have a couple lines of code to deselect the other buttons manually.
 
->Finally, describe how your team collaborated on the project. What did you do together? What did you do separately? What did each team member contribute? Optionally, include a brief team retrospective: What is one thing you did well as a team? What is one thing you could have improved?
+Additionally a lot of our code to do with selection is messy in general. This is because we were struggling really hard with the functional requirements, and got to the point where we just needed to get as much functionality done as we could. We also had a selector class at one point, but the remaining people able to work on the project were unable to figure out how it was supposed to be used and it was scraped in favor of methods in the controller class.
 
-After assessing the project, we divied up the project into three components: the red bar, the UI, and the music playing. Cooper started on the red bar, Emma started on the UI, and Ben started on the music playing. After a weekend to work on our seperate parts, we all got together and combined our individual contributions into the repo's master branch. Then we started debugging. A few hours later the code was up to spec and worked as intended. We worked well as a team because we all became experts in the different parts of the code that we had worked on, and accepted suggestions from each other on how to refactor our parts of the project. We could have improved on organizing when we got together; there were miscommunications about when we were working.
+With only two of us left we simply were not able to figure out how to properly drag notes and resize them. We came close, but couldn’t figure out why the notes were moving faster than the mouse. 
+
+4)
+Quinn/Will collaborated on most of the code that had to do with the selection rectangle interacting with the NoteBoxes
+
+Quinn/Ben collaborated on getting the instrument pane to change the construction of note boxes, and getting different instrument noises to play
+
+Quinn - Instrument Pane, selection methods of note box objects, UML diagram.
+Will - created the Selection Rectangle and figured out how to use drag events.
+Ben - Created the NoteBox class, and several methods to interact with them in the controller class
+Niki - Created the unused selection class (was really sick).
+
+5)
+Our estimation was pretty optimistic. During the planning poker activity we estimated that most, if not all, of the smaller tasks would take about 30 minutes, which if we broke it up wouldn't be too bad. Indeed, most of the smaller tasks took about the 30 minutes we had estimated, but a couple of them - specifically implementing dragging and resizing notebars - proved a much more difficult task. Our estimation on the larger portions and code design were not too far off. The problem became the refactoring of the code mid-way through that effectively doubled the time it took to build the code organization. In total, we need to improve on understanding the intricacies of smaller tasks to better estimating the time they will take and need to either plan out or code better or budget in time for large scale refactoring.
