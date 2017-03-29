@@ -59,7 +59,7 @@
       </MenuBar>
    </top>
    <center>
-      <ScrollPane onDragDetected="#handleDragDetected" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
