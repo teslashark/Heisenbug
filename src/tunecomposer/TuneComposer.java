@@ -382,7 +382,7 @@ public class TuneComposer extends Application {
             // TODO: get this code
             // player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + c, i, 0, s, t);
             // to be use here in accordance to her advice
-                        
+                       
             switch (noteBox.getInstrument()) {
                 case "Piano": 
                     channel = 0;
