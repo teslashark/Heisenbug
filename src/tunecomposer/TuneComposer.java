@@ -362,6 +362,25 @@ public class TuneComposer extends Application {
         System.exit(0);
     }    
     
+   
+     /**
+     * handler for "group" menuItem to create a gesture
+     * @param event 
+     */
+    @FXML
+    protected void handleGroupMenuItemAction(ActionEvent event) {
+    }    
+    
+     /**
+     * handler for "Un Group" menuItem to create a gesture
+     * @param event 
+     */
+    @FXML
+    protected void handleUngroupMenuItemAction(ActionEvent event) {
+ 
+    }    
+    
+        
     /**
      * takes array of rectangles representing notes, and adds them to player.
      * assumes pane height is 1280px high.

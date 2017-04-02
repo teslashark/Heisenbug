@@ -98,6 +98,7 @@ public class NoteBox {
     public String getInstrument(){
         return instrument;
     }
+
     /**
      * Get method for the rectangle
      * @return the rectangle representing the NoteBox
@@ -105,6 +106,7 @@ public class NoteBox {
     public Rectangle getRectangle() {
         return rectangle;
     }
+    
     
     /**
      * Gives the x-coordinate of the NoteBox
