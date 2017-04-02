@@ -145,7 +145,7 @@ public class Gesture {
     }
     
     /**
-     * Changes the width of a noteBox based of an incrimentation of size
+     * Changes the width of a noteBox based of an incrementation of size
      * @param sizeDifference the difference  of width between the new note box and the old one
      */
     public void changeGestureLength(int sizeDifference) {

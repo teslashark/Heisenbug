@@ -95,6 +95,10 @@ public class NoteBox {
         return dragZone;
     }
     
+    public String getInstrument(){
+        return instrument;
+    }
+    
     /**
      * Get method for the rectangle
      * @return the rectangle representing the NoteBox
