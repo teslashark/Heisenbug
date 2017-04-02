@@ -95,6 +95,9 @@ public class NoteBox {
         return dragZone;
     }
     
+    public String getInstrument(){
+        return instrument;
+    }
     /**
      * Get method for the rectangle
      * @return the rectangle representing the NoteBox
@@ -230,6 +233,23 @@ public class NoteBox {
         return isYOverlapping && isXOverlapping;
         
     }
-    
+
+     private void onMouseDragged(MouseEvent e) {
+        Point start = new Point((int)e.getX(),(int)e.getY());
+        if (pointIsInRectangle(start, this.getStretchZone())){
+            //add the functionality from the sample solution
+        }
+     }
+    public static boolean pointIsInRectangle(Point point, Rectangle rect) {
+        boolean xValInRange = 
+                (point.x >= rect.getX() &&
+                point.x <= rect.getX() + rect.getWidth());
+       
+        boolean yValInRange = 
+                (point.y >= rect.getY() &&
+                point.y <= rect.getY() + rect.getHeight());
+        
+        return (xValInRange && yValInRange);
+    }
     
 }
