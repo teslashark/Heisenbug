@@ -237,7 +237,7 @@ public class NoteBox {
      private void onMouseDragged(MouseEvent e) {
         Point start = new Point((int)e.getX(),(int)e.getY());
         if (pointIsInRectangle(start, this.getStretchZone())){
-            //add the functionality from the sample solution testing
+            //add the functionality from the sample solution testing 123
         }
      }
     public static boolean pointIsInRectangle(Point point, Rectangle rect) {
