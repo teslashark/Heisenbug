@@ -20,10 +20,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
-/**
- *
- * @author limpicbc
- */
 public class Gesture {
     
     /**

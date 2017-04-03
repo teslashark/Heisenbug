@@ -98,11 +98,7 @@ public class NoteBox {
     public String getInstrument(){
         return instrument;
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> origin/master
     /**
      * Get method for the rectangle
      * @return the rectangle representing the NoteBox

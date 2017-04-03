@@ -369,6 +369,8 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleGroupMenuItemAction(ActionEvent event) {
+            System.out.println("Group Menu Click");
+            System.out.println(selectedNotes);
     }    
     
      /**
@@ -377,9 +379,9 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
- 
+             System.out.println("Ungroup Menu Click");
+             System.out.println(selectedNotes);
     }    
-    
         
     /**
      * takes array of rectangles representing notes, and adds them to player.
