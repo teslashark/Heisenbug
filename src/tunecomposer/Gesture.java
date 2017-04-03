@@ -1,15 +1,14 @@
 package tunecomposer;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author ggsha
- */
+ * Gestures need to have an isSelected boolean and methods like dragging, 
+ * resizing, deleting, etc. These will share functionality to the notebox 
+ * methods, but it cannot inherit because of the difference in nature of 
+ * these objects as stated previously. 
+*/
+
 import java.awt.Point;
+import java.util.ArrayList;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -48,17 +47,24 @@ public class Gesture {
     private Rectangle dragZone;
     
     private int gesCount;
+    
+    ArrayList<NoteBox> containsElements;
+    
     /**
      * gesture Constructor
      * @param event the mouse event
      */
-    public Gesture(MouseEvent event) {
+    public Gesture(ArrayList<NoteBox> selectedNotes, MouseEvent event) {
         this.gesCount = 0;
         this.rectangle = new Rectangle(initialGesWidth, gesHeight);
         //TODO: bring up to spec is selected default
         this.isSelected = false; 
+        
+        this.containsElements = selectedNotes;
+        
         rectangle.setId("Gesture" + (gesCount + 1));
         gesCount += 1;
+        
         //ensure rectangle doesn't go off screen
         if (event.getX() > 1900) { 
             rectangle.setX(1900);            
@@ -79,6 +85,11 @@ public class Gesture {
      * activate the resizing action.
      * @return The rectangle representing the place to click to resize the NoteBox
      */
+    
+    public ArrayList<NoteBox> getContents() {
+        return containsElements;
+    }
+        
     public Rectangle getStretchZone() {
         return stretchZone;
     }
