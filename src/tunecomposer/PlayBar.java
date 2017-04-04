@@ -16,8 +16,8 @@ import tunecomposer.NoteBox;
 
 /**
  * PlayBar class which creates the animation of a red bar that indicates what notes are playing.
- * @author lazarcl
- */
+
+*/
 public class PlayBar {
     
     /**

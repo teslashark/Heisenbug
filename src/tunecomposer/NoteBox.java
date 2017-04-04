@@ -6,9 +6,15 @@
 package tunecomposer;
 
 import java.awt.Point;
+import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import tunecomposer.TuneComposer;
 
 /**
  *
@@ -92,6 +98,7 @@ public class NoteBox {
     public String getInstrument(){
         return instrument;
     }
+    
     /**
      * Get method for the rectangle
      * @return the rectangle representing the NoteBox
@@ -99,6 +106,7 @@ public class NoteBox {
     public Rectangle getRectangle() {
         return rectangle;
     }
+    
     
     /**
      * Gives the x-coordinate of the NoteBox
@@ -154,13 +162,13 @@ public class NoteBox {
     // in rather than making it snap in while dragging
     public void repositionNoteBox(int newXCoordinate, int newYCoordinate){
         // don't let the user make a note go offscreen
-        this.rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
+        rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
-        this.rectangle.setY(Math.round(newYCoordinate / 10) * 10);
-        this.stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
-        this.stretchZone.setY(rectangle.getY());
-        this.dragZone.setX(rectangle.getX());
-        this.dragZone.setY(rectangle.getY());
+        rectangle.setY(Math.round(newYCoordinate / 10) * 10);
+        stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
+        stretchZone.setY(rectangle.getY());
+        dragZone.setX(rectangle.getX());
+        dragZone.setY(rectangle.getY());
         
     }
     
@@ -227,15 +235,11 @@ public class NoteBox {
         return isYOverlapping && isXOverlapping;
         
     }
-    private Point start;
-    private void onMousePressed(MouseEvent e) {
-        Point start = new Point((int)e.getX(),(int)e.getY());    
-    }
 
      private void onMouseDragged(MouseEvent e) {
-
+        Point start = new Point((int)e.getX(),(int)e.getY());
         if (pointIsInRectangle(start, this.getStretchZone())){
-            this.rectangle.setWidth(start.getX()-e.getX());
+            //add the functionality from the sample solution
         }
      }
     public static boolean pointIsInRectangle(Point point, Rectangle rect) {
