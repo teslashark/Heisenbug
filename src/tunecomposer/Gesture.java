@@ -1,12 +1,14 @@
 package tunecomposer;
 
 /*
- * Gestures need to have an isSelected boolean and methods like dragging, 
- * resizing, deleting, etc. These will share functionality to the notebox 
- * methods, but it cannot inherit because of the difference in nature of 
- * these objects as stated previously. 
-*/
-
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ *
+ * @author ggsha
+ */
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.beans.property.StringProperty;
@@ -17,14 +19,16 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.shape.Rectangle;
-
+import tunecomposer.NoteBox;
 public class Gesture {
     
     /**
      * The rectangle to visually represent this Gesture
      */
-    protected Rectangle rectangle;
+    protected Rectangle rectangle = new Rectangle(2000,1280,0,0);
     
     /**
      * returns true if the Gesture is selected
@@ -38,7 +42,7 @@ public class Gesture {
     private final int initialGesWidth = 1;
     
     /**
-         * The initial height of a gesture
+     * The initial height of a gesture
      */
     private final int gesHeight = 1;
     
@@ -47,36 +51,43 @@ public class Gesture {
     private Rectangle dragZone;
     
     private int gesCount;
-    
-    ArrayList<NoteBox> containsElements;
-    
     /**
      * gesture Constructor
      * @param event the mouse event
      */
-    public Gesture(ArrayList<NoteBox> selectedNotes, MouseEvent event) {
+    public Gesture(ArrayList notes) {
         this.gesCount = 0;
-        this.rectangle = new Rectangle(initialGesWidth, gesHeight);
+        this.rectangle = new Rectangle(1999,1279,1,1);
         //TODO: bring up to spec is selected default
         this.isSelected = false; 
-        
-        this.containsElements = selectedNotes;
-        
         rectangle.setId("Gesture" + (gesCount + 1));
         gesCount += 1;
-        
-        //ensure rectangle doesn't go off screen
-        if (event.getX() > 1900) { 
-            rectangle.setX(1900);            
+
+        rectangle.setStroke(BLACK);
+        rectangle.setStrokeWidth(1);
+        rectangle.setFill(Color.TRANSPARENT);
+        //Set dimentions and location of the rectangle based on the arraylist
+        NoteBox currentNote;
+        for (int i=0;i<notes.size();i++){
+            currentNote = (NoteBox) notes.get(i);
+            if (currentNote.getX()<rectangle.getX()){
+                rectangle.setX(currentNote.getX());
+            }
+            if (currentNote.getY()<rectangle.getY()){
+                rectangle.setY(currentNote.getY());
+            }
+            if ((currentNote.getX()+currentNote.getWidth())>(rectangle.getX()+rectangle.getWidth())){
+                rectangle.setWidth(currentNote.getX()+currentNote.getWidth()-rectangle.getX());
+            }
+            if ((currentNote.getY()+10)>(rectangle.getY()+rectangle.getHeight())){
+                rectangle.setHeight(currentNote.getY()+10-rectangle.getY());
+            }
         }
-        else {
-            rectangle.setX(event.getX());
-        }
-        //snap Y coordinate between horizontal lines in composer
-        rectangle.setY(Math.round(event.getY() / 10) * 10);
+
         
-        stretchZone = new Rectangle(this.getX() + (this.getWidth() - 5),this.getY(),5, this.getGesHeight());
-        dragZone = new Rectangle(this.getX(), this.getY(),this.getWidth()-5, this.getGesHeight());
+        //Set up strech and drag zones
+        stretchZone = new Rectangle();
+        dragZone = new Rectangle();
 
     }
     
@@ -85,11 +96,6 @@ public class Gesture {
      * activate the resizing action.
      * @return The rectangle representing the place to click to resize the NoteBox
      */
-    
-    public ArrayList<NoteBox> getContents() {
-        return containsElements;
-    }
-        
     public Rectangle getStretchZone() {
         return stretchZone;
     }
