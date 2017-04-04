@@ -31,12 +31,6 @@ import javax.sound.midi.ShortMessage;
 import tunecomposer.NoteBox;
 import tunecomposer.Gesture;
 
-/**
- * This JavaFX app lets the user play scales.
- * @author Janet Davis, Ben Limpich, Emma Twersky, Cooper Lazar
- * @author PROJECT 3
- * @since February 20, 2017
- */
 public class TuneComposer extends Application {
     /**
      * Contains the rectangle objects that represent 
@@ -44,6 +38,8 @@ public class TuneComposer extends Application {
      */
     protected ArrayList musicNotesArray = new ArrayList();
     
+    protected ArrayList gesturesArray = new ArrayList();
+        
     //must be first letter capatilized
     private String selectedInstrument = "Piano";
     
@@ -86,7 +82,9 @@ public class TuneComposer extends Application {
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
     
     private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
-    
+
+    private ArrayList<Gesture> selectedGestures = new ArrayList<Gesture>();
+
     private Rectangle selectionRectangle;
     
 
@@ -374,6 +372,7 @@ public class TuneComposer extends Application {
             System.out.println(selectedNotes);
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.rectangle);
+            
     }
      /**
      * handler for "Un Group" menuItem to create a gesture
@@ -476,6 +475,19 @@ public class TuneComposer extends Application {
                 selectedNotes.add(currentNote);
             }
         }
+   
+        Gesture currentGesture;
+        selectedGestures.clear();
+        for (int i=0; i < gesturesArray.size(); i++) {
+            currentGesture = (Gesture)gesturesArray.get(i);
+            if (currentGesture.getIsSelected()) {
+                selectedGestures.add(currentGesture);
+            }
+        }
+        
+        System.out.println(selectedGestures);
+        
+        
     }
     
     /**

@@ -5,10 +5,7 @@ package tunecomposer;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
- *
- * @author ggsha
- */
+
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.beans.property.StringProperty;
@@ -23,6 +20,7 @@ import javafx.scene.paint.Color;
 import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.NoteBox;
+
 public class Gesture {
     
     /**
@@ -64,10 +62,12 @@ public class Gesture {
         gesCount += 1;
 
         rectangle.setStroke(BLACK);
-        rectangle.setStrokeWidth(1);
+        rectangle.setStrokeWidth(1.5);
+        rectangle.getStrokeDashArray().addAll(3.0,7.0,3.0,7.0);
         rectangle.setFill(Color.TRANSPARENT);
         //Set dimentions and location of the rectangle based on the arraylist
         NoteBox currentNote;
+        
         for (int i=0;i<notes.size();i++){
             currentNote = (NoteBox) notes.get(i);
             if (currentNote.getX()<rectangle.getX()){
@@ -88,7 +88,6 @@ public class Gesture {
             }
         }
 
-        
         //Set up strech and drag zones
         stretchZone = new Rectangle();
         dragZone = new Rectangle();
