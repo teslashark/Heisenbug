@@ -74,13 +74,13 @@ public class Gesture {
                 rectangle.setX(currentNote.getX());
             }
             if (currentNote.getY()<rectangle.getY()){
-                rectangle.setX(currentNote.getX());
+                rectangle.setY(currentNote.getY());
             }
             if ((currentNote.getX()+currentNote.getWidth())>(rectangle.getX()+rectangle.getWidth())){
                 rectangle.setWidth(currentNote.getX()+currentNote.getWidth()-rectangle.getX());
             }
-            if ((currentNote.getY()+10)>(rectangle.getY()+10)){
-                rectangle.setHeight(currentNote.getY()+10);
+            if ((currentNote.getY()+10)>(rectangle.getY()+rectangle.getHeight())){
+                rectangle.setHeight(currentNote.getY()+10-rectangle.getY());
             }
         }
 
