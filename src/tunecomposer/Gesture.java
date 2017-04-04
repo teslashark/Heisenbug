@@ -38,7 +38,7 @@ public class Gesture {
     private final int initialGesWidth = 1;
     
     /**
-     * The initial height of a gesture
+         * The initial height of a gesture
      */
     private final int gesHeight = 1;
     
