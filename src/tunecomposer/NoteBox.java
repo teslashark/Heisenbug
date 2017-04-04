@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tunecomposer;
 
 import java.awt.Point;
@@ -16,11 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
-/**
- *
- * @author limpicbc
- */
-public class NoteBox {
+public class NoteBox extends Items  {
     
     /**
      * The instrument to be represented by the NoteBox

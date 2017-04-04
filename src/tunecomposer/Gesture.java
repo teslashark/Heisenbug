@@ -1,10 +1,5 @@
-package tunecomposer;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package tunecomposer;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -21,7 +16,7 @@ import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.shape.Rectangle;
 import tunecomposer.NoteBox;
 
-public class Gesture {
+public class Gesture extends Items {
     
     /**
      * The rectangle to visually represent this Gesture

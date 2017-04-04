@@ -81,10 +81,16 @@ public class TuneComposer extends Application {
      */
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
     
+    private ArrayList<Items> composerItems = new ArrayList<Items>();
+
+    private ArrayList<Items> selectedItems = new ArrayList<Items>();
+    
+    // Remove Soon
     private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
 
+    // Remove Soon
     private ArrayList<Gesture> selectedGestures = new ArrayList<Gesture>();
-
+    
     private Rectangle selectionRectangle;
     
 
@@ -372,6 +378,10 @@ public class TuneComposer extends Application {
             System.out.println(selectedNotes);
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.rectangle);
+            
+            
+            
+            
             
     }
      /**
