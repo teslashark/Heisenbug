@@ -21,6 +21,15 @@ import tunecomposer.NoteBox;
  * @author pablofernandez
  */
 public class Items {
+     
+    /**
+     * returns true if the NoteBox is marked as a selected note
+     */
+    public boolean isSelected;
+    
+    public Rectangle stretchZone;
+    
+    public Rectangle dragZone;
     
 }
 

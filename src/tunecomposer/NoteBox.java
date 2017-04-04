@@ -25,11 +25,6 @@ public class NoteBox extends Items  {
     protected Rectangle rectangle;
     
     /**
-     * returns true if the NoteBox is marked as a selected note
-     */
-    private boolean isSelected;
-    
-    /**
      * the default width of a newly created NoteBox
      */
     private final int initialBoxWidth = 100;
@@ -38,10 +33,6 @@ public class NoteBox extends Items  {
      * The height of a noteBox
      */
     private final int boxHeight = 10;
-    
-    private Rectangle stretchZone;
-    
-    private Rectangle dragZone;
     
     /**
      * NoteBox Constructor

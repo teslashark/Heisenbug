@@ -32,13 +32,6 @@ import tunecomposer.NoteBox;
 import tunecomposer.Gesture;
 
 public class TuneComposer extends Application {
-    /**
-     * Contains the rectangle objects that represent 
-     * the musical notes in the UI.
-     */
-    protected ArrayList musicNotesArray = new ArrayList();
-    
-    protected ArrayList gesturesArray = new ArrayList();
         
     //must be first letter capatilized
     private String selectedInstrument = "Piano";
@@ -79,9 +72,12 @@ public class TuneComposer extends Application {
     /**
      * An arrayList to hold all instrument radio buttons for easy access.
      */
+        
+    protected ArrayList gesturesArray = new ArrayList();
+    
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
     
-    private ArrayList<Items> composerItems = new ArrayList<Items>();
+    protected ArrayList<Items> composerItems = new ArrayList<Items>(); 
 
     private ArrayList<Items> selectedItems = new ArrayList<Items>();
     
@@ -121,7 +117,6 @@ public class TuneComposer extends Application {
     public TuneComposer() {
         this.player = new MidiPlayer(100,60);
     }
-    
     
     /**
      * saves x-coordinate of start location of a drag
@@ -190,8 +185,8 @@ public class TuneComposer extends Application {
             this.selectionRectangle.setY(startingPointY);
             resizeSelectionRectangle(selectionRectangle,event); 
         
-            for (int i = 0; i < musicNotesArray.size(); i++) {
-                currentNote = (NoteBox)musicNotesArray.get(i);
+            for (int i = 0; i < composerItems.size(); i++) {
+                currentNote = (NoteBox)composerItems.get(i);
 
                 if (currentNote.isInRect(topLeft, bottomRight)) {
                     currentNote.markNote();
@@ -249,8 +244,8 @@ public class TuneComposer extends Application {
        boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
        Point clickPoint = new Point((int)event.getX(), roundedYCoordinate);
-       for(int i = 0; i < musicNotesArray.size(); i++){
-           currentNote = (NoteBox) musicNotesArray.get(i);
+       for(int i = 0; i < composerItems.size(); i++){
+           currentNote = (NoteBox) composerItems.get(i);
            if(currentNote.pointIsInNoteBox(clickPoint)){
               hasNoConflictWithNote = false;
               if (event.isControlDown()) {
@@ -275,7 +270,7 @@ public class TuneComposer extends Application {
             }else{
                 unselectAll();
             }
-            musicNotesArray.add(noteBox);
+            composerItems.add(noteBox);
             musicPane.getChildren().add(noteBox.getRectangle());
        }
        
@@ -310,8 +305,8 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleSelectAllClicked(ActionEvent event) {
         NoteBox currentNote;
-        for (int i = 0; i < musicNotesArray.size(); i++) {
-            currentNote = (NoteBox)musicNotesArray.get(i);
+        for (int i = 0; i < composerItems.size(); i++) {
+            currentNote = (NoteBox)composerItems.get(i);
             currentNote.markNote();
         }
     }
@@ -324,8 +319,8 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleDeleteClicked(ActionEvent event) {
         NoteBox currentNote;
-        for (int i=0; i < musicNotesArray.size();) {
-            currentNote = (NoteBox)musicNotesArray.get(i);
+        for (int i=0; i < composerItems.size();) {
+            currentNote = (NoteBox)composerItems.get(i);
             if (currentNote.getIsSelected()) {
                 deleteNote(currentNote);
             } else {
@@ -355,7 +350,7 @@ public class TuneComposer extends Application {
         player.clear();
         addNotesArrayToMidiPlayer();
         player.play();
-        playBarObj.playAnimation(musicNotesArray);
+        playBarObj.playAnimation(composerItems); // composerItems musicNotesArray
     }
     
     /**
@@ -378,17 +373,6 @@ public class TuneComposer extends Application {
             System.out.println(selectedNotes);
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.rectangle);
-            
-            composerItems.add(gesture); 
-          
-            NoteBox currentNote;
-            for (int i = 0; i < musicNotesArray.size(); i++) {
-                currentNote = (NoteBox)musicNotesArray.get(i);
-                composerItems.add(currentNote); 
-            }
-       
-            System.out.println(composerItems);
-            
     }
      /**
      * handler for "Un Group" menuItem to create a gesture
@@ -407,8 +391,8 @@ public class TuneComposer extends Application {
      * all objects in musicNotesArray must be of type javafx shape.
      */
     private void addNotesArrayToMidiPlayer() {
-        for (int i = 0; i < musicNotesArray.size(); i++){            
-            NoteBox noteBox = (NoteBox) musicNotesArray.get(i);
+        for (int i = 0; i < composerItems.size(); i++){            
+            NoteBox noteBox = (NoteBox) composerItems.get(i);
             int noteLength = (int) noteBox.getWidth();
             int startTick = (int)noteBox.getX();
             int pitch = 128 - (int) noteBox.getY() / 10;
@@ -474,8 +458,8 @@ public class TuneComposer extends Application {
      * @param note The NoteBox to be deleted. 
      */
     public void deleteNote(NoteBox note){
-        int index = musicNotesArray.indexOf(note);
-        musicNotesArray.remove(index);  
+        int index = composerItems.indexOf(note);
+        composerItems.remove(index);  
         musicPane.getChildren().remove(note.getRectangle());
     }
     
@@ -485,8 +469,8 @@ public class TuneComposer extends Application {
     public void updateSelected() {
         NoteBox currentNote;
         selectedNotes.clear();
-        for (int i=0; i < musicNotesArray.size(); i++) {
-            currentNote = (NoteBox)musicNotesArray.get(i);
+        for (int i=0; i < composerItems.size(); i++) {
+            currentNote = (NoteBox)composerItems.get(i);
             if (currentNote.getIsSelected()) {
                 selectedNotes.add(currentNote);
             }
@@ -503,7 +487,6 @@ public class TuneComposer extends Application {
         
         System.out.println(selectedGestures);
         
-        
     }
     
     /**
@@ -512,8 +495,8 @@ public class TuneComposer extends Application {
     public void unselectAll() {
         selectedNotes.clear();
         NoteBox currentNote;
-        for (int i=0; i < musicNotesArray.size(); i++) {
-            currentNote = (NoteBox)musicNotesArray.get(i);
+        for (int i=0; i < composerItems.size(); i++) {
+            currentNote = (NoteBox)composerItems.get(i);
             currentNote.unmarkNote();
         }
     }

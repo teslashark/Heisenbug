@@ -23,10 +23,6 @@ public class Gesture extends Items {
      */
     protected Rectangle rectangle = new Rectangle(2000,1280,0,0);
     
-    /**
-     * returns true if the Gesture is selected
-     */
-    private boolean isSelected;
     
     /**
      * the initial width of a gesture; 
@@ -38,10 +34,6 @@ public class Gesture extends Items {
      * The initial height of a gesture
      */
     private final int gesHeight = 1;
-    
-    private Rectangle stretchZone;
-    
-    private Rectangle dragZone;
     
     private int gesCount;
     /**
