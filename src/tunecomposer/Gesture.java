@@ -19,11 +19,10 @@ import tunecomposer.NoteBox;
 public class Gesture extends Items {
     
     /**
-     * The rectangle to visually represent this Gesture
+     * The gesRectangle to visually represent this Gesture
      */
-    protected Rectangle rectangle = new Rectangle(2000,1280,0,0);
-    
-    
+    protected Rectangle gesRectangle = new Rectangle(2000,1280,0,0);
+   
     /**
      * the initial width of a gesture; 
      * currently just for representing a click, subject to change
@@ -42,36 +41,36 @@ public class Gesture extends Items {
      */
     public Gesture(ArrayList notes) {
         this.gesCount = 0;
-        this.rectangle = new Rectangle(1999,1279,1,1);
+        this.gesRectangle = new Rectangle(1999,1279,1,1);
         //TODO: bring up to spec is selected default
         this.isSelected = false; 
-        rectangle.setId("Gesture" + (gesCount + 1));
+        gesRectangle.setId("Gesture" + (gesCount + 1));
         gesCount += 1;
 
-        rectangle.setStroke(BLACK);
-        rectangle.setStrokeWidth(1.5);
-        rectangle.getStrokeDashArray().addAll(3.0,7.0,3.0,7.0);
-        rectangle.setFill(Color.TRANSPARENT);
-        //Set dimentions and location of the rectangle based on the arraylist
+        gesRectangle.setStroke(BLACK);
+        gesRectangle.setStrokeWidth(1.5);
+        gesRectangle.getStrokeDashArray().addAll(3.0,7.0,3.0,7.0);
+        gesRectangle.setFill(Color.TRANSPARENT);
+        //Set dimentions and location of the gesRectangle based on the arraylist
         NoteBox currentNote;
         
         for (int i=0;i<notes.size();i++){
             currentNote = (NoteBox) notes.get(i);
-            if (currentNote.getX()<rectangle.getX()){
-                rectangle.setX(currentNote.getX());
+            if (currentNote.getX()<gesRectangle.getX()){
+                gesRectangle.setX(currentNote.getX());
             }
-            if (currentNote.getY()<rectangle.getY()){
-                rectangle.setY(currentNote.getY());
+            if (currentNote.getY()<gesRectangle.getY()){
+                gesRectangle.setY(currentNote.getY());
             }
        }
         for (int i=0;i<notes.size();i++){
             currentNote = (NoteBox) notes.get(i);
 
-            if ((currentNote.getX()+currentNote.getWidth())>(rectangle.getX()+rectangle.getWidth())){
-                rectangle.setWidth(currentNote.getX()+currentNote.getWidth()-rectangle.getX());
+            if ((currentNote.getX()+currentNote.getWidth())>(gesRectangle.getX()+gesRectangle.getWidth())){
+                gesRectangle.setWidth(currentNote.getX()+currentNote.getWidth()-gesRectangle.getX());
             }
-            if ((currentNote.getY()+10)>(rectangle.getY()+rectangle.getHeight())){
-                rectangle.setHeight(currentNote.getY()+10-rectangle.getY());
+            if ((currentNote.getY()+10)>(gesRectangle.getY()+gesRectangle.getHeight())){
+                gesRectangle.setHeight(currentNote.getY()+10-gesRectangle.getY());
             }
         }
 
@@ -82,45 +81,29 @@ public class Gesture extends Items {
     }
     
     /**
-     * Returns a rectangle representative of the area of the gesture which can be clicked on to
+     * Returns a gesRectangle representative of the area of the gesture which can be clicked on to
      * activate the resizing action.
-     * @return The rectangle representing the place to click to resize the NoteBox
+     * @return The gesRectangle representing the place to click to resize the NoteBox
      */
     public Rectangle getStretchZone() {
         return stretchZone;
     }
     
     /**
-     * Returns a rectangle representative of the area of the notebox which can be clicked on to
+     * Returns a gesRectangle representative of the area of the notebox which can be clicked on to
      * activate the drag to move action.
-     * @return The rectangle representing the place to click to drag and move the NoteBox
+     * @return The gesRectangle representing the place to click to drag and move the NoteBox
      */
     public Rectangle getDragZone() {
         return dragZone;
     }
     
     /**
-     * Get method for the rectangle
-     * @return the rectangle representing the NoteBox
+     * Get method for the gesRectangle
+     * @return the gesRectangle representing the NoteBox
      */
     public Rectangle getRectangle() {
-        return rectangle;
-    }
-    
-    /**
-     * Gives the x-coordinate of the NoteBox
-     * @return the x-coordinate
-     */
-    public int getX() {
-        return (int) this.rectangle.getX();
-    }
-    
-    /**
-     * Gives the y-Coordinate of the NoteBox
-     * @return the y-coordinate
-     */
-    public int getY() {
-        return (int) this.rectangle.getY();
+        return gesRectangle;
     }
     
     /**
@@ -136,7 +119,23 @@ public class Gesture extends Items {
      * @return the width of the NoteBox
      */
     public int getWidth() {
-        return (int) this.rectangle.getWidth();
+        return (int) this.gesRectangle.getWidth();
+    }
+    
+    /**
+     * Gives the x-coordinate of the NoteBox
+     * @return the x-coordinate
+     */
+    public int getX() {
+        return (int) this.gesRectangle.getX();
+    }
+    
+    /**
+     * Gives the y-Coordinate of the NoteBox
+     * @return the y-coordinate
+     */
+    public int getY() {
+        return (int) this.gesRectangle.getY();
     }
     
     /**
@@ -152,8 +151,8 @@ public class Gesture extends Items {
      * @param sizeDifference the difference  of width between the new note box and the old one
      */
     public void changeGestureLength(int sizeDifference) {
-        this.rectangle.setWidth(this.rectangle.getWidth() + sizeDifference);
-        this.stretchZone.setX(rectangle.getX() + rectangle.getWidth() - 5);
+        this.gesRectangle.setWidth(this.gesRectangle.getWidth() + sizeDifference);
+        this.stretchZone.setX(gesRectangle.getX() + gesRectangle.getWidth() - 5);
         this.dragZone.setWidth(this.getWidth()-5);
     }
     
@@ -161,13 +160,13 @@ public class Gesture extends Items {
     // in rather than making it snap in while dragging
     public void repositionGesture(int newXCoordinate, int newYCoordinate){
         // don't let the user make a note go offscreen
-        rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
+        gesRectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
-        rectangle.setY(Math.round(newYCoordinate / 10) * 10);
-        stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
-        stretchZone.setY(rectangle.getY());
-        dragZone.setX(rectangle.getX());
-        dragZone.setY(rectangle.getY());
+        gesRectangle.setY(Math.round(newYCoordinate / 10) * 10);
+        stretchZone.setX(gesRectangle.getX() + gesRectangle.getWidth() -5);
+        stretchZone.setY(gesRectangle.getY());
+        dragZone.setX(gesRectangle.getX());
+        dragZone.setY(gesRectangle.getY());
         
     }
     
@@ -176,7 +175,7 @@ public class Gesture extends Items {
      */
     public void markGes(){
         this.isSelected = true;
-        rectangle.setStyle("-fx-stroke: red; -fx-stroke-width: 3;");
+        gesRectangle.setStyle("-fx-stroke: red; -fx-stroke-width: 3;");
     }
     
     /**
@@ -184,7 +183,7 @@ public class Gesture extends Items {
      */
     public void unmarkGes(){
         this.isSelected = false;
-        rectangle.setStyle("-fx-stroke: black; -fx-stroke-width: 1;");
+        gesRectangle.setStyle("-fx-stroke: black; -fx-stroke-width: 1;");
     }
     
     /**
@@ -211,10 +210,10 @@ public class Gesture extends Items {
     }
     
     /**
-     * Checks to see if the gesture is within a given rectangle (used for the selection rectangle)
-     * @param topLeft Top left corner of the other rectangle
-     * @param bottomRight Bottom right corner of the other rectangle
-     * @return returns true is the note box is within the other rectangle, else false
+     * Checks to see if the gesture is within a given gesRectangle (used for the selection gesRectangle)
+     * @param topLeft Top left corner of the other gesRectangle
+     * @param bottomRight Bottom right corner of the other gesRectangle
+     * @return returns true is the note box is within the other gesRectangle, else false
      */
     public boolean isInRect(Point topLeft, Point bottomRight) {
         

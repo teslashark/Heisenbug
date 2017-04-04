@@ -72,24 +72,18 @@ public class TuneComposer extends Application {
     /**
      * An arrayList to hold all instrument radio buttons for easy access.
      */
-        
-    protected ArrayList gesturesArray = new ArrayList();
-    
+         
     private ArrayList<RadioButton> instrumentButtons = new ArrayList<RadioButton>();
     
     protected ArrayList<Items> composerItems = new ArrayList<Items>(); 
-
-    private ArrayList<Items> selectedItems = new ArrayList<Items>();
     
-    // Remove Soon
     private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
 
-    // Remove Soon
-    private ArrayList<Gesture> selectedGestures = new ArrayList<Gesture>();
+    //private ArrayList<Items> selectedItems = new ArrayList<Items>();
+    //private ArrayList<Gesture> selectedGestures = new ArrayList<Gesture>();
     
     private Rectangle selectionRectangle;
     
-
     /**
      * creates the grey lines of the music staff and the red line playBar object.
      * adds staff lines to musicPane pane, and sets css id to "staffLine"
@@ -239,7 +233,7 @@ public class TuneComposer extends Application {
        player.stop();
        player.clear();
        playBarObj.stopAnimation();
-       this.updateSelected();
+       this.updateSelected();  // THIS IS CAUSING A FLAG
        NoteBox currentNote;
        boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
@@ -372,7 +366,13 @@ public class TuneComposer extends Application {
             System.out.println("Group Menu Click");
             System.out.println(selectedNotes);
             Gesture gesture = new Gesture(selectedNotes);
-            musicPane.getChildren().add(gesture.rectangle);
+            musicPane.getChildren().add(gesture.gesRectangle);
+            
+            composerItems.add(gesture);
+            
+            System.out.println(composerItems);
+            
+            
     }
      /**
      * handler for "Un Group" menuItem to create a gesture
@@ -467,26 +467,14 @@ public class TuneComposer extends Application {
      * Checks all NoteBoxes in the musicNoteArray to update the ArrayList of selectedNotes
      */
     public void updateSelected() {
-        NoteBox currentNote;
+        NoteBox currentNote; 
         selectedNotes.clear();
         for (int i=0; i < composerItems.size(); i++) {
             currentNote = (NoteBox)composerItems.get(i);
             if (currentNote.getIsSelected()) {
                 selectedNotes.add(currentNote);
             }
-        }
-   
-        Gesture currentGesture;
-        selectedGestures.clear();
-        for (int i=0; i < gesturesArray.size(); i++) {
-            currentGesture = (Gesture)gesturesArray.get(i);
-            if (currentGesture.getIsSelected()) {
-                selectedGestures.add(currentGesture);
-            }
-        }
-        
-        System.out.println(selectedGestures);
-        
+        }        
     }
     
     /**

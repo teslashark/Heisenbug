@@ -31,5 +31,13 @@ public class Items {
     
     public Rectangle dragZone;
     
+    public int getX() {
+        return 0;
+    }
+    
+    public int getWidth() {
+        return 0;
+    }
+    
 }
 

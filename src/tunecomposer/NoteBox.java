@@ -20,11 +20,6 @@ public class NoteBox extends Items  {
     protected final String instrument;
     
     /**
-     * The rectangle to visually represent the NoteBox
-     */
-    protected Rectangle rectangle;
-    
-    /**
      * the default width of a newly created NoteBox
      */
     private final int initialBoxWidth = 100;
@@ -33,6 +28,11 @@ public class NoteBox extends Items  {
      * The height of a noteBox
      */
     private final int boxHeight = 10;
+    
+    /**
+     * The rectangle to visually represent the NoteBox
+     */
+    public Rectangle rectangle;
     
     /**
      * NoteBox Constructor
@@ -89,7 +89,6 @@ public class NoteBox extends Items  {
     public Rectangle getRectangle() {
         return rectangle;
     }
-    
     
     /**
      * Gives the x-coordinate of the NoteBox

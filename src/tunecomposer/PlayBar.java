@@ -68,9 +68,9 @@ public class PlayBar {
      * movementSpeed, disappears at end of last note displayed.
      * @param noteList List of rectangles that visually represent notes on the screen
      */
-    public void playAnimation(ArrayList noteList) {
+    public void playAnimation(ArrayList<Items> composerItems) {
         playLine.setVisible(true);
-        int endCoordinate = findEndCoordinate(noteList);
+        int endCoordinate = findEndCoordinate(composerItems);
         
         timeline.getKeyFrames().clear();
         
@@ -102,12 +102,18 @@ public class PlayBar {
      * Returns the x cord of the right side of 
      * the last note in our list of notes.
      */
-    private int findEndCoordinate(ArrayList<NoteBox> noteList) {
+    private int findEndCoordinate(ArrayList<Items> composerItems) {
         int largestXCoordinate = 0;      
-        for (NoteBox noteBox: noteList) {
-            int noteBoxRightXCoordinate = noteBox.getX() + noteBox.getWidth();
-            if (noteBoxRightXCoordinate > largestXCoordinate) 
-                largestXCoordinate = noteBoxRightXCoordinate;
+        
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                int noteBoxRightXCoordinate = arrayItem.getX() + arrayItem.getWidth();
+                if (noteBoxRightXCoordinate > largestXCoordinate) 
+                {
+                    largestXCoordinate = noteBoxRightXCoordinate; 
+                }
+            }
         }
         return largestXCoordinate;
     } 
