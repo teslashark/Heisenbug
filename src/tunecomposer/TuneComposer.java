@@ -379,9 +379,15 @@ public class TuneComposer extends Application {
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.rectangle);
             
-            
-            
-            
+            composerItems.add(gesture); 
+          
+            NoteBox currentNote;
+            for (int i = 0; i < musicNotesArray.size(); i++) {
+                currentNote = (NoteBox)musicNotesArray.get(i);
+                composerItems.add(currentNote); 
+            }
+       
+            System.out.println(composerItems);
             
     }
      /**
