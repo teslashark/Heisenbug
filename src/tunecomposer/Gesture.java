@@ -10,6 +10,7 @@ package tunecomposer;
  * @author ggsha
  */
 import java.awt.Point;
+import java.util.ArrayList;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,18 +19,16 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.shape.Rectangle;
-
-/**
- *
- * @author limpicbc
- */
+import tunecomposer.NoteBox;
 public class Gesture {
     
     /**
      * The rectangle to visually represent this Gesture
      */
-    protected Rectangle rectangle;
+    protected Rectangle rectangle = new Rectangle(2000,1280,0,0);
     
     /**
      * returns true if the Gesture is selected
@@ -56,25 +55,39 @@ public class Gesture {
      * gesture Constructor
      * @param event the mouse event
      */
-    public Gesture(MouseEvent event) {
+    public Gesture(ArrayList notes) {
         this.gesCount = 0;
-        this.rectangle = new Rectangle(initialGesWidth, gesHeight);
+        this.rectangle = new Rectangle(1999,1279,1,1);
         //TODO: bring up to spec is selected default
         this.isSelected = false; 
         rectangle.setId("Gesture" + (gesCount + 1));
         gesCount += 1;
-        //ensure rectangle doesn't go off screen
-        if (event.getX() > 1900) { 
-            rectangle.setX(1900);            
+
+        rectangle.setStroke(BLACK);
+        rectangle.setStrokeWidth(1);
+        rectangle.setFill(Color.TRANSPARENT);
+        //Set dimentions and location of the rectangle based on the arraylist
+        NoteBox currentNote;
+        for (int i=0;i<notes.size();i++){
+            currentNote = (NoteBox) notes.get(i);
+            if (currentNote.getX()<rectangle.getX()){
+                rectangle.setX(currentNote.getX());
+            }
+            if (currentNote.getY()<rectangle.getY()){
+                rectangle.setX(currentNote.getX());
+            }
+            if ((currentNote.getX()+currentNote.getWidth())>(rectangle.getX()+rectangle.getWidth())){
+                rectangle.setWidth(currentNote.getX()+currentNote.getWidth()-rectangle.getX());
+            }
+            if ((currentNote.getY()+10)>(rectangle.getY()+10)){
+                rectangle.setHeight(currentNote.getY()+10);
+            }
         }
-        else {
-            rectangle.setX(event.getX());
-        }
-        //snap Y coordinate between horizontal lines in composer
-        rectangle.setY(Math.round(event.getY() / 10) * 10);
+
         
-        stretchZone = new Rectangle(this.getX() + (this.getWidth() - 5),this.getY(),5, this.getGesHeight());
-        dragZone = new Rectangle(this.getX(), this.getY(),this.getWidth()-5, this.getGesHeight());
+        //Set up strech and drag zones
+        stretchZone = new Rectangle();
+        dragZone = new Rectangle();
 
     }
     
@@ -145,7 +158,7 @@ public class Gesture {
     }
     
     /**
-     * Changes the width of a noteBox based of an incrimentation of size
+     * Changes the width of a noteBox based of an incrementation of size
      * @param sizeDifference the difference  of width between the new note box and the old one
      */
     public void changeGestureLength(int sizeDifference) {
