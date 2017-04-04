@@ -76,6 +76,9 @@ public class Gesture {
             if (currentNote.getY()<rectangle.getY()){
                 rectangle.setY(currentNote.getY());
             }
+        }
+        for (int i=0;i<notes.size();i++){
+            currentNote = (NoteBox) notes.get(i);
             if ((currentNote.getX()+currentNote.getWidth())>(rectangle.getX()+rectangle.getWidth())){
                 rectangle.setWidth(currentNote.getX()+currentNote.getWidth()-rectangle.getX());
             }
@@ -83,6 +86,7 @@ public class Gesture {
                 rectangle.setHeight(currentNote.getY()+10-rectangle.getY());
             }
         }
+    
 
         
         //Set up strech and drag zones
