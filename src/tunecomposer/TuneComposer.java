@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javax.sound.midi.ShortMessage;
 import tunecomposer.NoteBox;
+import tunecomposer.Gesture;
 
 /**
  * This JavaFX app lets the user play scales.
@@ -362,6 +363,29 @@ public class TuneComposer extends Application {
         System.exit(0);
     }    
     
+   
+     /**
+     * handler for "group" menuItem to create a gesture
+     * @param event 
+     */
+    @FXML
+    protected void handleGroupMenuItemAction(ActionEvent event) {
+            System.out.println("Group Menu Click");
+            System.out.println(selectedNotes);
+            Gesture gesture = new Gesture(selectedNotes);
+            musicPane.getChildren().add(gesture.rectangle);
+    }
+     /**
+     * handler for "Un Group" menuItem to create a gesture
+     * @param event 
+     */
+    @FXML
+    protected void handleUngroupMenuItemAction(ActionEvent event) {
+             System.out.println("Ungroup Menu Click");
+             System.out.println(selectedNotes);
+
+    }    
+        
     /**
      * takes array of rectangles representing notes, and adds them to player.
      * assumes pane height is 1280px high.
