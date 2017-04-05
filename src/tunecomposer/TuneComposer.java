@@ -121,15 +121,14 @@ public class TuneComposer extends Application {
         this.player = new MidiPlayer(100,60);
     }
     
-    /**
-     * saves x-coordinate of start location of a drag
-     */
+    private boolean drag;
+    private boolean stretch;
+
     private double startingPointX;
-    /**
-     * saves y-coordinate of start of location of a drag
-     */
     private double startingPointY;
-    
+    private double dragPointX;
+    private double dragPointY;
+        
     /**
      * Handles mouse pressed event, saving point in case the user drags the mouse, and 
      * begins the selection rectangle
@@ -137,10 +136,34 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleOnMousePressedAction(MouseEvent event){
+            
         selectionRectangle = new Rectangle();
         musicPane.getChildren().add(selectionRectangle);
         startingPointX = event.getX();
         startingPointY = event.getY();
+        Point startingPoint = new Point((int)startingPointX,(int)startingPointY);
+        NoteBox currentNote;
+        stretch = false;
+        drag = false;
+        this.updateSelected();
+        for (int i=0; i<selectedNotes.size();i++){    
+            currentNote = (NoteBox)selectedNotes.get(i); 
+            if (pointIsInRectangle(startingPoint,currentNote.getDragZone())) {
+                drag=true;
+            }
+            else if (pointIsInRectangle(startingPoint,currentNote.getStretchZone())) {
+                stretch=true;
+            }else{
+                stretch = false;
+                drag = false;
+            }
+            
+        }
+
+        dragPointX = (int)event.getX();
+        dragPointY = (int)event.getY();
+        this.updateSelected();
+        
     }
     
     /**
@@ -152,75 +175,57 @@ public class TuneComposer extends Application {
     protected void handleOnMouseDraggedAction(MouseEvent event){
         NoteBox currentNote;
         NoteBox currentSelectedNote;
-        boolean stretchDrag = false;
-        Point topLeft = new Point((int)startingPointX,(int)startingPointY);
-        Point bottomRight = new Point((int)event.getX(), (int)event.getY());
-        Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
-        //boolean validGestureMove = false;
-        //Point gestureRelativeFocalPoint = null;
-        
-        if (gesture != null){
-            for (NoteBox currentGestureNote: gesture.getGestureNotes()){
-                if (currentGestureNote.pointIsInNoteBox(startingPoint)) {
-                    validGestureMove = true;
-                    gestureRelativeFocalPoint = new Point(currentGestureNote.getX(), currentGestureNote.getY());
-                    break;
-                }   
-            }
-            /*int repositionAmountX = ((int)event.getX()-(int)startingPointX);
-            int repositionAmountY = ((int)event.getY()-(int)startingPointY);
-            if (validGestureMove){
-                gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
-                for (NoteBox currentGestureNote: gesture.getGestureNotes()){
-                    currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
-                }
-            }*/
-        }
-        if (!validGestureMove){
-            for (int i=0; i<selectedNotes.size();i++){    
-                currentNote = (NoteBox)selectedNotes.get(i); 
-                Rectangle stretchZone = currentNote.getStretchZone();
-                if (pointIsInRectangle(startingPoint, stretchZone)) {
-                    for (int j=0; j<selectedNotes.size();j++){
-                        currentSelectedNote = (NoteBox)selectedNotes.get(j);
-                        //Not sure why this doesn't change the length of the bars correctly
-                        int changeInLength = (int)event.getX() - (int)startingPointX;
-                        currentSelectedNote.changeNoteBoxLength(changeInLength);
-                    
-                    }
-                } else if (pointIsInRectangle(startingPoint, currentNote.getDragZone())) {
-                    for (int j=0; j<selectedNotes.size();j++){
-                        currentSelectedNote = (NoteBox)selectedNotes.get(j);
-                        //I don't know why this doesn't properly change the position,
-                        //the coordinate change seems to check out
-                        int xpos = currentSelectedNote.getX() + ( (int)event.getX() - startingPoint.x );
-                        int ypos = currentSelectedNote.getY() + ( (int)event.getY() - startingPoint.y );
-                        currentSelectedNote.repositionNoteBox(xpos,ypos);
-                    }
-                    stretchDrag=true;
-                    break;
-                } 
-            }
-            this.updateSelected();
-        
-            if (!stretchDrag){
-                this.selectionRectangle.setX(startingPointX);
-                this.selectionRectangle.setY(startingPointY);
-                resizeSelectionRectangle(selectionRectangle,event); 
-        
-                for (int i = 0; i < composerItems.size(); i++) {
-                    currentNote = (NoteBox)composerItems.get(i);
+        this.updateSelected();
+        if(stretch||drag){
+            if (stretch) {
+                for (int j=0; j<selectedNotes.size();j++){
+                    currentSelectedNote = (NoteBox)selectedNotes.get(j);
 
-                    if (currentNote.isInRect(topLeft, bottomRight)) {
-                        currentNote.markNote();
-                    } else if(!event.isControlDown()) {
-                        currentNote.unmarkNote();  
-                    }
+                    int changeInLength = (int)event.getX() - (int)dragPointX;
+                    currentSelectedNote.changeNoteBoxLength(changeInLength);
+                    dragPointX = (int)event.getX();
+                    dragPointY = (int)event.getY();
+                }
+            } else if (drag) {
+                for (int j=0; j<selectedNotes.size();j++){
+                    currentSelectedNote = (NoteBox)selectedNotes.get(j);
+
+                    int xpos = currentSelectedNote.getX() + ( (int)event.getX() - (int)dragPointX );
+                    int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
+                    currentSelectedNote.repositionNoteBox(xpos,ypos);
+                    
+                    dragPointX = (int)event.getX();
+                    dragPointY = (int)event.getY();
+                }
+            } 
+
+        }else{
+            Point topLeft = new Point((int)startingPointX,(int)startingPointY);
+            Point bottomRight = new Point((int)event.getX(), (int)event.getY());
+            this.selectionRectangle.setX(startingPointX);
+            this.selectionRectangle.setY(startingPointY);
+            resizeSelectionRectangle(selectionRectangle,event); 
+
+            for (int i = 0; i < musicNotesArray.size(); i++) {
+                currentNote = (NoteBox)musicNotesArray.get(i);
+
+                if (currentNote.isInRect(topLeft, bottomRight)) {
+                    currentNote.markNote();
+                } else if(!event.isControlDown()) {
+                    currentNote.unmarkNote();  
                 }
             }
+        }
+    
+    private void updateYPos(){
+        NoteBox currentNote;
+        for(int i=0;i<musicNotesArray.size();i++){
+            currentNote = (NoteBox)musicNotesArray.get(i);
+            currentNote.getRectangle().setY((currentNote.getY()/10)*10);
+            currentNote.getStretchZone().setY((currentNote.getY()/10)*10);
+            currentNote.getDragZone().setY((currentNote.getY()/10)*10);
         }
     }
-    
     /**
      * resizes a rectangle based on a mouse event, used for updating the size of the selection
      * rectangle.
@@ -250,18 +255,9 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleOnMouseReleasedAction(MouseEvent event){
-        musicPane.getChildren().remove(selectionRectangle);
-        if (gesture != null){
-            int repositionAmountX = ((int)event.getX()-gestureRelativeFocalPoint.x);
-            int repositionAmountY = ((int)event.getY()-gestureRelativeFocalPoint.y);
-            if (validGestureMove){
-                gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
-                for (NoteBox currentGestureNote: gesture.getGestureNotes()){
-                    currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
-                }
-                validGestureMove = false;
-            }
-        }
+        musicPane.getChildren().remove(selectionRectangle); 
+        this.updateSelected();
+        this.updateYPos();
     }
     
     /**
