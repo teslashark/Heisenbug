@@ -449,6 +449,8 @@ public class TuneComposer extends Application {
              System.out.println("Ungroup Menu Click");
              if(gesture != null) {
                  musicPane.getChildren().remove(gesture.gesRectangle);
+                 composerItems.remove(gesture);
+                 System.out.println(composerItems);
                  gesture = null;
              }
              //System.out.println(selectedNotes);
