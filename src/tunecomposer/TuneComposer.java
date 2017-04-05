@@ -387,7 +387,7 @@ public class TuneComposer extends Application {
         player.play();
         playBarObj.playAnimation(composerItems); // composerItems musicNotesArray
     }
-    
+     
     /**
      * handler for "exit" menuItem to quit program with success status.
      * @param event 
@@ -426,6 +426,7 @@ public class TuneComposer extends Application {
              //System.out.println(selectedNotes);
     }    
         
+    
     /**
      * takes array of rectangles representing notes, and adds them to player.
      * assumes pane height is 1280px high.
@@ -433,8 +434,12 @@ public class TuneComposer extends Application {
      */
     
     private void addNotesArrayToMidiPlayer() {
-        for (int i = 0; i < composerItems.size(); i++){            
-            NoteBox noteBox = (NoteBox) composerItems.get(i);
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+            NoteBox noteBox;
+            noteBox = (NoteBox) arrayItem;
+            
             int noteLength = (int) noteBox.getWidth();
             int startTick = (int)noteBox.getX();
             int pitch = 128 - (int) noteBox.getY() / 10;
@@ -483,14 +488,9 @@ public class TuneComposer extends Application {
                     break;                       
             }
             
-            //[0,6,12,19,21,24,40,60];
-            
-            //for (int i = 0; i < 7; i++) {
-                
-            //}
-            
             player.addMidiEvent(ShortMessage.PROGRAM_CHANGE + channel, instrumentNum, 0, startTick, 0);
             player.addNote(pitch, VOLUME, startTick, noteLength, channel, 0);
+            }
         }
     }
     
@@ -535,11 +535,20 @@ public class TuneComposer extends Application {
      * deselects all NoteBoxes in the musicNotesArray
      */
     public void unselectAll() {
+        
         selectedNotes.clear();
-        NoteBox currentNote;
-        for (int i=0; i < composerItems.size(); i++) {
-            currentNote = (NoteBox)composerItems.get(i);
-            currentNote.unmarkNote();
+
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                NoteBox currentNote;
+                currentNote = (NoteBox) arrayItem;
+                currentNote.unmarkNote();
+
+                //NoteBox currentNote;
+                //currentNote = (NoteBox)composerItems.get(i);
+                    
+            }
         }
     }
     
