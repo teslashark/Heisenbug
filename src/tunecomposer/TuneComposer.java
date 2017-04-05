@@ -83,12 +83,14 @@ public class TuneComposer extends Application {
     
     private ArrayList<Gesture> selectedGestures = new ArrayList<Gesture>();
     
+    private ArrayList gesturesArray = new ArrayList();
+    
     private Rectangle selectionRectangle;
    
     private Gesture gesture;
     
     private boolean validGestureMove = false;
-    
+        
     private Point gestureRelativeFocalPoint;
     
     /**
@@ -154,6 +156,8 @@ public class TuneComposer extends Application {
         Point topLeft = new Point((int)startingPointX,(int)startingPointY);
         Point bottomRight = new Point((int)event.getX(), (int)event.getY());
         Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
+        //boolean validGestureMove = false;
+        //Point gestureRelativeFocalPoint = null;
         
         if (gesture != null){
             for (NoteBox currentGestureNote: gesture.getGestureNotes()){
@@ -163,6 +167,14 @@ public class TuneComposer extends Application {
                     break;
                 }   
             }
+            /*int repositionAmountX = ((int)event.getX()-(int)startingPointX);
+            int repositionAmountY = ((int)event.getY()-(int)startingPointY);
+            if (validGestureMove){
+                gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
+                for (NoteBox currentGestureNote: gesture.getGestureNotes()){
+                    currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
+                }
+            }*/
         }
         if (!validGestureMove){
             for (int i=0; i<selectedNotes.size();i++){    
@@ -240,8 +252,8 @@ public class TuneComposer extends Application {
     protected void handleOnMouseReleasedAction(MouseEvent event){
         musicPane.getChildren().remove(selectionRectangle);
         if (gesture != null){
-            int repositionAmountX = (Math.abs((int)event.getX()-gestureRelativeFocalPoint.x));
-            int repositionAmountY = (Math.abs((int)event.getY()-gestureRelativeFocalPoint.y));
+            int repositionAmountX = ((int)event.getX()-gestureRelativeFocalPoint.x);
+            int repositionAmountY = ((int)event.getY()-gestureRelativeFocalPoint.y);
             if (validGestureMove){
                 gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
                 for (NoteBox currentGestureNote: gesture.getGestureNotes()){
@@ -419,6 +431,7 @@ public class TuneComposer extends Application {
      * assumes pane height is 1280px high.
      * all objects in musicNotesArray must be of type javafx shape.
      */
+    
     private void addNotesArrayToMidiPlayer() {
         for (int i = 0; i < composerItems.size(); i++){            
             NoteBox noteBox = (NoteBox) composerItems.get(i);

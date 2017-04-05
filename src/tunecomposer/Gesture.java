@@ -170,12 +170,9 @@ public class Gesture extends Items {
     // in rather than making it snap in while dragging
     public void repositionGesture(int newXCoordinate, int newYCoordinate){
         // don't let the user make a note go offscreen
-<<<<<<< HEAD
+
         gesRectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
-=======
-        
-        rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
->>>>>>> origin/master
+     
         // snap Y coordinate between horizontal lines in composer
         gesRectangle.setY(Math.round(newYCoordinate / 10) * 10);
         stretchZone.setX(gesRectangle.getX() + gesRectangle.getWidth() -5);
@@ -249,5 +246,8 @@ public class Gesture extends Items {
         
     }
     
+    public void unGesture(){
+        gestureNotes.clear();
+    }
     
 }
