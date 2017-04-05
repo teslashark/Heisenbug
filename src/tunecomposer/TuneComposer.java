@@ -541,7 +541,8 @@ public class TuneComposer extends Application {
     public void updateSelected() {
         
         selectedNotes.clear();
-
+        selectedGestures.clear();
+        
         for (Items arrayItem : composerItems) {
             if (arrayItem instanceof NoteBox)
             {
@@ -550,32 +551,19 @@ public class TuneComposer extends Application {
                 if (currentNote.getIsSelected()) {
                     selectedNotes.add(currentNote);
                 }
-                //NoteBox currentNote;
-                //currentNote = (NoteBox)composerItems.get(i);
-                    
+            }
+            
+            if (arrayItem instanceof Gesture)
+            {
+                Gesture currentGesture;
+                currentGesture = (Gesture) arrayItem;
+                if (currentGesture.getIsSelected()) {
+                    selectedGestures.add(currentGesture);
+                }
             }
         }    
-        
-        /*
-        NoteBox currentNote; 
-        for (int i=0; i < composerItems.size(); i++) {
-            currentNote = (NoteBox)composerItems.get(i);
-            if (currentNote.getIsSelected()) {
-                selectedNotes.add(currentNote);
-            }
-        }
-   
-        Gesture currentGesture;
-        selectedGestures.clear();
-        for (int i=0; i < gesturesArray.size(); i++) {
-            currentGesture = (Gesture)gesturesArray.get(i);
-            if (currentGesture.getIsSelected()) {
-                selectedGestures.add(currentGesture);
-            }
-        }
-        */
-        
-        //System.out.println(selectedGestures);
+                
+        System.out.println("Selected Gestures" + selectedGestures);
         
     }
     
@@ -585,6 +573,7 @@ public class TuneComposer extends Application {
     public void unselectAll() {
         
         selectedNotes.clear();
+        selectedGestures.clear();
 
         for (Items arrayItem : composerItems) {
             if (arrayItem instanceof NoteBox)
@@ -592,12 +581,18 @@ public class TuneComposer extends Application {
                 NoteBox currentNote;
                 currentNote = (NoteBox) arrayItem;
                 currentNote.unmarkNote();
-
-                //NoteBox currentNote;
-                //currentNote = (NoteBox)composerItems.get(i);
-                    
+            }
+            
+            if (arrayItem instanceof NoteBox)
+            {
+                Gesture currentGesture;
+                currentGesture = (Gesture) arrayItem;
+                currentGesture.unmarkGes();
             }
         }
+        
+        System.out.println("Selected Gestures" + selectedGestures);
+
     }
     
     /**
