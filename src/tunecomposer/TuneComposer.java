@@ -153,9 +153,6 @@ public class TuneComposer extends Application {
             }
             else if (pointIsInRectangle(startingPoint,currentNote.getStretchZone())) {
                 stretch=true;
-            }else{
-                stretch = false;
-                drag = false;
             }
             
         }
@@ -183,9 +180,10 @@ public class TuneComposer extends Application {
 
                     int changeInLength = (int)event.getX() - (int)dragPointX;
                     currentSelectedNote.changeNoteBoxLength(changeInLength);
-                    dragPointX = (int)event.getX();
-                    dragPointY = (int)event.getY();
+                    
                 }
+                dragPointX = (int)event.getX();
+                dragPointY = (int)event.getY();
             } else if (drag) {
                 for (int j=0; j<selectedNotes.size();j++){
                     currentSelectedNote = (NoteBox)selectedNotes.get(j);
@@ -194,9 +192,10 @@ public class TuneComposer extends Application {
                     int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
                     currentSelectedNote.repositionNoteBox(xpos,ypos);
                     
-                    dragPointX = (int)event.getX();
-                    dragPointY = (int)event.getY();
+                    
                 }
+                dragPointX = (int)event.getX();
+                dragPointY = (int)event.getY();
             } 
 
         }else{
