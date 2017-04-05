@@ -624,23 +624,28 @@ public class TuneComposer extends Application {
                 NoteBox currentNote;
                 currentNote = (NoteBox) arrayItem;
                 if (currentNote.getIsSelected()) {
-                    System.out.println("Notebox is selected");
                     selectedNotes.add(currentNote);
                 }
             }
+            
+            ArrayList<NoteBox> GestureNotes = new ArrayList<NoteBox>();
             
             if (arrayItem instanceof Gesture)
             {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
+                GestureNotes = currentGesture.getGestureNotes();
+                
                 if (currentGesture.getIsSelected()) {
-                    System.out.println("Gesture is selected");
+                    for (NoteBox gestureItem : GestureNotes) {
+                        selectedNotes.add(gestureItem);
+                    }
                     selectedGestures.add(currentGesture);
                 }
             }
         }    
                 
-        System.out.println("Selected Gestures" + selectedGestures);
+        System.out.println("Selected Gestures" + selectedGestures);                
         
     }
     
