@@ -36,11 +36,17 @@ public class Gesture extends Items {
     private final int gesHeight = 1;
     
     private int gesCount;
+    
+    private ArrayList<NoteBox> gestureNotes = new ArrayList<NoteBox>();
+    
     /**
      * gesture Constructor
      * @param event the mouse event
      */
-    public Gesture(ArrayList notes) {
+    public Gesture(ArrayList<NoteBox> notes) {
+        for (NoteBox currentNote: notes){
+            gestureNotes.add(currentNote);
+        }
         this.gesCount = 0;
         this.rectangle = new Rectangle(1999,1279,1,1);
         //TODO: bring up to spec is selected default
@@ -79,6 +85,10 @@ public class Gesture extends Items {
         stretchZone = new Rectangle();
         dragZone = new Rectangle();
 
+    }
+    
+    public ArrayList<NoteBox> getGestureNotes() {
+        return gestureNotes;
     }
     
     /**
@@ -161,6 +171,7 @@ public class Gesture extends Items {
     // in rather than making it snap in while dragging
     public void repositionGesture(int newXCoordinate, int newYCoordinate){
         // don't let the user make a note go offscreen
+        
         rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
         rectangle.setY(Math.round(newYCoordinate / 10) * 10);
@@ -180,7 +191,7 @@ public class Gesture extends Items {
     }
     
     /**
-     * unmarkes the note as selected
+     * unmarks the note as selected
      */
     public void unmarkGes(){
         this.isSelected = false;
