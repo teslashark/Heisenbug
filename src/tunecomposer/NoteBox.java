@@ -138,6 +138,11 @@ public class NoteBox extends Items  {
         this.rectangle.setWidth(this.rectangle.getWidth() + sizeDifference);
         this.stretchZone.setX(rectangle.getX() + rectangle.getWidth() - 5);
         this.dragZone.setWidth(this.getWidth()-5);
+        if (rectangle.getWidth()<5){
+            this.rectangle.setWidth(5);
+            this.stretchZone.setX(rectangle.getX());
+            this.dragZone.setWidth(this.getWidth()-5);
+        }
     }
     
     // TODO: make it so that when the mouse is unclicked on dragging it snaps
@@ -146,7 +151,7 @@ public class NoteBox extends Items  {
         // don't let the user make a note go offscreen
         rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
-        rectangle.setY(Math.round(newYCoordinate / 10) * 10);
+        rectangle.setYnewYCoordinate);
         stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
         stretchZone.setY(rectangle.getY());
         dragZone.setX(rectangle.getX());
@@ -218,13 +223,7 @@ public class NoteBox extends Items  {
         
     }
 
-     private void onMouseDragged(MouseEvent e) {
-        Point start = new Point((int)e.getX(),(int)e.getY());
-        if (pointIsInRectangle(start, this.getStretchZone())){
-            //add the functionality from the sample solution
-        }
-     }
-    public static boolean pointIsInRectangle(Point point, Rectangle rect) {
+      public static boolean pointIsInRectangle(Point point, Rectangle rect) {
         boolean xValInRange = 
                 (point.x >= rect.getX() &&
                 point.x <= rect.getX() + rect.getWidth());
