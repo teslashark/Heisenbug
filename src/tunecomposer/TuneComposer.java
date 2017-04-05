@@ -175,48 +175,76 @@ public class TuneComposer extends Application {
     protected void handleOnMouseDraggedAction(MouseEvent event){
         NoteBox currentNote;
         NoteBox currentSelectedNote;
+        boolean validGestureMove = false;
+        Point gestureRelativeFocalPoint = null;
+        dragPointX = (int)event.getX();
+        dragPointY = (int)event.getY();
+        Point draggingPoint = new Point((int)dragPointX, (int)dragPointY);
+        Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
         this.updateSelected();
-        if(stretch||drag){
-            if (stretch) {
-                for (int j=0; j<selectedNotes.size();j++){
-                    currentSelectedNote = (NoteBox)selectedNotes.get(j);
-
-                    int changeInLength = (int)event.getX() - (int)dragPointX;
-                    currentSelectedNote.changeNoteBoxLength(changeInLength);
-                    
+        
+        if (this.gesture != null){
+            System.out.println("jkl;");
+            for (NoteBox currentGestureNote: gesture.getGestureNotes()){
+                if (currentGestureNote.pointIsInNoteBox(startingPoint)) {
+                    validGestureMove = true;
+                    gestureRelativeFocalPoint = new Point(currentGestureNote.getX(), currentGestureNote.getY());
+                    break;
+                }   
+            }
+            System.out.println("asdf");
+            int repositionAmountX = ((int)event.getX()-(int)dragPointX);
+            int repositionAmountY = ((int)event.getY()-(int)dragPointY);
+            if (validGestureMove){
+                gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
+                for (NoteBox currentGestureNote: gesture.getGestureNotes()){
+                    currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
                 }
-                dragPointX = (int)event.getX();
-                dragPointY = (int)event.getY();
-            } else if (drag) {
-                for (int j=0; j<selectedNotes.size();j++){
-                    currentSelectedNote = (NoteBox)selectedNotes.get(j);
+             }
+        }
+        if (!validGestureMove){
+            if(stretch||drag){
+                if (stretch) {
+                    for (int j=0; j<selectedNotes.size();j++){
+                        currentSelectedNote = (NoteBox)selectedNotes.get(j);
+                        
+                        int changeInLength = (int)event.getX() - (int)dragPointX;
+                        currentSelectedNote.changeNoteBoxLength(changeInLength);
+                    
+                    }
+                    dragPointX = (int)event.getX();
+                    dragPointY = (int)event.getY();
+                } else if (drag) {
+                    for (int j=0; j<selectedNotes.size();j++){
+                        currentSelectedNote = (NoteBox)selectedNotes.get(j);
 
-                    int xpos = currentSelectedNote.getX() + ( (int)event.getX() - (int)dragPointX );
-                    int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
-                    currentSelectedNote.repositionNoteBox(xpos,ypos);
+                        int xpos = currentSelectedNote.getX() + ( (int)event.getX() - (int)dragPointX );
+                        int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
+                        currentSelectedNote.repositionNoteBox(xpos,ypos);
                     
                     
-                }
-                dragPointX = (int)event.getX();
-                dragPointY = (int)event.getY();
-            } 
+                    }
+                    dragPointX = (int)event.getX();
+                    dragPointY = (int)event.getY();
+                } 
 
-        }else{
+            }else{
             
-            Point topLeft = new Point((int)startingPointX,(int)startingPointY);
-            Point bottomRight = new Point((int)event.getX(), (int)event.getY());
-            this.selectionRectangle.setX(startingPointX);
-            this.selectionRectangle.setY(startingPointY);
-            resizeSelectionRectangle(selectionRectangle,event); 
+                Point topLeft = new Point((int)startingPointX,(int)startingPointY);
+                Point bottomRight = new Point((int)event.getX(), (int)event.getY());
+                this.selectionRectangle.setX(startingPointX);
+                this.selectionRectangle.setY(startingPointY);
+                resizeSelectionRectangle(selectionRectangle,event); 
 
-            for (Items arrayItem : composerItems) {
-                if (arrayItem instanceof NoteBox)
-                {
-                    currentNote = (NoteBox) arrayItem;
-                    if (currentNote.isInRect(topLeft, bottomRight)) {
-                        currentNote.markNote();
-                    } else if(!event.isControlDown()) {
-                        currentNote.unmarkNote();  
+                for (Items arrayItem : composerItems) {
+                    if (arrayItem instanceof NoteBox)
+                    {
+                        currentNote = (NoteBox) arrayItem;
+                        if (currentNote.isInRect(topLeft, bottomRight)) {
+                            currentNote.markNote();
+                        } else if(!event.isControlDown()) {
+                            currentNote.unmarkNote();  
+                        }
                     }
                 }
             }
@@ -457,12 +485,11 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleGroupMenuItemAction(ActionEvent event) {
-            System.out.println("Group Menu Click");
-            System.out.println(selectedNotes);
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.gesRectangle);
+            System.out.println(gesture);
             composerItems.add(gesture);
-            System.out.println(composerItems);
+            //System.out.println(composerItems);
             unselectAll();
     }
      /**
@@ -472,12 +499,12 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
              System.out.println("Ungroup Menu Click");
-             if(gesture != null) {
+             //if(gesture != null) {
                  musicPane.getChildren().remove(gesture.gesRectangle);
                  composerItems.remove(gesture);
                  System.out.println(composerItems);
                  gesture = null;
-             }
+             //}
              //System.out.println(selectedNotes);
     }    
         
