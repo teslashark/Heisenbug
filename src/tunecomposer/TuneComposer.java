@@ -7,6 +7,7 @@ import java.awt.Point;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -77,6 +78,8 @@ public class TuneComposer extends Application {
     
     protected ArrayList<Items> composerItems = new ArrayList<Items>(); 
     
+    protected ArrayList<Items> composerItemsToRemove = new ArrayList<Items>(); 
+
     private ArrayList<NoteBox> selectedNotes = new ArrayList<NoteBox>();
 
     //private ArrayList<Items> selectedItems = new ArrayList<Items>();
@@ -339,7 +342,6 @@ public class TuneComposer extends Application {
        
         
     }
-    
         
     /**
      * Handles when an instrument RadioButton is clicked.
@@ -366,12 +368,22 @@ public class TuneComposer extends Application {
      * @param event the mouse event
      */
     @FXML
-    protected void handleSelectAllClicked(ActionEvent event) {
-        NoteBox currentNote;
-        for (int i = 0; i < composerItems.size(); i++) {
-            currentNote = (NoteBox)composerItems.get(i);
-            currentNote.markNote();
-        }
+    protected void handleSelectAllClicked(ActionEvent event) {        
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                NoteBox currentNote;
+                currentNote = (NoteBox) arrayItem;
+                currentNote.markNote();
+            }
+            
+            if (arrayItem instanceof Gesture)
+            {
+                Gesture currentGesture;
+                currentGesture = (Gesture) arrayItem;
+                currentGesture.markGes();
+            }
+        }   
     }
     
     /**
@@ -380,16 +392,29 @@ public class TuneComposer extends Application {
      * @param event 
      */
     @FXML
-    protected void handleDeleteClicked(ActionEvent event) {
-        NoteBox currentNote;
-        for (int i=0; i < composerItems.size();) {
-            currentNote = (NoteBox)composerItems.get(i);
-            if (currentNote.getIsSelected()) {
-                deleteNote(currentNote);
-            } else {
-                i++;
+    protected void handleDeleteClicked(ActionEvent event) {      
+                
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                NoteBox currentNote;
+                currentNote = (NoteBox) arrayItem;
+                if (currentNote.getIsSelected()) {
+                    deleteNote(currentNote);
+                    composerItemsToRemove.add(currentNote);
+                }
             }
-        }
+            
+            if (arrayItem instanceof Gesture)
+            {
+                Gesture currentGesture;
+                currentGesture = (Gesture) arrayItem;
+                if (currentGesture.getIsSelected()) {
+                    // Delete a gesture detected
+                }
+            }
+        }    
+        composerItems.removeAll(composerItemsToRemove);
     }
 
     /**
@@ -530,8 +555,7 @@ public class TuneComposer extends Application {
      * @param note The NoteBox to be deleted. 
      */
     public void deleteNote(NoteBox note){
-        int index = composerItems.indexOf(note);
-        composerItems.remove(index);  
+        //int index = composerItems.indexOf(note);
         musicPane.getChildren().remove(note.getRectangle());
     }
     
@@ -583,14 +607,13 @@ public class TuneComposer extends Application {
                 currentNote.unmarkNote();
             }
             
-            if (arrayItem instanceof NoteBox)
+            if (arrayItem instanceof Gesture)
             {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 currentGesture.unmarkGes();
             }
         }
-        
         System.out.println("Selected Gestures" + selectedGestures);
 
     }
