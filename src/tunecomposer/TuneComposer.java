@@ -245,8 +245,8 @@ public class TuneComposer extends Application {
     protected void handleOnMouseReleasedAction(MouseEvent event){
         musicPane.getChildren().remove(selectionRectangle);
         if (gesture != null){
-            int repositionAmountX = (Math.abs((int)event.getX()-gestureRelativeFocalPoint.x));
-            int repositionAmountY = (Math.abs((int)event.getY()-gestureRelativeFocalPoint.y));
+            int repositionAmountX = ((int)event.getX()-gestureRelativeFocalPoint.x);
+            int repositionAmountY = ((int)event.getY()-gestureRelativeFocalPoint.y);
             if (validGestureMove){
                 gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
                 for (NoteBox currentGestureNote: gesture.getGestureNotes()){
