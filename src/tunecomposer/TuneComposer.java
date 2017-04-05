@@ -92,10 +92,9 @@ public class TuneComposer extends Application {
     private Gesture gesture;
     
     private boolean validGestureMove = false;
-    
+        
     private Point gestureRelativeFocalPoint;
     
-
     /**
      * creates the grey lines of the music staff and the red line playBar object.
      * adds staff lines to musicPane pane, and sets css id to "staffLine"
@@ -159,6 +158,8 @@ public class TuneComposer extends Application {
         Point topLeft = new Point((int)startingPointX,(int)startingPointY);
         Point bottomRight = new Point((int)event.getX(), (int)event.getY());
         Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
+        //boolean validGestureMove = false;
+        //Point gestureRelativeFocalPoint = null;
         
         if (gesture != null){
             for (NoteBox currentGestureNote: gesture.getGestureNotes()){
@@ -168,6 +169,14 @@ public class TuneComposer extends Application {
                     break;
                 }   
             }
+            /*int repositionAmountX = ((int)event.getX()-(int)startingPointX);
+            int repositionAmountY = ((int)event.getY()-(int)startingPointY);
+            if (validGestureMove){
+                gesture.repositionGesture(repositionAmountX + gesture.getX(), repositionAmountY + gesture.getY());
+                for (NoteBox currentGestureNote: gesture.getGestureNotes()){
+                    currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
+                }
+            }*/
         }
         if (!validGestureMove){
             for (int i=0; i<selectedNotes.size();i++){    
@@ -410,8 +419,11 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
              System.out.println("Ungroup Menu Click");
+             if (gesture != null){
+                 musicPane.getChildren().remove(gesture.rectangle);
+                 gesture = null;
+             }
              //System.out.println(selectedNotes);
-
     }    
         
     /**

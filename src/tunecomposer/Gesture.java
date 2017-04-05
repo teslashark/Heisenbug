@@ -246,5 +246,8 @@ public class Gesture extends Items {
         
     }
     
+    public void unGesture(){
+        gestureNotes.clear();
+    }
     
 }
