@@ -357,6 +357,8 @@ public class TuneComposer extends Application {
                     
             }
             
+            ArrayList<NoteBox> GestureNotes = new ArrayList<NoteBox>();
+
             if (arrayItem instanceof Gesture)
             {
                 currentGesture = (Gesture) arrayItem;
@@ -365,8 +367,19 @@ public class TuneComposer extends Application {
                     if (event.isControlDown()) {
                         if (currentGesture.getIsSelected()) {
                             currentGesture.unmarkGes();
+                            GestureNotes = currentGesture.getGestureNotes();
+                            for (NoteBox gestureItem : GestureNotes) {
+                                selectedNotes.remove(gestureItem);
+                                gestureItem.unmarkNote();
+                            }                            
                         } else {
                             currentGesture.markGes();
+                            GestureNotes = currentGesture.getGestureNotes();
+                            for (NoteBox gestureItem : GestureNotes) {
+                                //selectedNotes.add(gestureItem);
+                                gestureItem.markNote();
+                            } 
+                            
                         }
                     break;
                 } 
