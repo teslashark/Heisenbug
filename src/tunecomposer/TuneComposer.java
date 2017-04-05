@@ -179,6 +179,7 @@ public class TuneComposer extends Application {
         //Point gestureRelativeFocalPoint = null;
         Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
         this.updateSelected();
+<<<<<<< HEAD
         
         for (Items arrayItem : composerItems){
             if (arrayItem instanceof Gesture){
@@ -186,6 +187,12 @@ public class TuneComposer extends Application {
                 currentGesture = (Gesture) arrayItem;
                 currentGesture.getGestureNotes();
             for (NoteBox currentGestureNote: currentGesture.getGestureNotes()){
+=======
+                
+        if (this.gesture != null){
+            System.out.println("jkl;");
+            for (NoteBox currentGestureNote: gesture.getGestureNotes()){
+>>>>>>> origin/master
                 if (currentGestureNote.pointIsInNoteBox(startingPoint)) {
                     System.out.println("asdf");
                     validGestureMove = true;
@@ -332,6 +339,8 @@ public class TuneComposer extends Application {
        playBarObj.stopAnimation();
        this.updateSelected();  // THIS IS CAUSING A FLAG
        NoteBox currentNote;
+       Gesture currentGesture;
+
        boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
        Point clickPoint = new Point((int)event.getX(), roundedYCoordinate);
@@ -358,6 +367,28 @@ public class TuneComposer extends Application {
                 } 
                     
             }
+            
+            if (arrayItem instanceof Gesture)
+            {
+                currentGesture = (Gesture) arrayItem;
+                if(currentGesture.pointIsInGesture(clickPoint)){
+                    hasNoConflictWithNote = false;
+                    if (event.isControlDown()) {
+                        if (currentGesture.getIsSelected()) {
+                            currentGesture.unmarkGes();
+                        } else {
+                            currentGesture.markGes();
+                        }
+                    break;
+                } 
+                    
+                unselectAll();
+                currentGesture.markGes();
+                break;
+                } 
+                    
+            } 
+            
         }    
                  
        if (hasNoConflictWithNote) {           
@@ -604,6 +635,7 @@ public class TuneComposer extends Application {
                 NoteBox currentNote;
                 currentNote = (NoteBox) arrayItem;
                 if (currentNote.getIsSelected()) {
+                    System.out.println("Notebox is selected");
                     selectedNotes.add(currentNote);
                 }
             }
@@ -613,6 +645,7 @@ public class TuneComposer extends Application {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 if (currentGesture.getIsSelected()) {
+                    System.out.println("Gesture is selected");
                     selectedGestures.add(currentGesture);
                 }
             }
