@@ -13,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 public class NoteBox extends Items  {
-    
     /**
      * The instrument to be represented by the NoteBox
      */
@@ -151,7 +150,7 @@ public class NoteBox extends Items  {
         // don't let the user make a note go offscreen
         rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
-        rectangle.setYnewYCoordinate);
+        rectangle.setY(newYCoordinate);
         stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
         stretchZone.setY(rectangle.getY());
         dragZone.setX(rectangle.getX());

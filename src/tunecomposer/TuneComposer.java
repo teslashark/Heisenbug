@@ -200,14 +200,15 @@ public class TuneComposer extends Application {
             } 
 
         }else{
+            
             Point topLeft = new Point((int)startingPointX,(int)startingPointY);
             Point bottomRight = new Point((int)event.getX(), (int)event.getY());
             this.selectionRectangle.setX(startingPointX);
             this.selectionRectangle.setY(startingPointY);
             resizeSelectionRectangle(selectionRectangle,event); 
 
-            for (int i = 0; i < musicNotesArray.size(); i++) {
-                currentNote = (NoteBox)musicNotesArray.get(i);
+            for (int i = 0; i < composerItems.size(); i++) {
+                currentNote = (NoteBox)composerItems.get(i);
 
                 if (currentNote.isInRect(topLeft, bottomRight)) {
                     currentNote.markNote();
@@ -216,11 +217,12 @@ public class TuneComposer extends Application {
                 }
             }
         }
+    }
     
     private void updateYPos(){
         NoteBox currentNote;
-        for(int i=0;i<musicNotesArray.size();i++){
-            currentNote = (NoteBox)musicNotesArray.get(i);
+        for(int i=0;i<composerItems.size();i++){
+            currentNote = (NoteBox)composerItems.get(i);
             currentNote.getRectangle().setY((currentNote.getY()/10)*10);
             currentNote.getStretchZone().setY((currentNote.getY()/10)*10);
             currentNote.getDragZone().setY((currentNote.getY()/10)*10);
