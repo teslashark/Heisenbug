@@ -206,26 +206,50 @@ public class TuneComposer extends Application {
             this.selectionRectangle.setY(startingPointY);
             resizeSelectionRectangle(selectionRectangle,event); 
 
-            for (int i = 0; i < composerItems.size(); i++) {
-                currentNote = (NoteBox)composerItems.get(i);
-
-                if (currentNote.isInRect(topLeft, bottomRight)) {
-                    currentNote.markNote();
-                } else if(!event.isControlDown()) {
-                    currentNote.unmarkNote();  
+            for (Items arrayItem : composerItems) {
+                if (arrayItem instanceof NoteBox)
+                {
+                    currentNote = (NoteBox) arrayItem;
+                    if (currentNote.isInRect(topLeft, bottomRight)) {
+                        currentNote.markNote();
+                    } else if(!event.isControlDown()) {
+                        currentNote.unmarkNote();  
+                    }
                 }
             }
         }
     }
     
-    private void updateYPos(){
-        NoteBox currentNote;
-        for(int i=0;i<composerItems.size();i++){
-            currentNote = (NoteBox)composerItems.get(i);
-            currentNote.getRectangle().setY((currentNote.getY()/10)*10);
-            currentNote.getStretchZone().setY((currentNote.getY()/10)*10);
-            currentNote.getDragZone().setY((currentNote.getY()/10)*10);
-        }
+    private void updateYPos(){        
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                NoteBox currentNote;
+                currentNote = (NoteBox) arrayItem;
+                currentNote.getRectangle().setY((currentNote.getY()/10)*10);
+                currentNote.getStretchZone().setY((currentNote.getY()/10)*10);
+                currentNote.getDragZone().setY((currentNote.getY()/10)*10);
+                    
+            }
+            
+            /*if (arrayItem instanceof Gesture)
+            {
+                Gesture currentGesture;
+                currentGesture = (Gesture) arrayItem;
+                if (currentGesture.getIsSelected()) {
+                    selectedNotes.add(currentGesture);
+                }
+                
+                currentNote = (NoteBox)composerItems.get(i);
+                currentNote.getRectangle().setY((currentNote.getY()/10)*10);
+                currentNote.getStretchZone().setY((currentNote.getY()/10)*10);
+                currentNote.getDragZone().setY((currentNote.getY()/10)*10);
+                    
+            }*/
+           
+        }    
+          
+         
     }
     /**
      * resizes a rectangle based on a mouse event, used for updating the size of the selection
@@ -276,24 +300,31 @@ public class TuneComposer extends Application {
        boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
        Point clickPoint = new Point((int)event.getX(), roundedYCoordinate);
-       for(int i = 0; i < composerItems.size(); i++){
-           currentNote = (NoteBox) composerItems.get(i);
-           if(currentNote.pointIsInNoteBox(clickPoint)){
-              hasNoConflictWithNote = false;
-              if (event.isControlDown()) {
-                  if (currentNote.getIsSelected()) {
-                      currentNote.unmarkNote();
-                  } else {
-                      currentNote.markNote();
-                  }
-                  break;
-              } 
-              unselectAll();
-              currentNote.markNote();
-              break;
-           } 
-       }       
-        
+       
+       
+       for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                currentNote = (NoteBox) arrayItem;
+                if(currentNote.pointIsInNoteBox(clickPoint)){
+                    hasNoConflictWithNote = false;
+                    if (event.isControlDown()) {
+                        if (currentNote.getIsSelected()) {
+                            currentNote.unmarkNote();
+                        } else {
+                            currentNote.markNote();
+                        }
+                    break;
+                } 
+                    
+                unselectAll();
+                currentNote.markNote();
+                break;
+                } 
+                    
+            }
+        }    
+                 
        if (hasNoConflictWithNote) {           
             //this.selector.unselectAll(musicNotesArray);
             NoteBox noteBox = new NoteBox(selectedInstrument, event);
@@ -506,8 +537,25 @@ public class TuneComposer extends Application {
      * Checks all NoteBoxes in the musicNoteArray to update the ArrayList of selectedNotes
      */
     public void updateSelected() {
-        NoteBox currentNote; 
+        
         selectedNotes.clear();
+
+        for (Items arrayItem : composerItems) {
+            if (arrayItem instanceof NoteBox)
+            {
+                NoteBox currentNote;
+                currentNote = (NoteBox) arrayItem;
+                if (currentNote.getIsSelected()) {
+                    selectedNotes.add(currentNote);
+                }
+                //NoteBox currentNote;
+                //currentNote = (NoteBox)composerItems.get(i);
+                    
+            }
+        }    
+        
+        /*
+        NoteBox currentNote; 
         for (int i=0; i < composerItems.size(); i++) {
             currentNote = (NoteBox)composerItems.get(i);
             if (currentNote.getIsSelected()) {
@@ -523,6 +571,7 @@ public class TuneComposer extends Application {
                 selectedGestures.add(currentGesture);
             }
         }
+        */
         
         //System.out.println(selectedGestures);
         
