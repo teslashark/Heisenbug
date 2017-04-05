@@ -13,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 public class NoteBox extends Items  {
-    
     /**
      * The instrument to be represented by the NoteBox
      */
@@ -39,12 +38,12 @@ public class NoteBox extends Items  {
      * @param instrument A string of the desired instrument
      * @param event the mouse event
      */
-    public NoteBox(String instrument,MouseEvent event) {
+    public NoteBox(String instrument, MouseEvent event) {
         this.instrument = instrument;
-        rectangle.setId("noteBox" + instrument);
         this.rectangle = new Rectangle(initialBoxWidth, boxHeight);
         //TODO: bring up to spec is selected default
-        this.isSelected = false;
+        this.isSelected = false; 
+        rectangle.setId("noteBox" + instrument);
         //ensure rectangle doesn't go off screen
         if (event.getX() > 1900) { 
             rectangle.setX(1900);            
@@ -54,6 +53,28 @@ public class NoteBox extends Items  {
         }
         //snap Y coordinate between horizontal lines in composer
         rectangle.setY(Math.round(event.getY() / 10) * 10);
+        
+        stretchZone = new Rectangle(this.getX() + (this.getWidth() - 5),this.getY(),5, this.getBoxHeight());
+        dragZone = new Rectangle(this.getX(), this.getY(),this.getWidth()-5, this.getBoxHeight());
+
+    }
+    
+    /**
+     * Returns a rectangle representative of the area of the notebox which can be clicked on to
+     * activate the resizing action.
+     * @return The rectangle representing the place to click to resize the NoteBox
+     */
+    public Rectangle getStretchZone() {
+        return stretchZone;
+    }
+    
+    /**
+     * Returns a rectangle representative of the area of the notebox which can be clicked on to
+     * activate the drag to move action.
+     * @return The rectangle representing the place to click to drag and move the NoteBox
+     */
+    public Rectangle getDragZone() {
+        return dragZone;
     }
     
     public String getInstrument(){
@@ -67,15 +88,60 @@ public class NoteBox extends Items  {
     public Rectangle getRectangle() {
         return rectangle;
     }
-   
+    
     /**
-     * Changes the width of a noteBox based of an incrementation of size
+     * Gives the x-coordinate of the NoteBox
+     * @return the x-coordinate
+     */
+    public int getX() {
+        return (int) this.rectangle.getX();
+    }
+    
+    /**
+     * Gives the y-Coordinate of the NoteBox
+     * @return the y-coordinate
+     */
+    public int getY() {
+        return (int) this.rectangle.getY();
+    }
+    
+    /**
+     * Gives the height of the noteBox
+     * @return the height of the noteBox
+     */
+    public int getBoxHeight() {
+        return boxHeight;
+    }
+    
+    /**
+     * Gives the width of the notebox
+     * @return the width of the NoteBox
+     */
+    public int getWidth() {
+        return (int) this.rectangle.getWidth();
+    }
+    
+    /**
+     * Returns whether the NoteBox is marked as selected
+     * @return true if the note box is selected, else false
+     */
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+    
+    /**
+     * Changes the width of a noteBox based of an incrimentation of size
      * @param sizeDifference the difference  of width between the new note box and the old one
      */
     public void changeNoteBoxLength(int sizeDifference) {
         this.rectangle.setWidth(this.rectangle.getWidth() + sizeDifference);
         this.stretchZone.setX(rectangle.getX() + rectangle.getWidth() - 5);
         this.dragZone.setWidth(this.getWidth()-5);
+        if (rectangle.getWidth()<5){
+            this.rectangle.setWidth(5);
+            this.stretchZone.setX(rectangle.getX());
+            this.dragZone.setWidth(this.getWidth()-5);
+        }
     }
     
     // TODO: make it so that when the mouse is unclicked on dragging it snaps
@@ -84,7 +150,7 @@ public class NoteBox extends Items  {
         // don't let the user make a note go offscreen
         rectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
         // snap Y coordinate between horizontal lines in composer
-        rectangle.setY(Math.round(newYCoordinate / 10) * 10);
+        rectangle.setY(newYCoordinate);
         stretchZone.setX(rectangle.getX() + rectangle.getWidth() -5);
         stretchZone.setY(rectangle.getY());
         dragZone.setX(rectangle.getX());
@@ -101,7 +167,7 @@ public class NoteBox extends Items  {
     }
     
     /**
-     * unmarks the note as selected
+     * unmarkes the note as selected
      */
     public void unmarkNote(){
         this.isSelected = false;
@@ -116,12 +182,12 @@ public class NoteBox extends Items  {
     public boolean pointIsInNoteBox(Point point) {
         
         boolean xValInRange = 
-                (point.x >= rectangle.getX() &&
-                point.x <= rectangle.getX() + this.getWidth());
+                (point.x >= this.getX() &&
+                point.x <= this.getX() + this.getWidth());
         
         boolean yValInRange = 
-                (point.y >= rectangle.getY() &&
-                point.y <= rectangle.getY() + this.boxHeight);
+                (point.y >= this.getY() &&
+                point.y <= this.getY() + this.boxHeight);
         
         return (xValInRange && yValInRange);
     }
@@ -139,10 +205,10 @@ public class NoteBox extends Items  {
      */
     public boolean isInRect(Point topLeft, Point bottomRight) {
         
-        int noteXMax = (int)(rectangle.getX() + rectangle.getWidth());
-        int noteXMin = (int)rectangle.getX();
-        int noteYMax = (int)(rectangle.getY() + rectangle.getHeight());
-        int noteYMin = (int)rectangle.getY();
+        int noteXMax = this.getX() + this.getWidth();
+        int noteXMin = this.getX();
+        int noteYMax = this.getY() + this.boxHeight;
+        int noteYMin = this.getY();
         
         int selectBoxXMax = (bottomRight.x > topLeft.x) ? bottomRight.x : topLeft.x;
         int selectBoxXMin = (bottomRight.x < topLeft.x) ? bottomRight.x : topLeft.x;
@@ -156,13 +222,7 @@ public class NoteBox extends Items  {
         
     }
 
-     private void onMouseDragged(MouseEvent e) {
-        Point start = new Point((int)e.getX(),(int)e.getY());
-        if (pointIsInRectangle(start, super.getStretchZone())){
-            //add the functionality from the sample solution
-        }
-     }
-    public static boolean pointIsInRectangle(Point point, Rectangle rect) {
+      public static boolean pointIsInRectangle(Point point, Rectangle rect) {
         boolean xValInRange = 
                 (point.x >= rect.getX() &&
                 point.x <= rect.getX() + rect.getWidth());
