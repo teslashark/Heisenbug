@@ -498,8 +498,6 @@ public class TuneComposer extends Application {
     @FXML
     protected void handleDeleteClicked(ActionEvent event) {      
                 
-        ArrayList<NoteBox> GestureNotes = new ArrayList<NoteBox>();
-
         System.out.println("Delete triggered");
         System.out.println("Composer Items" + composerItems);
 
@@ -516,23 +514,10 @@ public class TuneComposer extends Application {
             
             if (arrayItem instanceof Gesture)
             {
-                System.out.println("Status: A");
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
-                if (currentGesture.getIsSelected()) {                 System.out.println("Status: B");
-
-                    
-                    GestureNotes = currentGesture.getGestureNotes();
-                    
-                    System.out.println("Gesture notes: " + GestureNotes);
-                    for (NoteBox foundnote : GestureNotes) {
-                         deleteNote(foundnote);
-                         composerItemsToRemove.add(foundnote);
-                         System.out.println("Delete notes");
-                    }
+                if (currentGesture.getIsSelected()) {
                     deleteGesture(currentGesture);
-                    composerItemsToRemove.add(currentGesture);
-                    
                 }
             }
         }    
@@ -541,6 +526,7 @@ public class TuneComposer extends Application {
         
         System.out.println("Selected Notes" + selectedNotes);
         System.out.println("Selected Gestur" + selectedGestures);
+
 
     }
 
