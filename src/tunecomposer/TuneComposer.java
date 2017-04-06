@@ -665,14 +665,10 @@ public class TuneComposer extends Application {
      */
     public void deleteNote(NoteBox note){
         //int index = composerItems.indexOf(note);
-        selectedNotes.remove(note);
-        modifyAllGesturesNotes(note, "unselected");
         musicPane.getChildren().remove(note.getRectangle());
     }
 
     public void deleteGesture(Gesture gesture){
-        //int index = composerItems.indexOf(note);
-        selectedGestures.remove(gesture);
         musicPane.getChildren().remove(gesture.getRectangle());
     }
     
