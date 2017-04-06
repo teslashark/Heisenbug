@@ -168,7 +168,7 @@ public class Gesture extends Items {
         for(NoteBox noteBox: this.getGestureNotes()){
             int noteEdge = (int)noteBox.getX()+(int)noteBox.getWidth();
             if (noteEdge>furthestNoteEdge){
-                furthestNoteEdge = not  eEdge;
+                furthestNoteEdge = noteEdge;
             }
         }
         int gesEdge = (int)this.gesRectangle.getX()+(int)this.gesRectangle.getWidth();
