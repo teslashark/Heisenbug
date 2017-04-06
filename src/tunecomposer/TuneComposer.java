@@ -133,7 +133,6 @@ public class TuneComposer extends Application {
     private double dragPointY;
         
     protected void modifyAllGesturesNotes(NoteBox selected, String switchto){
-        
         ArrayList<NoteBox> GestureNotes = new ArrayList<NoteBox>();
 
         for (Items arrayItem : composerItems) {
@@ -142,7 +141,7 @@ public class TuneComposer extends Application {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 GestureNotes = currentGesture.getGestureNotes();
-                 
+                
                 if(GestureNotes.contains(selected)){
                     
                     if(switchto=="selected") {
@@ -152,12 +151,27 @@ public class TuneComposer extends Application {
                             currentGesture.unmarkGes();
                     }
 
-                    for (NoteBox notefound : GestureNotes) {
+                    for (NoteBox noteFound : GestureNotes) {
+                        for (Items arrayGesture : composerItems) {
+                            if (arrayGesture instanceof Gesture){
+                                Gesture tempGesture;
+                                tempGesture = (Gesture) arrayGesture;
+                                if (tempGesture.getGestureNotes().contains(noteFound)){
+                                    if (switchto=="selected"){
+                                        tempGesture.markGes();
+                                    }
+                                    if(switchto=="unselected") {
+                                        tempGesture.unmarkGes();
+                                    }
+                                    
+                                }
+                            }
+                        }
                         if(switchto=="selected") {
-                            notefound.markNote();
+                            noteFound.markNote();
                         }
                         if(switchto=="unselected") {
-                            notefound.unmarkNote();
+                            noteFound.unmarkNote();
                         }
                     }
 
@@ -560,12 +574,15 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleGroupMenuItemAction(ActionEvent event) {
+        if(selectedNotes.size()<1){
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.gesRectangle);
             System.out.println(gesture);
             composerItems.add(gesture);
             //System.out.println(composerItems);
             unselectAll();
+        }
+
     }
      /**
      * handler for "Un Group" menuItem to create a gesture
@@ -573,14 +590,31 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
-            System.out.println("Selected For Ungroup" + selectedGestures);
-            for (Gesture arrayItem : selectedGestures) {
-                 musicPane.getChildren().remove(arrayItem.gesRectangle); 
-                 composerItems.remove(arrayItem);
-                 arrayItem = null;
+        System.out.println("Selected For Ungroup" + selectedGestures);
+        for (Gesture arrayItem : selectedGestures) {
+            System.out.println(checkIsNested(arrayItem));
+            if (!checkIsNested(arrayItem)){
+                musicPane.getChildren().remove(arrayItem.gesRectangle); 
+                composerItems.remove(arrayItem);
+                arrayItem = null;  
             }
+        }
     }    
     
+    protected boolean checkIsNested (Gesture gesture){
+        for (NoteBox noteA : gesture.getGestureNotes()){
+            for (Gesture temp : selectedGestures){
+                if (temp.getGestureNotes().contains(noteA)&&temp.getRectangle().getId()!=gesture.getRectangle().getId()){
+                    for (NoteBox noteB : temp.getGestureNotes()){
+                        if(!gesture.getGestureNotes().contains(noteB)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
     /**
      * takes array of rectangles representing notes, and adds them to player.
      * assumes pane height is 1280px high.
