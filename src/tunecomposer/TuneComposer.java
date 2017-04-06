@@ -46,7 +46,7 @@ public class TuneComposer extends Application {
      * One midi player is used throughout, so we can stop a scale that is
      * currently playing.
      */
-    private final MidiPlayer player;
+    private MidiPlayer player;
 
     /**
      * Pane that all visual music features live within
@@ -70,23 +70,23 @@ public class TuneComposer extends Application {
      * An arrayList to hold all instrument radio buttons for easy access.
      */
          
-    private final ArrayList<RadioButton> instrumentButtons = new ArrayList<>();
+    private ArrayList<RadioButton> instrumentButtons = new ArrayList<>();
     
     protected ArrayList<Items> composerItems = new ArrayList<>(); 
     
     protected ArrayList<Items> composerItemsToRemove = new ArrayList<>(); 
 
-    private final ArrayList<NoteBox> selectedNotes = new ArrayList<>();
+    private ArrayList<NoteBox> selectedNotes = new ArrayList<>();
     
-    private final ArrayList<Gesture> selectedGestures = new ArrayList<>();
+    private ArrayList<Gesture> selectedGestures = new ArrayList<>();
     
-    private final ArrayList<Gesture> gesturesArray = new ArrayList<>();
+    private ArrayList<Gesture> gesturesArray = new ArrayList<>();
     
     private Rectangle selectionRectangle;
    
     private Gesture gesture;
     
-    private final boolean validGestureMove = false;
+    private boolean validGestureMove = false;
         
     private Point gestureRelativeFocalPoint;
     
@@ -126,8 +126,7 @@ public class TuneComposer extends Application {
     private double dragPointX;
     private double dragPointY;
         
-    protected void modifyAllGesturesNotes(NoteBox selected, String switchto){
-        
+    protected void modifyAllGesturesNotes(NoteBox selected, String switchto){        
         ArrayList<NoteBox> GestureNotes = new ArrayList<>();
 
         for (Items arrayItem : composerItems) {
@@ -136,34 +135,44 @@ public class TuneComposer extends Application {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 GestureNotes = currentGesture.getGestureNotes();
-                 
+                
                 if(GestureNotes.contains(selected)){
                     
                     if("selected".equals(switchto)) {
                             currentGesture.markGes();
-                            selectedGestures.add(currentGesture);
                     }
                     if("unselected".equals(switchto)) {
                             currentGesture.unmarkGes();
-                            selectedGestures.remove(currentGesture);
                     }
 
-                    for (NoteBox notefound : GestureNotes) {
-                        if("selected".equals(switchto)) {
-                            notefound.markNote();
-                            selectedNotes.add(notefound);
+                    for (NoteBox noteFound : GestureNotes) {
+                        for (Items arrayGesture : composerItems) {
+                            if (arrayGesture instanceof Gesture){
+                                Gesture tempGesture;
+                                tempGesture = (Gesture) arrayGesture;
+                                if (tempGesture.getGestureNotes().contains(noteFound)){
+                                    if (switchto=="selected"){
+                                        tempGesture.markGes();
+                                    }
+                                    if(switchto=="unselected") {
+                                        tempGesture.unmarkGes();
+                                    }
+                                    
+                                }
+                            }
                         }
-                        if("unselected".equals(switchto)) {
-                            notefound.unmarkNote();
-                            selectedNotes.remove(notefound);
+                        if(switchto=="selected") {
+                            noteFound.markNote();
+                        }
+                        if(switchto=="unselected") {
+                            noteFound.unmarkNote();
                         }
                     }
-                               
-                    break;
+
                 }
             }
         }     
-        
+        updateSelected();
 
     }
     
@@ -182,14 +191,12 @@ public class TuneComposer extends Application {
         Point startingPoint = new Point((int)startingPointX,(int)startingPointY);
         
         NoteBox currentNote;
-        Gesture currentGes;
         
         stretch = false;
         drag = false;
 
         updateSelected();
         for (Items arrayItem : selectedNotes) {
-            System.out.println(selectedNotes);
             if(arrayItem instanceof NoteBox){
                 currentNote = (NoteBox) arrayItem; 
                 if (pointIsInRectangle(startingPoint,currentNote.getDragZone())) {
@@ -217,7 +224,6 @@ public class TuneComposer extends Application {
     protected void handleOnMouseDraggedAction(MouseEvent event){
         NoteBox currentNote;
         NoteBox currentSelectedNote;
-        Gesture currentGes;
         Gesture currentSelectedGes;
         this.updateSelected();
 
@@ -362,7 +368,6 @@ public class TuneComposer extends Application {
        playBarObj.stopAnimation();
        this.updateSelected(); 
        NoteBox currentNote;
-       Gesture currentGesture;
 
        boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
@@ -519,20 +524,20 @@ public class TuneComposer extends Application {
     protected void handleExitMenuItemAction(ActionEvent event) {
         System.exit(0);
     }    
-    
    
      /**
      * handler for "group" menuItem to create a gesture
      * @param event 
      */
     @FXML
-    protected void handleGroupMenuItemAction(ActionEvent event) {
+    protected void handleGroupMenuItemAction(ActionEvent event) {        
+        if(selectedNotes.size()>0){
             Gesture gesture = new Gesture(selectedNotes);
             musicPane.getChildren().add(gesture.gesRectangle);
-            System.out.println(gesture);
             composerItems.add(gesture);
-            //System.out.println(composerItems);
             unselectAll();
+        }
+
     }
      /**
      * handler for "Un Group" menuItem to create a gesture
@@ -540,14 +545,29 @@ public class TuneComposer extends Application {
      */
     @FXML
     protected void handleUngroupMenuItemAction(ActionEvent event) {
-            System.out.println("Selected For Ungroup" + selectedGestures);
-            for (Gesture arrayItem : selectedGestures) {
-                 musicPane.getChildren().remove(arrayItem.gesRectangle); 
-                 composerItems.remove(arrayItem);
-                 arrayItem = null;
+        for (Gesture arrayItem : selectedGestures) {
+            if (!checkIsNested(arrayItem)){
+                musicPane.getChildren().remove(arrayItem.gesRectangle); 
+                composerItems.remove(arrayItem);
+                arrayItem = null;  
             }
+        }
     }    
     
+    protected boolean checkIsNested (Gesture gesture){
+        for (NoteBox noteA : gesture.getGestureNotes()){
+            for (Gesture temp : selectedGestures){
+                if (temp.getGestureNotes().contains(noteA)&&temp.getRectangle().getId()!=gesture.getRectangle().getId()){
+                    for (NoteBox noteB : temp.getGestureNotes()){
+                        if(!gesture.getGestureNotes().contains(noteB)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
     /**
      * takes array of rectangles representing notes, and adds them to player.
      * assumes pane height is 1280px high.
