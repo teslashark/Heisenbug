@@ -174,7 +174,7 @@ public class Gesture extends Items {
         gesRectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
      
         // snap Y coordinate between horizontal lines in composer
-        gesRectangle.setY(Math.round(newYCoordinate / 10) * 10);
+        gesRectangle.setY(newYCoordinate);
         stretchZone.setX(gesRectangle.getX() + gesRectangle.getWidth() -5);
         stretchZone.setY(gesRectangle.getY());
         dragZone.setX(gesRectangle.getX());

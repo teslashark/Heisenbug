@@ -179,16 +179,22 @@ public class TuneComposer extends Application {
         //Point gestureRelativeFocalPoint = null;
         Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
         this.updateSelected();
+<<<<<<< Updated upstream
         
+=======
+
+>>>>>>> Stashed changes
         for (Items arrayItem : composerItems){
             if (arrayItem instanceof Gesture){
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 currentGesture.getGestureNotes();
             for (NoteBox currentGestureNote: currentGesture.getGestureNotes()){
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                 if (currentGestureNote.pointIsInNoteBox(startingPoint)) {
-                    System.out.println("asdf");
                     validGestureMove = true;
                     //gestureRelativeFocalPoint = new Point(currentGestureNote.getX(), currentGestureNote.getY());
                     break;
@@ -197,14 +203,17 @@ public class TuneComposer extends Application {
             int repositionAmountX = ((int)event.getX()-(int)dragPointX);
             int repositionAmountY = ((int)event.getY()-(int)dragPointY);
             if (validGestureMove){
+                currentGesture.isSelected = true;
                 currentGesture.repositionGesture(repositionAmountX + currentGesture.getX(), repositionAmountY + currentGesture.getY());
                 for (NoteBox currentGestureNote: currentGesture.getGestureNotes()){
+                    currentGestureNote.isSelected = true;
                     currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
                 }
+                dragPointX = (int)event.getX();
+                dragPointY = (int)event.getY();
+                this.updateSelected();
              }
-            }
-            //dragPointX = (int)event.getX();
-            //dragPointY = (int)event.getY();
+          }
         }
         if (!validGestureMove){
             if(stretch||drag){
@@ -642,6 +651,10 @@ public class TuneComposer extends Application {
                 NoteBox currentNote;
                 currentNote = (NoteBox) arrayItem;
                 if (currentNote.getIsSelected()) {
+<<<<<<< Updated upstream
+=======
+                    //System.out.println("Notebox is selected");
+>>>>>>> Stashed changes
                     selectedNotes.add(currentNote);
                 }
             }
@@ -655,9 +668,13 @@ public class TuneComposer extends Application {
                 GestureNotes = currentGesture.getGestureNotes();
                 
                 if (currentGesture.getIsSelected()) {
+<<<<<<< Updated upstream
                     for (NoteBox gestureItem : GestureNotes) {
                         selectedNotes.add(gestureItem);
                     }
+=======
+                    //System.out.println("Gesture is selected");
+>>>>>>> Stashed changes
                     selectedGestures.add(currentGesture);
                 }
             }
