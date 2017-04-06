@@ -124,8 +124,10 @@ public class TuneComposer extends Application {
         this.player = new MidiPlayer(100,60);
     }
     
-    private boolean drag;
-    private boolean stretch;
+    private boolean noteDrag;
+    private boolean noteStretch;
+    private boolean gesDrag;
+    private boolean gesStretch;
 
     private double startingPointX;
     private double startingPointY;
@@ -145,24 +147,51 @@ public class TuneComposer extends Application {
         startingPointX = event.getX();
         startingPointY = event.getY();
         Point startingPoint = new Point((int)startingPointX,(int)startingPointY);
+        
         NoteBox currentNote;
-        stretch = false;
-        drag = false;
+        Gesture currentGes;
+        
+        noteStretch = false;
+        noteDrag = false;
+        gesStretch = false;
+        gesDrag = false;
         this.updateSelected();
-        for (int i=0; i<selectedNotes.size();i++){    
-            currentNote = (NoteBox)selectedNotes.get(i); 
-            if (pointIsInRectangle(startingPoint,currentNote.getDragZone())) {
-                drag=true;
+        for (Items arrayItem : selectedNotes){    
+            if(arrayItem instanceof Gesture){
+                currentGes = (Gesture) arrayItem;
+                for (NoteBox currentNoteBox: currentGes.getGestureNotes()){
+                    if (pointIsInRectangle(startingPoint,currentNoteBox.getDragZone())){
+                        gesDrag = true;
+                    }else if (pointIsInRectangle(startingPoint,currentNoteBox.getStretchZone())) {
+                        gesStretch=true;
+                    }
+                }
+                /*if (pointIsInRectangle(startingPoint,currentGes.getDragZone())) {
+                    gesDrag=true;
+                }*/
+            }else if(arrayItem instanceof NoteBox){
+                currentNote = (NoteBox) arrayItem; 
+                if (pointIsInRectangle(startingPoint,currentNote.getDragZone())) {
+                    noteDrag=true;
+                }
+                else if (pointIsInRectangle(startingPoint,currentNote.getStretchZone())) {
+                    noteStretch=true;
+                }
             }
-            else if (pointIsInRectangle(startingPoint,currentNote.getStretchZone())) {
-                stretch=true;
-            }
-            
-        }
 
+        }
+        if (gesDrag||gesStretch){
+            noteDrag=false;
+            noteStretch = false;
+        }
+        System.out.println(noteDrag);
+        System.out.println(noteStretch);
+        System.out.println(gesDrag);
+        System.out.println(gesStretch);
         dragPointX = (int)event.getX();
         dragPointY = (int)event.getY();
         this.updateSelected();
+        
         
     }
     
@@ -175,90 +204,79 @@ public class TuneComposer extends Application {
     protected void handleOnMouseDraggedAction(MouseEvent event){
         NoteBox currentNote;
         NoteBox currentSelectedNote;
-        boolean validGestureMove = false;
-        //Point gestureRelativeFocalPoint = null;
-        Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
+        Gesture currentGes;
+        Gesture currentSelectedGes;
+
+//        Point startingPoint = new Point((int)startingPointX, (int)startingPointY);
         this.updateSelected();
 
-        for (Items arrayItem : composerItems){
-            if (arrayItem instanceof Gesture){
-                Gesture currentGesture;
-                currentGesture = (Gesture) arrayItem;
-                currentGesture.getGestureNotes();
-            for (NoteBox currentGestureNote: currentGesture.getGestureNotes()){
-
-                if (currentGestureNote.pointIsInNoteBox(startingPoint)) {
-                    validGestureMove = true;
-                    //gestureRelativeFocalPoint = new Point(currentGestureNote.getX(), currentGestureNote.getY());
-                    break;
-                }   
-            }
-            int repositionAmountX = ((int)event.getX()-(int)dragPointX);
-            int repositionAmountY = ((int)event.getY()-(int)dragPointY);
-            if (validGestureMove){
-                currentGesture.isSelected = true;
-                selectedGestures.add(currentGesture);
-                    
-                currentGesture.repositionGesture(repositionAmountX + currentGesture.getX(), repositionAmountY + currentGesture.getY());
-                for (NoteBox currentGestureNote: currentGesture.getGestureNotes()){
-                    currentGestureNote.isSelected = true;
-                    selectedNotes.add(currentGestureNote);
-
-                    currentGestureNote.repositionNoteBox(repositionAmountX + currentGestureNote.getX(), repositionAmountY + currentGestureNote.getY());
+        if (gesStretch){
+            for (int j=0; j<selectedGestures.size();j++){
+                currentSelectedGes = (Gesture)selectedGestures.get(j);
+                int changeInLength = (int)event.getX() - (int)dragPointX;
+                for (NoteBox currentGestureNote: currentSelectedGes.getGestureNotes()){
+                    currentGestureNote.changeNoteBoxLength(changeInLength);
                 }
-                dragPointX = (int)event.getX();
-                dragPointY = (int)event.getY();
-                this.updateSelected();
-             }
-          }
-        }
-        if (!validGestureMove){
-            if(stretch||drag){
-                if (stretch) {
-                    for (int j=0; j<selectedNotes.size();j++){
-                        currentSelectedNote = (NoteBox)selectedNotes.get(j);
-                        
-                        int changeInLength = (int)event.getX() - (int)dragPointX;
-                        currentSelectedNote.changeNoteBoxLength(changeInLength);
-                    
-                    }
-                    dragPointX = (int)event.getX();
-                    dragPointY = (int)event.getY();
-                } else if (drag) {
-                    for (int j=0; j<selectedNotes.size();j++){
-                        currentSelectedNote = (NoteBox)selectedNotes.get(j);
+                currentSelectedGes.changeGestureLength(changeInLength);
+            }
+            dragPointX = (int)event.getX();
+            dragPointY = (int)event.getY();
+        }else if (gesDrag) {        
+            for (int j=0; j<selectedGestures.size();j++){
+                currentSelectedGes = (Gesture)selectedGestures.get(j);
 
-                        int xpos = currentSelectedNote.getX() + ( (int)event.getX() - (int)dragPointX );
-                        int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
-                        currentSelectedNote.repositionNoteBox(xpos,ypos);
-                    
-                    
-                    }
-                    dragPointX = (int)event.getX();
-                    dragPointY = (int)event.getY();
-                } 
+                int xpos = currentSelectedGes.getX() + ( (int)event.getX() - (int)dragPointX );
+                int ypos = currentSelectedGes.getY() + ( (int)event.getY() - (int)dragPointY );
+                for (NoteBox currentGestureNote: currentSelectedGes.getGestureNotes()){
+                    currentGestureNote.repositionNoteBox(xpos,ypos);
+                }
+                System.out.println("repos");
+                currentSelectedGes.repositionGesture(xpos,ypos);
+            }
+            dragPointX = (int)event.getX();
+            dragPointY = (int)event.getY();
+        } else if (noteStretch) {
+            for (int j=0; j<selectedNotes.size();j++){
+                currentSelectedNote = (NoteBox)selectedNotes.get(j);
 
-            }else{
-            
-                Point topLeft = new Point((int)startingPointX,(int)startingPointY);
-                Point bottomRight = new Point((int)event.getX(), (int)event.getY());
-                this.selectionRectangle.setX(startingPointX);
-                this.selectionRectangle.setY(startingPointY);
-                resizeSelectionRectangle(selectionRectangle,event); 
+                int changeInLength = (int)event.getX() - (int)dragPointX;
+                currentSelectedNote.changeNoteBoxLength(changeInLength);
 
-                for (Items arrayItem : composerItems) {
-                    if (arrayItem instanceof NoteBox)
-                    {
-                        currentNote = (NoteBox) arrayItem;
-                        if (currentNote.isInRect(topLeft, bottomRight)) {
-                            currentNote.markNote();
-                        } else if(!event.isControlDown()) {
-                            currentNote.unmarkNote();  
-                        }
+            }
+            dragPointX = (int)event.getX();
+            dragPointY = (int)event.getY();
+        } else if (noteDrag) {
+            for (int j=0; j<selectedNotes.size();j++){
+                currentSelectedNote = (NoteBox)selectedNotes.get(j);
+
+                int xpos = currentSelectedNote.getX() + ( (int)event.getX() - (int)dragPointX );
+                int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
+                currentSelectedNote.repositionNoteBox(xpos,ypos);
+
+
+            }
+            dragPointX = (int)event.getX();
+            dragPointY = (int)event.getY();
+        }else{
+            Point topLeft = new Point((int)startingPointX,(int)startingPointY);
+            Point bottomRight = new Point((int)event.getX(), (int)event.getY());
+            this.selectionRectangle.setX(startingPointX);
+            this.selectionRectangle.setY(startingPointY);
+            resizeSelectionRectangle(selectionRectangle,event); 
+
+            for (Items arrayItem : composerItems) {
+                if (arrayItem instanceof NoteBox)
+                {
+                    currentNote = (NoteBox) arrayItem;
+                    if (currentNote.isInRect(topLeft, bottomRight)) {
+                        currentNote.markNote();
+                    } else if(!event.isControlDown()) {
+                        currentNote.unmarkNote();  
                     }
                 }
             }
         }
+        updateSelected();
     }
     
     private void updateYPos(){        
@@ -709,7 +727,7 @@ public class TuneComposer extends Application {
             }
         }    
                 
-        System.out.println("Selected Gestures" + selectedGestures);                
+//        System.out.println("Selected Gestures" + selectedGestures);                
         
     }
     
@@ -736,7 +754,7 @@ public class TuneComposer extends Application {
                 currentGesture.unmarkGes();
             }
         }
-        System.out.println("Selected Gestures" + selectedGestures);
+//        System.out.println("Selected Gestures" + selectedGestures);
 
     }
     
