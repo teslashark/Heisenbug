@@ -142,7 +142,7 @@ public class TuneComposer extends Application {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 GestureNotes = currentGesture.getGestureNotes();
-                
+                 
                 if(GestureNotes.contains(selected)){
                     
                     if(switchto=="selected") {
@@ -164,10 +164,17 @@ public class TuneComposer extends Application {
                             selectedNotes.remove(notefound);
                         }
                     }
+                    
+                // TEMPORARY
+                boolean result = currentGesture.getIsSelected();
+                System.out.println("MAGN A: " + result);
+                               
                     break;
                 }
             }
-        }            
+        }     
+        
+
     }
     
     /**
@@ -249,9 +256,8 @@ public class TuneComposer extends Application {
                 int xpos = currentSelectedNote.getX() + ( (int)event.getX() - (int)dragPointX );
                 int ypos = currentSelectedNote.getY() + ( (int)event.getY() - (int)dragPointY );
                 currentSelectedNote.repositionNoteBox(xpos,ypos);
-
-
             }
+            
             for (int j=0; j<selectedGestures.size();j++){
                 currentSelectedGes = (Gesture)selectedGestures.get(j);
 
@@ -496,38 +502,33 @@ public class TuneComposer extends Application {
      * @param event 
      */
     @FXML
-    protected void handleDeleteClicked(ActionEvent event) {      
-                
-        System.out.println("Delete triggered");
-        System.out.println("Composer Items" + composerItems);
 
+    protected void handleDeleteClicked(ActionEvent event) {   
+        updateSelected();
         for (Items arrayItem : composerItems) {
+            
             if (arrayItem instanceof NoteBox)
             {
                 NoteBox currentNote;
                 currentNote = (NoteBox) arrayItem;
-                if (currentNote.getIsSelected()) {
+                if (selectedNotes.contains(currentNote)) {
                     deleteNote(currentNote);
                     composerItemsToRemove.add(currentNote);
                 }
             }
-            
+                        
             if (arrayItem instanceof Gesture)
             {
                 Gesture currentGesture;
                 currentGesture = (Gesture) arrayItem;
                 if (currentGesture.getIsSelected()) {
                     deleteGesture(currentGesture);
+                    composerItemsToRemove.add(currentGesture);
                 }
             }
         }    
         composerItems.removeAll(composerItemsToRemove);
-        System.out.println("Composer Items" + composerItems);
-        
-        System.out.println("Selected Notes" + selectedNotes);
-        System.out.println("Selected Gestur" + selectedGestures);
-
-
+        updateSelected();
     }
 
     /**
@@ -664,7 +665,6 @@ public class TuneComposer extends Application {
      * @param note The NoteBox to be deleted. 
      */
     public void deleteNote(NoteBox note){
-        //int index = composerItems.indexOf(note);
         musicPane.getChildren().remove(note.getRectangle());
     }
 
@@ -727,8 +727,6 @@ public class TuneComposer extends Application {
                 currentGesture.unmarkGes();
             }
         }
-//        System.out.println("Selected Gestures" + selectedGestures);
-
     }
     
     /**
