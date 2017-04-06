@@ -48,7 +48,6 @@ public class Gesture extends Items {
         }
         this.gesCount = 0;
         this.gesRectangle = new Rectangle(1999,1279,1,1);
-        //TODO: bring up to spec is selected default
         this.isSelected = false; 
         gesRectangle.setId("Gesture" + (gesCount + 1));
         gesCount += 1;
@@ -86,6 +85,10 @@ public class Gesture extends Items {
 
     }
     
+    /**
+     * Create a list of notes in this gesture
+     * @return a list of notes in this gesture
+     */
     public ArrayList<NoteBox> getGestureNotes() {
         return gestureNotes;
     }
@@ -93,16 +96,16 @@ public class Gesture extends Items {
     /**
      * Returns a gesRectangle representative of the area of the gesture which can be clicked on to
      * activate the resizing action.
-     * @return The gesRectangle representing the place to click to resize the NoteBox
+     * @return The gesRectangle representing the place to click to resize the gesture
      */
     public Rectangle getStretchZone() {
         return stretchZone;
     }
     
     /**
-     * Returns a gesRectangle representative of the area of the notebox which can be clicked on to
+     * Returns a gesRectangle representative of the area of the gesture which can be clicked on to
      * activate the drag to move action.
-     * @return The gesRectangle representing the place to click to drag and move the NoteBox
+     * @return The gesRectangle representing the place to click to drag and move the gesture
      */
     public Rectangle getDragZone() {
         return dragZone;
@@ -110,30 +113,30 @@ public class Gesture extends Items {
     
     /**
      * Get method for the gesRectangle
-     * @return the gesRectangle representing the NoteBox
+     * @return the gesRectangle representing the gesture
      */
     public Rectangle getRectangle() {
         return gesRectangle;
     }
     
     /**
-     * Gives the height of the noteBox
-     * @return the height of the noteBox
+     * Gives the height of the gesture
+     * @return the height of the Gesture
      */
     public int getGesHeight() {
         return gesHeight;
     }
     
     /**
-     * Gives the width of the notebox
-     * @return the width of the NoteBox
+     * Gives the width of the gesture
+     * @return the width of the Gesture
      */
     public int getWidth() {
         return (int) this.gesRectangle.getWidth();
     }
     
     /**
-     * Gives the x-coordinate of the NoteBox
+     * Gives the x-coordinate of the Gesture
      * @return the x-coordinate
      */
     public int getX() {
@@ -157,8 +160,8 @@ public class Gesture extends Items {
     }
     
     /**
-     * Changes the width of a noteBox based of an incrementation of size
-     * @param sizeDifference the difference  of width between the new note box and the old one
+     * Changes the width of a gesture based of an incrementation of size
+     * @param sizeDifference the difference of width between the stretched gesture and the old one
      */
     public void changeGestureLength(int sizeDifference) {
         this.gesRectangle.setWidth(this.gesRectangle.getWidth() + sizeDifference);
@@ -177,14 +180,11 @@ public class Gesture extends Items {
             }
     }
     
-    // TODO: make it so that when the mouse is unclicked on dragging it snaps
-    // in rather than making it snap in while dragging
     public void repositionGesture(int newXCoordinate, int newYCoordinate){
-        // don't let the user make a note go offscreen
+        // don't let the user make a gesture go offscreen
 
         gesRectangle.setX(newXCoordinate > 1900 ? 1900 : newXCoordinate);
-     
-        // snap Y coordinate between horizontal lines in composer
+             // snap Y coordinate between horizontal lines in composer
         gesRectangle.setY(newYCoordinate);
         stretchZone.setX(gesRectangle.getX() + gesRectangle.getWidth() -5);
         stretchZone.setY(gesRectangle.getY());
@@ -194,7 +194,7 @@ public class Gesture extends Items {
     }
     
     /**
-     * marks the note as selected
+     * marks the gesture as selected
      */
     public void markGes(){
         this.isSelected = true;
@@ -202,7 +202,7 @@ public class Gesture extends Items {
     }
     
     /**
-     * unmarks the note as selected
+     * unmarks the gesture
      */
     public void unmarkGes(){
         this.isSelected = false;
@@ -210,9 +210,9 @@ public class Gesture extends Items {
     }
     
     /**
-     * Checks to see whether a given point is inside the notebox
+     * Checks to see whether a given point is inside the gesture
      * @param point the point to be tested
-     * @return returns true if the point is within the box, else false
+     * @return returns true if the point is within the rectangle, else false
      */
     public boolean pointIsInGesture(Point point) {
         
@@ -227,7 +227,11 @@ public class Gesture extends Items {
         return (xValInRange && yValInRange);
     }
     
-
+/**
+     * Checks to see whether two gestures overlap
+     * @param max1, min1, max2, min2
+     * @return confirmation if overlap
+     */
     public static boolean isOverlapping(int max1, int min1, int max2, int min2) {
         return (max1 >= min2 && max2 >= min1);
     }
@@ -236,7 +240,7 @@ public class Gesture extends Items {
      * Checks to see if the gesture is within a given gesRectangle (used for the selection gesRectangle)
      * @param topLeft Top left corner of the other gesRectangle
      * @param bottomRight Bottom right corner of the other gesRectangle
-     * @return returns true is the note box is within the other gesRectangle, else false
+     * @return returns true is the gesture is within the other gesRectangle, else false
      */
     public boolean isInRect(Point topLeft, Point bottomRight) {
         
@@ -257,6 +261,9 @@ public class Gesture extends Items {
         
     }
     
+    /** 
+     *  Clear gesture note count for ungrouping
+     */
     public void unGesture(){
         gestureNotes.clear();
     }
