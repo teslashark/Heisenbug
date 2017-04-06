@@ -1,16 +1,40 @@
-/* Colors notes as light blue, with a black outline. */
 
-/*TODO: are the stroke color specifications 
-necessary? isn't it already default?*/
+.root {    
+    -fx-background-color: #34495E;
+}
+
+#musicPane {
+        -fx-background-color: #D6DBDF;
+}
+
+#instrumentButtonsGroup {
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+}
+
+#pianoButton {
+     -fx-mark-highlight-color: grey ;
+     -fx-mark-color: grey ;
+}
 
 #noteBoxPiano {
     -fx-fill: grey; 
-    -fx-stroke: black;  
+    -fx-stroke: black; 
+}
+
+#harpsicordButton {
+     -fx-mark-highlight-color: green;
+     -fx-mark-color: green;
 }
 
 #noteBoxHarpsicord {
     -fx-fill: green; 
-    -fx-stroke: black;    
+    -fx-stroke: black;  
+}
+
+#marimbaButton {
+     -fx-mark-highlight-color: blue;
+     -fx-mark-color: blue;
 }
 
 #noteBoxMarimba {
@@ -18,9 +42,19 @@ necessary? isn't it already default?*/
     -fx-stroke: black;    
 }
 
+#organButton {
+     -fx-mark-highlight-color: yellow;
+     -fx-mark-color: yellow;
+}
+
 #noteBoxChurchOrgan {
     -fx-fill: yellow; 
     -fx-stroke: black;    
+}
+
+#accordionButton {
+     -fx-mark-highlight-color: purple;
+     -fx-mark-color: purple;
 }
 
 #noteBoxAccordion {
@@ -28,14 +62,29 @@ necessary? isn't it already default?*/
     -fx-stroke: black;    
 }
 
+#guitarButton {
+     -fx-mark-highlight-color: lightblue;
+     -fx-mark-color: lightblue;
+}
+
 #noteBoxGuitar {
     -fx-fill: lightblue; 
     -fx-stroke: black;    
 }
 
+#violenButton {
+     -fx-mark-highlight-color: darkslategrey;
+     -fx-mark-color: darkslategrey;
+}
+
 #noteBoxViolin {
     -fx-fill: darkslategrey; 
     -fx-stroke: black;    
+}
+
+#hornButton {
+     -fx-mark-highlight-color: brown;
+     -fx-mark-color: brown;
 }
 
 #noteBoxFrenchHorn {

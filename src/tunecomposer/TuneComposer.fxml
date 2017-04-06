@@ -16,7 +16,7 @@
 
 <BorderPane prefHeight="1280.0" prefWidth="2000.0" stylesheets="@TuneComposer.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tunecomposer.TuneComposer">
    <top>
-      <MenuBar>
+      <MenuBar fx:id="menu">
         <menus>
           <Menu text="File">
             <items>
@@ -90,42 +90,42 @@
                <children>
                   <Group fx:id="instrumentButtonsGroup">
                      <children>
-                        <RadioButton fx:id="pianoButton" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Piano" textFill="#9e9d9d">
+                        <RadioButton fx:id="pianoButton" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Piano" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="38.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Harpsicord" textFill="#2ec626">
+                        <RadioButton fx:id="harpsicordButton" layoutY="38.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Harpsicord" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="76.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Marimba" textFill="#3515d7">
+                        <RadioButton fx:id="marimbaButton" layoutY="76.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Marimba" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="114.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Church Organ" textFill="#c1d71e">
+                        <RadioButton fx:id="organButton" layoutY="114.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Church Organ" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="152.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Accordion" textFill="#8d1885">
+                        <RadioButton fx:id="accordionButton" layoutY="152.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Accordion" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="190.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Guitar" textFill="#2fe3ff">
+                        <RadioButton fx:id="guitarButton" layoutY="190.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Guitar" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="228.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Violin">
+                        <RadioButton fx:id="violenButton" layoutY="228.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="Violin" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </RadioButton>
-                        <RadioButton layoutY="266.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="French Horn" textFill="#a33e22">
+                        <RadioButton fx:id="hornButton" layoutY="266.0" mnemonicParsing="false" onAction="#handleInstrumentSelection" text="French Horn" textFill="White">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
