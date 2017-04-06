@@ -346,7 +346,6 @@ public class TuneComposer extends Application {
     }
     
     
-    
     protected void modifyAllGesturesNotes(NoteBox selected, String switchto){
         
         ArrayList<NoteBox> GestureNotes = new ArrayList<NoteBox>();
