@@ -147,33 +147,24 @@ public class TuneComposer extends Application {
                     
                     if(switchto=="selected") {
                             currentGesture.markGes();
-                            selectedGestures.add(currentGesture);
                     }
                     if(switchto=="unselected") {
                             currentGesture.unmarkGes();
-                            selectedGestures.remove(currentGesture);
                     }
 
                     for (NoteBox notefound : GestureNotes) {
                         if(switchto=="selected") {
                             notefound.markNote();
-                            selectedNotes.add(notefound);
                         }
                         if(switchto=="unselected") {
                             notefound.unmarkNote();
-                            selectedNotes.remove(notefound);
                         }
                     }
-                    
-                // TEMPORARY
-                boolean result = currentGesture.getIsSelected();
-                System.out.println("MAGN A: " + result);
-                               
-                    break;
+
                 }
             }
         }     
-        
+        updateSelected();
 
     }
     
@@ -192,7 +183,6 @@ public class TuneComposer extends Application {
         Point startingPoint = new Point((int)startingPointX,(int)startingPointY);
         
         NoteBox currentNote;
-        Gesture currentGes;
         
         stretch = false;
         drag = false;
@@ -228,7 +218,6 @@ public class TuneComposer extends Application {
     protected void handleOnMouseDraggedAction(MouseEvent event){
         NoteBox currentNote;
         NoteBox currentSelectedNote;
-        Gesture currentGes;
         Gesture currentSelectedGes;
         this.updateSelected();
 
@@ -368,7 +357,6 @@ public class TuneComposer extends Application {
        playBarObj.stopAnimation();
        this.updateSelected(); 
        NoteBox currentNote;
-       Gesture currentGesture;
 
        boolean hasNoConflictWithNote = true;
        int roundedYCoordinate = Math.round((int)event.getY() / 10) * 10;
@@ -494,6 +482,7 @@ public class TuneComposer extends Application {
                 currentGesture.markGes();
             }
         }   
+        updateSelected();
     }
     
     /**
