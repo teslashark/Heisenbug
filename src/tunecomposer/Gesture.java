@@ -164,6 +164,17 @@ public class Gesture extends Items {
         this.gesRectangle.setWidth(this.gesRectangle.getWidth() + sizeDifference);
         this.stretchZone.setX(gesRectangle.getX() + gesRectangle.getWidth() - 5);
         this.dragZone.setWidth(this.getWidth()-5);
+        int furthestNoteEdge=0;
+        for(NoteBox noteBox: this.getGestureNotes()){
+            int noteEdge = (int)noteBox.getX()+(int)noteBox.getWidth();
+            if (noteEdge>furthestNoteEdge){
+                furthestNoteEdge = not  eEdge;
+            }
+        }
+        int gesEdge = (int)this.gesRectangle.getX()+(int)this.gesRectangle.getWidth();
+        if (gesEdge<furthestNoteEdge){
+                this.gesRectangle.setWidth(furthestNoteEdge-this.gesRectangle.getX());
+            }
     }
     
     // TODO: make it so that when the mouse is unclicked on dragging it snaps
