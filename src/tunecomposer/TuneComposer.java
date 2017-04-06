@@ -494,6 +494,7 @@ public class TuneComposer extends Application {
                 currentGesture.markGes();
             }
         }   
+        updateSelected();
     }
     
     /**
