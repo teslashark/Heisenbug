@@ -1,7 +1,6 @@
 package tunecomposer;
 
 import java.util.ArrayList;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,9 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import tunecomposer.NoteBox;
 
 /**
  * PlayBar class which creates the animation of a red bar that indicates what notes are playing.
